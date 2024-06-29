@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import Footer from "./Footer";
-import ThemeProvider from "styled-components";
 const MainContainer = styled.main``;
 
 interface ILayout {

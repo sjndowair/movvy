@@ -4,6 +4,7 @@ import {
   useCallback,
   useReducer,
   useMemo,
+  useContext,
 } from "react";
 import { FC } from "react";
 
@@ -46,4 +47,16 @@ export const ThemeModeProvider: FC<{
   );
 
   return <ThemeContext.Provider value={value} {...props} />;
+};
+
+interface IUseThemeMode extends IThemeState {
+  toggleTheme(): void;
+}
+
+export const useThemeMode = () => {
+  const ctx = useContext<IUseThemeMode>(ThemeContext);
+
+  if (!ctx) throw new Error("테마 컨텍스트의 프로바이더가 필요합니다.");
+
+  return ctx;
 };
