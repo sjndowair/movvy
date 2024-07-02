@@ -17,6 +17,18 @@ export const H1 = styled.h1`
 
 export const List = styled.ul`
   display: flex;
-  gap: 1.25rem;
+  gap: 1.75rem;
   font-size: ${(props) => props.theme.text.xl};
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const MyPage = styled.ul`
+  display: flex;
+  color: #fff;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  font-size: ${(props) => props.theme.text.xxl};
 `;
