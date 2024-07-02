@@ -12,7 +12,6 @@ const Layout = ({ children }: ILayout) => {
   return (
     <>
       <Header></Header>
-
       <MainContainer>{children}</MainContainer>
       <Footer></Footer>
     </>
