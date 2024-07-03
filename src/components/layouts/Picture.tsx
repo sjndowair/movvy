@@ -5,6 +5,8 @@ import {
   Slides,
   Overlay,
   NextBtn,
+  Picture,
+  Img,
   PrevBtn,
 } from "../styles/contain-style";
 import { slideData } from "../Context/slideCtx";
