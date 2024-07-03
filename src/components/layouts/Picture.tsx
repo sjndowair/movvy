@@ -24,24 +24,47 @@ const PictureArea = () => {
     setSlide((next) => (next - 1 + slideData.length) % slideData.length);
   }, []);
 
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+    setCurrentX(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      setCurrentX(e.clientX - startX);
+    }
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+    if (currentX > 10) {
+      prevSlide();
+    } else if (currentX < -10) {
+      nextSlide();
+    }
+    setCurrentX(0);
+  };
+
   return (
-    <Slider>
-      <Slides style={{ transform: `translateX(${-slide * 100}%)` }}>
+    <Slider
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
+      <Slides slideIndex={slide} isDragging={isDragging} currentX={currentX}>
         {slideData.map((slideItem, index) => (
           <Overlay key={index}>
-            <picture>
+            <Picture>
               <source srcSet={slideItem.webSrcSet} type="image/webp" />
-              {slideItem.isBanner ? (
-                <img src={slideItem.imgSrc} alt={slideItem.alt} />
-              ) : (
-                <img src={slideItem.imgSrc} alt={slideItem.alt} />
-              )}
-            </picture>
+              <Img src={slideItem.imgSrc} alt={slideItem.alt} />
+            </Picture>
           </Overlay>
         ))}
       </Slides>
-      <PrevBtn onClick={prevSlide}>전</PrevBtn>
-      <NextBtn onClick={nextSlide}>후</NextBtn>
+      <PrevBtn onClick={prevSlide}>후</PrevBtn>
+      <NextBtn onClick={nextSlide}>전</NextBtn>
     </Slider>
   );
 };
