@@ -9,8 +9,6 @@ import {
 } from "../styles/contain-style";
 import { slideData } from "../Context/slideCtx";
 
-use;
-
 const PictureArea = () => {
   const [slide, setSlide] = useState<number>(0);
 
