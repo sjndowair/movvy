@@ -11,6 +11,9 @@ import { slideData } from "../Context/slideCtx";
 
 const PictureArea = () => {
   const [slide, setSlide] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [startX, setStartX] = useState<number>(0);
+  const [currentX, setCurrentX] = useState<number>(0);
 
   const nextSlide = useCallback((): void => {
     setSlide((prev) => (prev + 1) % slideData.length);
