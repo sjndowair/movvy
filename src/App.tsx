@@ -5,6 +5,7 @@ import { darkTheme, lightTheme } from "./components/styles/theme";
 import { GlobalStyle } from "./components/styles/global-style";
 import { useThemeMode } from "./components/Context/themeCtx";
 import PictureArea from "./components/layouts/Picture";
+import CardComponent from "./components/layouts/CardComponet";
 
 function App() {
   const { isDark } = useThemeMode();
@@ -13,7 +14,8 @@ function App() {
     <ThemeProvider theme={!isDark ? lightTheme : darkTheme}>
       <GlobalStyle />
       <Layout>
-        <PictureArea></PictureArea>
+        <PictureArea />
+        <CardComponent />
       </Layout>
     </ThemeProvider>
   );
