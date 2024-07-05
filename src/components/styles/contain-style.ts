@@ -1,73 +1,111 @@
 import styled from "styled-components";
-import { slideData } from "../Context/slideCtx";
 
-export const Slider = styled.div`
-  position: absolute;
-  height: auto;
-  width: 100%;
-  overflow: hidden;
+export const Body = styled.body`
+  background-color: #333;
+  height: 100vw;
 `;
 
-export const Slides = styled.div<{
-  slideIndex: number;
-  isDragging: boolean;
-  currentX: number;
-}>`
+export const H2 = styled.h2`
+  color: #fff;
+  font-size: 2rem;
+`;
+
+export const Slider = styled.div`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 55vw;
+`;
+
+// export const Body = styled.body`
+//   background-color: #333;
+//   width: 100%;
+//   height: 100vw;
+// `;
+
+export const Slides = styled.div<{ slideIndex: number }>`
   display: flex;
-  height: 100vw;
-  width: ${slideData.length * 100}%;
-  transition: ${({ isDragging }) =>
-    isDragging ? "none" : "transform 0.5s ease-in-out"};
-  transform: ${({ slideIndex, currentX, isDragging }) =>
-    isDragging
-      ? `translateX(calc(-${
-          (slideIndex * 100) / slideData.length
-        }% + ${currentX}px))`
-      : `translateX(-${(slideIndex * 100) / slideData.length}%)`};
+  transition: transform 0.5s ease-in-out;
+  transform: ${({ slideIndex }) => `translateX(-${slideIndex * 100}%)`};
+`;
+
+export const Slide = styled.div`
+  position: relative;
+  flex: 0 0 100%;
+`;
+
+export const PictureAreaContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
 `;
 
 export const Picture = styled.picture`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: auto;
-`;
-
-export const Overlay = styled.div`
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-self: center;
 `;
 
 export const Img = styled.img`
   width: 100%;
-  object-fit: contain;
-  height: auto;
+  height: 40vw;
+  object-fit: cover;
 `;
 
 export const NextBtn = styled.button`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0, 5);
-
-  border: none;
-  padding: 0.75rem;
-  cursor: pointer;
-  z-index: 2;
-  left: 0.75rem;
-  overflow: hidden;
-`;
-export const PrevBtn = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0, 5);
+  top: 32%;
+  transform: translateY(-20%);
+  background-color: transparent;
   border: none;
   padding: 0.75rem;
   cursor: pointer;
   z-index: 2;
   right: 0.75rem;
-  color: #000;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 3px solid rgb(255, 111, 15);
+    border-right: 3px solid rgb(255, 111, 15);
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 5px rgb(255, 111, 15));
+  }
+
+  &:hover::after {
+    transform: rotate(45deg) scale(1.2);
+  }
+`;
+
+export const PrevBtn = styled.button`
+  position: absolute;
+  top: 32%;
+  transform: translateY(-20%);
+  background-color: transparent;
+  border: none;
+  padding: 0.75rem;
+  cursor: pointer;
+  z-index: 2;
+  left: 0.75rem;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 3px solid rgb(255, 111, 15);
+    border-left: 3px solid rgb(255, 111, 15);
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 5px rgb(255, 111, 15));
+  }
+
+  &:hover::before {
+    transform: rotate(-45deg) scale(1.2);
+  }
 `;
