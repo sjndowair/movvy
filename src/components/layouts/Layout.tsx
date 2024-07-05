@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import Footer from "./Footer";
+import { Body } from "../styles/contain-style";
 const MainContainer = styled.main``;
 
 interface ILayout {
@@ -12,7 +13,9 @@ const Layout = ({ children }: ILayout) => {
   return (
     <>
       <Header></Header>
-      <MainContainer>{children}</MainContainer>
+      <Body>
+        <MainContainer>{children}</MainContainer>
+      </Body>
       <Footer></Footer>
     </>
   );
