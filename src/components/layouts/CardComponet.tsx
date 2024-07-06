@@ -13,6 +13,20 @@ const CardComponent = () => {
   const prevCard = useCallback(() => {
     setCardIndex((prevIndex) => (prevIndex - 1) % cardData.length);
   }, []);
+  const nextSlide = useCallback(() => {
+    setSlideIndex(
+      (prevIndex) =>
+        (prevIndex + 10) % Math.floor(cardData.length / cardsPerSlide)
+    );
+  }, [cardsPerSlide]);
+
+  const prevSlide = useCallback(() => {
+    setSlideIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + Math.floor(cardData.length / cardsPerSlide)) %
+        Math.floor(cardData.length / cardsPerSlide)
+    );
+  }, [cardsPerSlide]);
 
   return (
     <section>
