@@ -1,8 +1,5 @@
-import React, { useCallback, useState } from "react";
 import React, { useCallback, useRef, useState } from "react";
 import { cardData } from "../Context/cardCtx";
-import { H2, PrevBtn } from "../styles/contain-style";
-import { CardContainer, BoardCard, Button } from "../styles/card-style";
 import { H2 } from "../styles/contain-style";
 import {
   CardContainer,
@@ -18,16 +15,14 @@ import {
 } from "../styles/card-style";
 import { NextBtn, PrevBtn } from "../styles/contain-style";
 
-const CardComponent = () => {
-  const [cardIndex, setCardIndex] = useState<number>(0);
+interface CardComponetsProps {
+  title: string;
+}
+const CardComponent: React.FC<CardComponetsProps> = ({ title }) => {
+  const [slideIndex, setSlideIndex] = useState<number>(0);
 
-  const nextCard = useCallback(() => {
-    setCardIndex((nextIndex) => (nextIndex + 1) % cardData.length);
-  }, []);
+  const cardsPerSlide: number = 5;
 
-  const prevCard = useCallback(() => {
-    setCardIndex((prevIndex) => (prevIndex - 1) % cardData.length);
-  }, []);
   const nextSlide = useCallback(() => {
     setSlideIndex(
       (prevIndex) =>
