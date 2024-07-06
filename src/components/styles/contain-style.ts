@@ -1,27 +1,24 @@
 import styled from "styled-components";
 
 export const Body = styled.body`
-  background-color: #333;
-  height: 100vw;
+  background-color: #222;
+  height: auto;
 `;
 
 export const H2 = styled.h2`
   color: #fff;
   font-size: 2rem;
+
+  text-indent: 2rem;
 `;
 
 export const Slider = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: 55vw;
+  height: 40vw;
+  margin-bottom: 10rem;
 `;
-
-// export const Body = styled.body`
-//   background-color: #333;
-//   width: 100%;
-//   height: 100vw;
-// `;
 
 export const Slides = styled.div<{ slideIndex: number }>`
   display: flex;
@@ -56,8 +53,9 @@ export const Img = styled.img`
 
 export const NextBtn = styled.button`
   position: absolute;
-  top: 32%;
-  transform: translateY(-20%);
+  top: 0;
+  bottom: 0;
+
   background-color: transparent;
   border: none;
   padding: 0.75rem;
@@ -84,8 +82,9 @@ export const NextBtn = styled.button`
 
 export const PrevBtn = styled.button`
   position: absolute;
-  top: 32%;
-  transform: translateY(-20%);
+  top: 0;
+  bottom: 0;
+
   background-color: transparent;
   border: none;
   padding: 0.75rem;
@@ -106,6 +105,7 @@ export const PrevBtn = styled.button`
   }
 
   &:hover::before {
-    transform: rotate(-45deg) scale(1.2);
+    transform: rotate(-45deg);
+    scale: (1.2);
   }
 `;
