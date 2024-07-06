@@ -45,26 +45,28 @@ const CardComponent = () => {
 
   return (
     <section>
-      <div>
-        <H2>믿고 보는 웨이브 에디터 추천작</H2>
-        <CardContainer>
-          {cardData.map((cardIndex, index) => (
-            <div key={index}>
-              <div>
-                {cardIndex.ImageContain.map((image, imgIndex) => (
+      <Coordinates>
+        <SlideWrapper>
+          <Intro>
+            <H2>{title}</H2>
+            <More>더보기</More>
+          </Intro>
+          <CardContainer slideIndex={slideIndex}>
+            {cardData.map((card, index) => (
+              <Slide key={index}>
+                {card.ImageContain.map((image, imgIndex) => (
                   <picture key={imgIndex}>
-                    <source srcSet={image.webSrcSet} />
-                    <BoardCard src={image.imgSrc} alt={image.alt} />
+                    <source srcSet={image.webSrcSet} type="image/webp" />
+                    <Card src={image.imgSrc} alt={image.alt} />
                   </picture>
                 ))}
-              </div>
-              <div />
-            </div>
-          ))}
-        </CardContainer>
-        <Button onClick={prevCard}>전</Button>
-        <Button onClick={nextCard}>후</Button>
-      </div>
+              </Slide>
+            ))}
+          </CardContainer>
+        </SlideWrapper>
+        <Prev onClick={prevSlide}></Prev>
+        <Next onClick={nextSlide}></Next>
+      </Coordinates>
     </section>
   );
 };
