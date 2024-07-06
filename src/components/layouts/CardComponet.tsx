@@ -1,7 +1,22 @@
 import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { cardData } from "../Context/cardCtx";
 import { H2, PrevBtn } from "../styles/contain-style";
 import { CardContainer, BoardCard, Button } from "../styles/card-style";
+import { H2 } from "../styles/contain-style";
+import {
+  CardContainer,
+  Button,
+  Slide,
+  SlideWrapper,
+  Card,
+  Prev,
+  Coordinates,
+  Next,
+  More,
+  Intro,
+} from "../styles/card-style";
+import { NextBtn, PrevBtn } from "../styles/contain-style";
 
 const CardComponent = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
