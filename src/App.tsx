@@ -1,30 +1,24 @@
-import { useTheme } from "styled-components";
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
-import Layout from "./components/layouts/Layout";
-import { darkTheme, lightTheme } from "./components/styles/theme";
-import { GlobalStyle } from "./components/styles/global-style";
-import { ThemeModeProvider } from "./components/Context/themeCtx";
-
-const Div = styled.div`
-  color: blue;
-`;
+import Layout from "./components/Layout";
+import { darkTheme, lightTheme } from "./components/Theme/theme";
+import { GlobalStyle } from "./components/Context/global-style";
+import { useThemeMode } from "./components/Theme/themeCtx";
+import PictureArea from "./components/Context/atoms/Slider/Picture";
+import MainContainer from "./components/Context/atoms/Card/NameCtx";
 
 function App() {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeMode();
 
   return (
     <ThemeProvider theme={!isDark ? lightTheme : darkTheme}>
       <GlobalStyle />
       <Layout>
-        <Div className="App">hello world</Div>
+        <PictureArea />
+        <MainContainer></MainContainer>
       </Layout>
     </ThemeProvider>
   );
 }
 
-export default () => (
-  <ThemeModeProvider>
-    <App />
-  </ThemeModeProvider>
-);
+export default App;
