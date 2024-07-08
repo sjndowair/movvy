@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import Header from "./Header";
-import Footer from "./Footer";
-import { Body } from "../styles/contain-style";
+import Header from "./Context/atoms/Header/Header";
+import Footer from "./Context/atoms/Footer/Footer";
+import { Body } from "./Context/atoms/Slider/contain-style";
 const MainContainer = styled.main``;
 
 interface ILayout {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import createGlobalStyle from "styled-components";
-import { Head, List, H1, MyPage } from "../styles/head-style";
+import { Head, List, H1, MyPage } from "./head-style";
 
 const NAV_MENUS = [
   "드라마",
