@@ -25,3 +25,12 @@ const CardComponent: React.FC<CardComponentProps> = ({ title }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [nextSlide]);
+
