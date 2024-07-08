@@ -10,10 +10,6 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
-    body {
-        background-color: #333;
-    }
-
     a {
         padding: 0;
         margin: 0;

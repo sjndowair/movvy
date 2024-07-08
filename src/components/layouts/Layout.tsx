@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import Header from "./Context/atoms/Header/Header";
-import Footer from "./Context/atoms/Footer/Footer";
-import { Body } from "./Context/atoms/Slider/contain-style";
+import Header from "./Header";
+import Footer from "./Footer";
+import ThemeProvider from "styled-components";
 const MainContainer = styled.main``;
 
 interface ILayout {
@@ -13,9 +13,8 @@ const Layout = ({ children }: ILayout) => {
   return (
     <>
       <Header></Header>
-      <Body>
-        <MainContainer>{children}</MainContainer>
-      </Body>
+
+      <MainContainer>{children}</MainContainer>
       <Footer></Footer>
     </>
   );
