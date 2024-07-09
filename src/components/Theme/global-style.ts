@@ -10,6 +10,10 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
+    body {
+        background-color: #333;
+    }
+
     a {
         padding: 0;
         margin: 0;
@@ -27,7 +31,7 @@ export const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar {
         display: none;
     }
-    html{
+    html {
         font-size: 11px;
         -webkit-text-size-adjust: none;
         font-family: -apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
