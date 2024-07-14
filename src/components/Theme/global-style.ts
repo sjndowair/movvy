@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
@@ -8,6 +8,10 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         margin: 0;
         box-sizing: border-box;
+    }
+    
+    main{
+        background-color: #333;
     }
 
     body {
@@ -59,3 +63,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 `;
+
+export const CardDisChargeContainer = styled.div``;
+
+export const NoticeContainer = styled.div``;
