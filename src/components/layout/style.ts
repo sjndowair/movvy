@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-export const MainContainer = styled.main``;
+interface IMainContainerProps {
+  headerToggle: boolean;
+}
+export const MainContainer = styled.main<IMainContainerProps>``;
 
 export const HeaderContainer = styled.header``;
 
