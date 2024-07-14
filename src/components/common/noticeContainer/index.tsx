@@ -8,7 +8,7 @@ import {
   WidthControlContainer,
 } from "./style";
 
-import { NOTICE_CONTENT_LIST } from "../../../constants/notice-content-constant";
+import { NOTICE_CONTENT_LIST } from "../../../constants/notice-content.constant";
 
 const NoticeContainer = () => {
   const [noticeIndex, setNoticeIndex] = useState<number>(0);
