@@ -53,9 +53,8 @@ export const Img = styled.img`
 
 export const NextBtn = styled.button`
   position: absolute;
-  top: 0;
-  bottom: 0;
-
+  top: 50%;
+  transform: translateY(-50%);
   background-color: transparent;
   border: none;
   padding: 0.75rem;
@@ -82,8 +81,8 @@ export const NextBtn = styled.button`
 
 export const PrevBtn = styled.button`
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
 
   background-color: transparent;
   border: none;
