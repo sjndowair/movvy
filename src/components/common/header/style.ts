@@ -1,17 +1,44 @@
 import styled from "styled-components";
 import { mediaSize } from "../../Theme/theme";
 
-export const Head = styled.header`
-  display: flex;
+interface IIsScrollEvent {
+  handleScrollEvent: boolean;
+}
+
+export const Head = styled.header<IIsScrollEvent>`
+  position: fixed;
+  width: 100%;
+  z-index: 3;
   color: ${(props) => props.theme.color.background};
   font-size: ${(props) => props.theme.text.xxl};
-  justify-content: space-around;
   height: 4.5rem;
-  background-color: #111;
+  transition: all 0.3s ease;
+  box-shadow: ${(props) =>
+    !props.handleScrollEvent ? "0" : "rgb(255, 111, 15) 0 0 15px 0.5px;"};
+  background-image: ${(props) =>
+    props.handleScrollEvent
+      ? "#000"
+      : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
+  background-color: ${(props) =>
+    props.handleScrollEvent
+      ? "#000"
+      : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
+`;
+
+export const HeadInnerContainer = styled.div`
+  width: 90%;
+  margin: auto;
+  height: inherit;
   align-items: center;
-  ${mediaSize.tablet} {
-    justify-content: space-between;
-  }
+  display: flex;
+
+  justify-content: space-between;
+`;
+
+export const HeadLeftContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3rem;
 `;
 
 export const H1 = styled.h1`
@@ -34,7 +61,8 @@ export const H1 = styled.h1`
 export const List = styled.ul`
   display: flex;
   gap: 1.75rem;
-  font-size: ${(props) => props.theme.text.xl};
+  font-weight: ${({ theme }) => theme.font.bold};
+  font-size: ${(props) => props.theme.text.md};
 
   ${mediaSize.tablet} {
     display: none;

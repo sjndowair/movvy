@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { GNB_MENUS_LIST } from "../../../constants/nav-menus.constant";
 import {
@@ -9,39 +9,16 @@ import {
   TabletToggleContainer,
   RotateIconContainer,
   ListIndex,
+  HeadLeftContainer,
+  HeadInnerContainer,
 } from "./style";
-
-const UserCircleIcon = (props: any) => {
-  return (
-    <svg
-      width="25"
-      height="25"
-      cursor="pointer"
-      dataSlot="icon"
-      fill="none"
-      strokeWidth={1.5}
-      stroke="#fff"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-      />
-    </svg>
-  );
-};
 
 export const Magnifier = () => {
   return (
     <svg
       cursor="pointer"
-      data-v-d955b8b8=""
-      width="22"
-      height="22"
+      width="16"
+      height="16"
       viewBox="0 0 22 22"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -69,9 +46,9 @@ export const GnbReduceToggleMenu = ({ iconClickRotate, ...props }: any) => {
     <svg
       dataSlot="icon"
       fill="none"
-      strokeWidth={1}
+      strokeWidth={0.5}
       stroke={strokeChangeEvent}
-      viewBox="0 0 22 22"
+      viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       {...props}
@@ -91,6 +68,18 @@ interface IGnbToggleProps {
 
 const Header = ({ onToggleMenu }: IGnbToggleProps) => {
   const [rotateToggle, setRotateToggle] = useState<boolean>(false);
+  const [scrollEvent, setScrollEvent] = useState<boolean>(false);
+
+  const headScrollEvent = () => {
+    setScrollEvent(window.scrollY > 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", headScrollEvent);
+    return () => {
+      window.addEventListener("scroll", headScrollEvent);
+    };
+  }, []);
 
   const iconClickRotate = (): void => {
     onToggleMenu();
@@ -98,33 +87,34 @@ const Header = ({ onToggleMenu }: IGnbToggleProps) => {
   };
 
   return (
-    <Head>
-      <H1>movvy</H1>
-      <nav>
-        <List>
-          {GNB_MENUS_LIST.map((item, idx) => (
-            <ListIndex key={idx}>{item}</ListIndex>
-          ))}
-        </List>
-      </nav>
-      <div>
-        <MyPage>
-          <li>
-            <Magnifier />
-          </li>
-          <li>
-            <UserCircleIcon />
-          </li>
-        </MyPage>
-      </div>
-      <TabletToggleContainer>
-        <RotateIconContainer iconClickRotate={rotateToggle}>
-          <GnbReduceToggleMenu
-            iconClickRotate={rotateToggle}
-            onClick={iconClickRotate}
-          ></GnbReduceToggleMenu>
-        </RotateIconContainer>
-      </TabletToggleContainer>
+    <Head handleScrollEvent={scrollEvent}>
+      <HeadInnerContainer>
+        <HeadLeftContainer>
+          <H1>movvy</H1>
+          <nav>
+            <List>
+              {GNB_MENUS_LIST.map((item, idx) => (
+                <ListIndex key={idx}>{item}</ListIndex>
+              ))}
+            </List>
+          </nav>
+        </HeadLeftContainer>
+        <div>
+          <MyPage>
+            <li>
+              <Magnifier />
+            </li>
+          </MyPage>
+        </div>
+        <TabletToggleContainer>
+          <RotateIconContainer iconClickRotate={rotateToggle}>
+            <GnbReduceToggleMenu
+              iconClickRotate={rotateToggle}
+              onClick={iconClickRotate}
+            ></GnbReduceToggleMenu>
+          </RotateIconContainer>
+        </TabletToggleContainer>
+      </HeadInnerContainer>
     </Head>
   );
 };
