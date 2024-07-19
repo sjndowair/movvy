@@ -1,24 +1,10 @@
-import {
-  FooterContainer,
-  FooterNavigation,
-  FooterNavMarginBox,
-  FooterNavigationElement,
-} from "./style";
-
-import { FOOTER_MENU_CONTAINER } from "../../../constants/footer-menus.constant";
+import { FooterContainer } from "./style";
 
 const Footer = () => {
   return (
     <FooterContainer>
-      <FooterNavMarginBox>
-        <FooterNavigation>
-          {FOOTER_MENU_CONTAINER.map((items, index) => (
-            <FooterNavigationElement key={index}>
-              {items}
-            </FooterNavigationElement>
-          ))}
-        </FooterNavigation>
-      </FooterNavMarginBox>
+      <span>Powered by TMDB.</span>
+      <span>© 2024 Movvy. All rights reserved.</span>
     </FooterContainer>
   );
 };
