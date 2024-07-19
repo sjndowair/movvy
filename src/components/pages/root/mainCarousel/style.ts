@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { keyframes } from "styled-components";
 import { mediaSize } from "../../../Theme/theme";
 
 export const Body = styled.body`
@@ -10,103 +11,6 @@ export const H2 = styled.h2`
   color: #fff;
   font-size: 2rem;
   text-indent: 2rem;
-`;
-
-export const Slider = styled.div`
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background-color: #333;
-  height: 43vw;
-`;
-
-export const Slides = styled.div<{ slideIndex: number }>`
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  transform: ${({ slideIndex }) => `translateX(-${slideIndex * 100}%)`};
-`;
-
-export const Slide = styled.div`
-  position: relative;
-  flex: 0 0 100%;
-`;
-
-export const PictureAreaContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-`;
-
-export const Picture = styled.picture`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-`;
-
-export const Img = styled.img`
-  width: 100%;
-  height: 40vw;
-  object-fit: cover;
-`;
-
-export const NextBtn = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: transparent;
-  border: none;
-  padding: 0.75rem;
-  cursor: pointer;
-  z-index: 2;
-  right: 0.75rem;
-
-  &::after {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-top: 3px solid rgb(255, 111, 15);
-    border-right: 3px solid rgb(255, 111, 15);
-    transform: rotate(45deg);
-    transition: transform 0.3s ease;
-    filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-  }
-
-  &:hover::after {
-    transform: rotate(45deg) scale(1.2);
-  }
-`;
-
-export const PrevBtn = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  background-color: transparent;
-  border: none;
-  padding: 0.75rem;
-  cursor: pointer;
-  z-index: 2;
-  left: 0.75rem;
-
-  &::before {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-top: 3px solid rgb(255, 111, 15);
-    border-left: 3px solid rgb(255, 111, 15);
-    transform: rotate(-45deg);
-    transition: transform 0.3s ease;
-    filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-  }
-
-  &:hover::before {
-    transform: rotate(-45deg);
-    scale: (1.2);
-  }
 `;
 
 export const HeaderToggleMenu = styled.div`
@@ -142,5 +46,75 @@ export const TabletGnbList = styled.li`
   &:hover {
     color: rgb(255, 111, 15);
     transition: all 0.15s ease;
+  }
+`;
+
+export const SlideContainer = styled.div`
+  position: relative;
+  height: auto;
+  width: 100%;
+  height: 56.3vw;
+`;
+
+export const PrevSlide = keyframes`
+from{
+  transform: translateX(-100%);
+}
+to{
+  transform: translateX(0);
+}
+
+`;
+
+export const NextSlide = keyframes`
+from{
+  transform: translateX(100%);
+}
+to{
+transform: translateX(0);
+}
+`;
+
+export const PrevSlideButton = styled.button`
+  width: 2rem;
+  background-color: #000;
+  height: 2rem;
+`;
+
+export const NextSlideButton = styled.button`
+  width: 2rem;
+  background-color: #000;
+  height: 2rem;
+`;
+
+export const Slide = styled.div<{ slideDirection: boolean }>`
+  position: absolute;
+  width: 100%;
+  height: auto;
+  animation: ${(props) => (props.slideDirection ? NextSlide : PrevSlide)} 1s
+    forwards;
+`;
+export const PositionValueContainer = styled.div`
+  width: 100%;
+  height: 5rem;
+  background-color: #000;
+`;
+
+export const ArrowInnerContainer = styled.div`
+  display: flex;
+  margin: auto;
+  width: 90%;
+  align-items: center;
+  justify-content: space-between;
+  height: inherit;
+`;
+
+export const ArrowStyleContainer = styled.svg`
+  box-shadow: rgba(60, 60, 60, 1) 0rem 0rem 1rem;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    fill: rgb(255, 111, 15);
+    box-shadow: rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;
   }
 `;
