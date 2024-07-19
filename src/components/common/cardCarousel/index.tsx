@@ -1,120 +1,125 @@
-import { FC, useCallback, useState, useEffect } from "react";
+// CardCarouselComponent.tsx
+import { useEffect, useState } from "react";
+import { getImagePath } from "../../../utils/image.util";
+import { IMovie, IMovieListResponse } from "../../../types/movieList";
 import {
-  CardContainer,
+  NextBtn,
   Slide,
-  SlideWrapper,
-  Card,
-  Prev,
-  Coordinates,
-  Next,
-  More,
-  Intro,
-  H2,
+  SlideContainer,
+  PrevBtn,
+  MoviesImgBox,
+  CardImg,
+  MoviesTitleName,
+  TitleEncaseContainer,
+  CardTitle,
+  SvgStyleSheet,
+  ArrowButtonContainer,
+  HoverDirectionContainer,
 } from "./style";
-import { cardData } from "../../../constants/temp-card.constant";
 
-export const ChevronLeftIcon: any = (props: any) => {
+interface CardCarouselProps {
+  title: string;
+  fetchMovies: () => Promise<IMovieListResponse>;
+}
+
+export const CardPrevArrow: any = () => {
   return (
-    <svg
-      dataSlot="icon"
-      fill="none"
-      strokeWidth={2.5}
-      stroke="rgb(255, 111, 15)"
+    <SvgStyleSheet
+      fill="rgb(255, 111, 15)"
+      strokeWidth={2}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      {...props}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         d="M15.75 19.5 8.25 12l7.5-7.5"
       />
-    </svg>
+    </SvgStyleSheet>
   );
 };
 
-export const ChevronRightIcon: any = (props: any) => {
+export const CardNextArrow: any = () => {
   return (
-    <svg
-      dataSlot="icon"
-      fill="none"
-      strokeWidth={2.5}
-      stroke="rgb(255, 111, 15)"
+    <SvgStyleSheet
+      fill="rgb(255, 111, 15)"
+      strokeWidth={2}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      {...props}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         d="m8.25 4.5 7.5 7.5-7.5 7.5"
       />
-    </svg>
+    </SvgStyleSheet>
   );
 };
 
-interface ICardComponentProps {
-  title: string;
-}
+const CardCarouselComponent = ({ title, fetchMovies }: CardCarouselProps) => {
+  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const visibleCards = 4;
 
-const CardCarousel: FC<ICardComponentProps> = ({ title }) => {
-  const [slideIndex, setSlideIndex] = useState<number>(0);
+  const prevClickSlideEvent = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((pre) => pre - visibleCards);
+    }
+  };
 
-  const calculateCardsPerSlide = useCallback(
-    () => (window?.innerWidth >= 768 ? 5 : 3),
-    []
-  );
-
-  const totalSlides: number = Math.ceil(
-    cardData.length / calculateCardsPerSlide()
-  );
-
-  const prevSlide = useCallback(() => {
-    setSlideIndex((curr) => (curr === 0 ? 0 : curr - 1));
-  }, []);
-
-  const nextSlide = useCallback(() => {
-    setSlideIndex((curr) => (curr === totalSlides - 1 ? 0 : curr + 1));
-  }, [totalSlides]);
+  const nextClickSlideEvent = () => {
+    if (currentIndex < movies.length - visibleCards) {
+      setCurrentIndex((pre) => pre + visibleCards);
+    }
+  };
 
   useEffect(() => {
-    window.addEventListener("resize", calculateCardsPerSlide);
+    fetchMovies().then((res) => {
+      if (res.results.length > 0) {
+        setMovies(res.results);
+      } else {
+        console.log("에러이니 res 다시확인");
+      }
+    });
+  }, [fetchMovies]);
 
-    return () => {
-      window.removeEventListener("resize", calculateCardsPerSlide);
-    };
-  }, [calculateCardsPerSlide]);
+  if (movies.length === 0) {
+    return <p>Now Loading...</p>;
+  }
 
   return (
-    <section>
-      <Coordinates>
-        <SlideWrapper>
-          <Intro>
-            <H2>{title}</H2>
-            <More>더보기</More>
-          </Intro>
-          <CardContainer slideIndex={slideIndex} totalSlides={totalSlides}>
-            {cardData.map((card, index) => (
-              <Slide key={index}>
-                <picture>
-                  <source srcSet={card.webSrcSet} type="image/webp" />
-                  <Card src={card.imgSrc} alt={card.alt} />
-                </picture>
-              </Slide>
+    <>
+      <TitleEncaseContainer>
+        <CardTitle>{title}</CardTitle>
+        <ArrowButtonContainer>
+          <PrevBtn onClick={prevClickSlideEvent}>
+            <CardPrevArrow />
+          </PrevBtn>
+          <NextBtn onClick={nextClickSlideEvent}>
+            <CardNextArrow />
+          </NextBtn>
+        </ArrowButtonContainer>
+        <SlideContainer>
+          <Slide currentIndex={currentIndex} totalCards={movies.length}>
+            {movies.map((m, i) => (
+              <>
+                <MoviesImgBox key={i}>
+                  <HoverDirectionContainer>
+                    <span>{m.title}</span>
+                    <span>지금 보러가기</span>
+                  </HoverDirectionContainer>
+                  <CardImg src={getImagePath(m.backdrop_path)} />
+                  <MoviesTitleName>{m.title}</MoviesTitleName>
+                </MoviesImgBox>
+              </>
             ))}
-          </CardContainer>
-          <Prev onClick={prevSlide}>
-            <ChevronLeftIcon />
-          </Prev>
-          <Next onClick={nextSlide}>
-            <ChevronRightIcon />
-          </Next>
-        </SlideWrapper>
-      </Coordinates>
-    </section>
+          </Slide>
+        </SlideContainer>
+      </TitleEncaseContainer>
+    </>
   );
 };
 
-export default CardCarousel;
+export default CardCarouselComponent;
