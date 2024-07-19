@@ -11,11 +11,11 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     main{
-        background-color: #333;
+        background-color: #111;
     }
 
     body {
-        background-color: #333;
+        background-color: #111;
     }
 
     a {

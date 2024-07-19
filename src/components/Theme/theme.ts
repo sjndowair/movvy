@@ -41,8 +41,8 @@ export const darkTheme: DefaultTheme = {
   },
 };
 
-const mediaQuery = (maxWidth: number): string =>
-  `media (max width: ${maxWidth}px)`;
+export const mediaQuery = (maxWidth: number): string =>
+  `@media (max-width: ${maxWidth}px)`;
 
 export const mediaSize = {
   custom: mediaQuery,
