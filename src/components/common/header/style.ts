@@ -5,40 +5,33 @@ interface IIsScrollEvent {
   handleScrollEvent: boolean;
 }
 
-export const Head = styled.header<IIsScrollEvent>`
+export const HeadContainer = styled.header<IIsScrollEvent>`
   position: fixed;
+  display: flex;
   width: 100%;
-  z-index: 3;
+  z-index: 1;
+  align-items: center;
   color: ${(props) => props.theme.color.background};
   font-size: ${(props) => props.theme.text.xxl};
   height: 4.5rem;
+  justify-content: space-around;
+  gap: 25rem;
+  align-items: center;
   transition: all 0.3s ease;
   box-shadow: ${(props) =>
     !props.handleScrollEvent ? "0" : "rgb(255, 111, 15) 0 0 15px 0.5px;"};
-  background-image: ${(props) =>
-    props.handleScrollEvent
-      ? "#000"
-      : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
-  background-color: ${(props) =>
+  background: ${(props) =>
     props.handleScrollEvent
       ? "#000"
       : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
 `;
 
 export const HeadInnerContainer = styled.div`
-  width: 90%;
-  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5rem;
   height: inherit;
-  align-items: center;
-  display: flex;
-
-  justify-content: space-between;
-`;
-
-export const HeadLeftContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 3rem;
 `;
 
 export const H1 = styled.h1`
@@ -75,37 +68,4 @@ export const ListIndex = styled.li`
     cursor: pointer;
     color: ${({ theme }) => theme.color.primary};
   }
-`;
-
-export const MyPage = styled.ul`
-  display: flex;
-  color: #fff;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: center;
-  ${mediaSize.tablet} {
-    display: none;
-  }
-`;
-
-interface IIconRotateProps {
-  iconClickRotate: boolean;
-}
-
-export const TabletToggleContainer = styled.div`
-  display: none;
-  cursor: pointer;
-
-  ${mediaSize.tablet} {
-    display: block;
-    width: 50px;
-    height: 50px;
-    margin-right: 1.5rem;
-  }
-`;
-
-export const RotateIconContainer = styled.div<IIconRotateProps>`
-  transition: all 0.25s ease-in;
-  transform: ${(props) =>
-    props.iconClickRotate ? "rotate(180deg)" : "rotate(0deg)"};
 `;
