@@ -9,51 +9,8 @@ import {
   MainTitleOverView,
   MainTitle,
 } from "../../../../pages/style";
-import {
-  ArrowInnerContainer,
-  ArrowStyleContainer,
-  NextSlideButton,
-  PositionValueContainer,
-  PrevSlideButton,
-  Slide,
-  SlideContainer,
-} from "./style";
-
-export const SlideLeftArrow: any = () => {
-  return (
-    <ArrowStyleContainer
-      fill="rgb(50, 50, 50)"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M15.75 19.5 8.25 12l7.5-7.5"
-      />
-    </ArrowStyleContainer>
-  );
-};
-
-export const SlideRightArrow: any = () => {
-  return (
-    <ArrowStyleContainer
-      fill="rgb(50, 50, 50)"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m8.25 4.5 7.5 7.5-7.5 7.5"
-      />
-    </ArrowStyleContainer>
-  );
-};
+import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
+import { LeftArrowButton, RightArrowButton } from "../../../Context/\bindex";
 
 const MainCarouselComponent = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -62,18 +19,18 @@ const MainCarouselComponent = () => {
 
   const prevClickSlideEvent = () => {
     setSlideDirection(false);
-    setCurrentIndex((pre) => (pre === 0 ? movies.length - 1 : pre - 1));
+    setCurrentIndex((pre) => (pre === 0 ? movies?.length - 1 : pre - 1));
   };
 
   const nextClickSlideEvent = () => {
     setSlideDirection(true);
-    setCurrentIndex((pre) => (pre === movies.length - 1 ? 0 : pre + 1));
+    setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
   };
 
   useEffect(() => {
     getNowPlayingMovieList().then((res) => {
-      if (res.results.length > 0) {
-        setMovies(res.results);
+      if (res?.results?.length) {
+        setMovies(res?.results);
       }
     });
   }, []);
@@ -81,15 +38,15 @@ const MainCarouselComponent = () => {
   useEffect(() => {
     const mainCarouselInterval = setInterval(() => {
       setSlideDirection(true);
-      setCurrentIndex((pre) => (pre === movies.length - 1 ? 0 : pre + 1));
+      setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
     }, 10000);
     return () => clearInterval(mainCarouselInterval);
-  }, [movies.length]);
+  }, [movies?.length]);
 
-  if (movies.length === 0) {
-    return <p>로딩중</p>;
+  if (!movies?.length) {
+    return <h1>로딩중</h1>;
   }
-  const currentMovies = movies[currentIndex];
+  const currentMovies = movies[currentIndex]; //함수로 수정하기
 
   return (
     movies && (
@@ -104,16 +61,14 @@ const MainCarouselComponent = () => {
             </MainTitle>
           </Slide>
         </SlideContainer>
-        <PositionValueContainer>
-          <ArrowInnerContainer>
-            <PrevSlideButton onClick={prevClickSlideEvent}>
-              <SlideLeftArrow />
-            </PrevSlideButton>
-            <NextSlideButton onClick={nextClickSlideEvent}>
-              <SlideRightArrow />
-            </NextSlideButton>
-          </ArrowInnerContainer>
-        </PositionValueContainer>
+        <ArrowInnerContainer>
+          <button onClick={prevClickSlideEvent}>
+            <LeftArrowButton />
+          </button>
+          <button onClick={nextClickSlideEvent}>
+            <RightArrowButton />
+          </button>
+        </ArrowInnerContainer>
       </>
     )
   );
