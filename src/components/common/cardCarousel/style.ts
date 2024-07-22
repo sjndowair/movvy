@@ -20,16 +20,6 @@ export const PrevBtn = styled.button`
   height: 3rem;
 `;
 
-export const SvgStyleSheet = styled.svg`
-  fill: rgb(60, 60, 60);
-  box-shadow: rgba(60, 60, 60, 1) 0rem 0rem 1rem;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    fill: rgb(255, 111, 15);
-    box-shadow: rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;
-  }
-`;
-
 export const SlideContainer = styled.div`
   display: flex;
   overflow: hidden;

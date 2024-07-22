@@ -12,51 +12,15 @@ import {
   MoviesTitleName,
   TitleEncaseContainer,
   CardTitle,
-  SvgStyleSheet,
   ArrowButtonContainer,
   HoverDirectionContainer,
 } from "./style";
+import { RightArrowButton, LeftArrowButton } from "../../Context/\bindex";
 
 interface CardCarouselProps {
   title: string;
   fetchMovies: () => Promise<IMovieListResponse>;
 }
-
-export const CardPrevArrow: any = () => {
-  return (
-    <SvgStyleSheet
-      fill="rgb(255, 111, 15)"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M15.75 19.5 8.25 12l7.5-7.5"
-      />
-    </SvgStyleSheet>
-  );
-};
-
-export const CardNextArrow: any = () => {
-  return (
-    <SvgStyleSheet
-      fill="rgb(255, 111, 15)"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m8.25 4.5 7.5 7.5-7.5 7.5"
-      />
-    </SvgStyleSheet>
-  );
-};
 
 const CardCarouselComponent = ({ title, fetchMovies }: CardCarouselProps) => {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -70,22 +34,20 @@ const CardCarouselComponent = ({ title, fetchMovies }: CardCarouselProps) => {
   };
 
   const nextClickSlideEvent = () => {
-    if (currentIndex < movies.length - visibleCards) {
+    if (currentIndex < movies?.length - visibleCards) {
       setCurrentIndex((pre) => pre + visibleCards);
     }
   };
 
   useEffect(() => {
     fetchMovies().then((res) => {
-      if (res.results.length > 0) {
-        setMovies(res.results);
-      } else {
-        console.log("에러이니 res 다시확인");
+      if (res?.results?.length > 0) {
+        setMovies(res?.results);
       }
     });
   }, [fetchMovies]);
 
-  if (movies.length === 0) {
+  if (!movies?.length) {
     return <p>Now Loading...</p>;
   }
 
@@ -95,10 +57,10 @@ const CardCarouselComponent = ({ title, fetchMovies }: CardCarouselProps) => {
         <CardTitle>{title}</CardTitle>
         <ArrowButtonContainer>
           <PrevBtn onClick={prevClickSlideEvent}>
-            <CardPrevArrow />
+            <LeftArrowButton />
           </PrevBtn>
           <NextBtn onClick={nextClickSlideEvent}>
-            <CardNextArrow />
+            <RightArrowButton />
           </NextBtn>
         </ArrowButtonContainer>
         <SlideContainer>
