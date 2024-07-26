@@ -64,6 +64,7 @@ export const List = styled.ul`
 
 export const ListIndex = styled.li`
   transition: all 0.225s ease;
+  color: rgba(255, 255, 255, 1);
   &:hover {
     cursor: pointer;
     color: ${({ theme }) => theme.color.primary};

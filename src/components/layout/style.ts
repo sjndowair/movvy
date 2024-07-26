@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
-interface IMainContainerProps {
-  headerToggle: boolean;
-}
-export const MainContainer = styled.main<IMainContainerProps>`
+export const MainContainer = styled.main`
   display: flex;
   width: 100%;
   flex-wrap: wrap;

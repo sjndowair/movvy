@@ -9,23 +9,18 @@ import {
   HeadInnerContainer,
 } from "./style";
 import { Magnifiy } from "../../Context/index";
+import { Link } from "react-router-dom";
 
-interface IGnbToggleProps {
-  onToggleMenu: () => void;
-}
-
-const Header = ({ onToggleMenu }: IGnbToggleProps) => {
-  const [rotateToggle, setRotateToggle] = useState<boolean>(false);
+const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
 
-  const headScrollEvent = () => {
+  const handleScrollEvent = () => {
     setScrollEvent(window?.scrollY > 0);
-    console.log("useEffect");
   };
 
   useEffect(() => {
-    window?.addEventListener("scroll", headScrollEvent);
-    return () => window?.addEventListener("scroll", headScrollEvent);
+    window?.addEventListener("scroll", handleScrollEvent);
+    return () => window?.addEventListener("scroll", handleScrollEvent);
   }, []);
 
   return (
@@ -34,9 +29,10 @@ const Header = ({ onToggleMenu }: IGnbToggleProps) => {
         <H1>movvy</H1>
         <nav>
           <List>
-            {GNB_MENUS_LIST.map((item, idx) => (
-              <ListIndex key={idx}>{item}</ListIndex>
-            ))}
+            <ListIndex>HOME</ListIndex>
+            <Link to={"/thisIsTestPage"}>
+              <ListIndex>MOVVY</ListIndex>
+            </Link>
           </List>
         </nav>
       </HeadInnerContainer>

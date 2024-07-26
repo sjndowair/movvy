@@ -5,15 +5,13 @@ import Footer from "../common/footer";
 
 interface ILayout {
   children?: JSX.Element | string | number | ReactNode;
-  headerToggle: boolean;
-  iconClickRotate: () => void;
 }
 
-const Layout = ({ children, headerToggle, iconClickRotate }: ILayout) => {
+const Layout = ({ children }: ILayout) => {
   return (
     <>
-      <Header onToggleMenu={iconClickRotate}></Header>
-      <MainContainer headerToggle={headerToggle}>{children}</MainContainer>
+      <Header></Header>
+      <MainContainer>{children}</MainContainer>
       <Footer></Footer>
     </>
   );
