@@ -10,9 +10,6 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
     
-    main{
-        background-color: #111;
-    }
 
     body {
         background-color: #111;
@@ -63,7 +60,3 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 `;
-
-export const CardDisChargeContainer = styled.div``;
-
-export const NoticeContainer = styled.div``;
