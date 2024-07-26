@@ -22,12 +22,7 @@ import { getVideoPath } from "../utils/video.util"; // 비디오 리이크
 import { CardCollectionBox } from "./style"; //스타일 컴포넌트
 
 const Home = () => {
-  const [headerToggle, setHeaderToggle] = useState<boolean>(false);
   const [randomMovie, setRandomMovie] = useState<IMovie | null>(null);
-
-  const handleToggleMenu = (): void => {
-    setHeaderToggle((prev) => !prev);
-  };
 
   useEffect(() => {
     getNowPlayingMovieList().then((res) => {
@@ -39,7 +34,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout headerToggle={headerToggle} iconClickRotate={handleToggleMenu}>
+    <Layout>
       <ModalComponet />
       <ScrollButton></ScrollButton>
       <MainCarouselComponent />
