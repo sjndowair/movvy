@@ -16,7 +16,7 @@ export const NextBtn = styled.button`
 export const PrevBtn = styled.button`
   width: 3rem;
   position: absolute;
-  right: 5rem;
+  left: 2rem;
   height: 3rem;
 `;
 
@@ -38,14 +38,13 @@ export const Slide = styled.div<ISlideProps>`
   transition: transform 0.5s ease;
   transform: ${({ currentIndex }) =>
     `translateX(-${(currentIndex * 100) / 4}%)`};
-  width: ${({ totalCards }) => `calc(100% * ${totalCards / 4})`};
+  width: ${({ totalCards }) => `calc(100% * ${Math.ceil(totalCards / 4)})`};
 `;
 
 export const MoviesImgBox = styled.div`
-  flex: 0 0 25%;
+  flex: 0 0 30%;
   position: relative;
-  max-width: 25%;
-  height: 30vw;
+  height: 14vw;
   box-sizing: border-box;
   padding: 0.75rem;
   text-align: center;
@@ -54,10 +53,10 @@ export const MoviesImgBox = styled.div`
 
 export const CardImg = styled.img`
   width: 100%;
-  height: 25.5vw;
+  height: auto;
   transition: all 0.5s ease;
   &:hover {
-    scale: 1.1;
+    transform: scale(1.2);
   }
 `;
 
@@ -85,6 +84,7 @@ export const TitleEncaseContainer = styled.div`
 export const CardTitle = styled.h2`
   font-size: 1.75rem;
   margin-left: 2.75rem;
+  margin-bottom: 2.75rem;
   font-weight: bold;
   text-transform: uppercase;
   color: ${({ theme }) => theme.color.primary};
@@ -94,7 +94,7 @@ export const HoverDirectionContainer = styled.div`
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translate(-50%);
+  transform: translateX(-50%);
   z-index: 10;
   opacity: 0;
   display: flex;
@@ -107,7 +107,7 @@ export const HoverDirectionContainer = styled.div`
   font-size: ${({ theme }) => theme.text.xxl};
   font-weight: ${({ theme }) => theme.font.bold};
   width: 100%;
-  height: 27.5vw;
+  height: 100%;
   cursor: pointer;
   &:hover {
     opacity: 1;
