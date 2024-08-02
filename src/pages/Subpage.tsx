@@ -1,19 +1,40 @@
-import { SubPageContainer } from "./style";
-import Home from "./root";
-import Layout from "../components/layout";
 import Header from "../components/common/header";
 import CardCarouselComponent from "../components/common/cardCarousel";
-CardCarouselComponent;
-import { CardCarouselProps } from "../components/common/cardCarousel";
+import { useCardStore } from "../contexts/movieCtx";
+import { useEffect } from "react";
+import Footer from "../components/common/footer";
+import {
+  getNowPlayingMovieList,
+  getTopRatedMovieList,
+  getPopularMovieList,
+} from "../apis/movieList.api";
 
-const SubPage = ({ title, fetchMovies }: CardCarouselProps) => {
+const SubPage = () => {
+  const { setTitle, fetchMovies } = useCardStore();
+
+  useEffect(() => {
+    setTitle("newTitlesubpage");
+    fetchMovies();
+  }, [setTitle, fetchMovies]);
+
   return (
     <>
-      <Header></Header>;
+      <Header />
       <CardCarouselComponent
-        title={title}
-        fetchMovies={fetchMovies}
-      ></CardCarouselComponent>
+        title="Now play"
+        fetchMovies={getNowPlayingMovieList}
+      />
+      <CardCarouselComponent
+        title="top Rate"
+        fetchMovies={getTopRatedMovieList}
+      />
+      <CardCarouselComponent
+        title="popular"
+        fetchMovies={getPopularMovieList}
+      />
+      <CardCarouselComponent title="newTitle" fetchMovies={fetchMovies} />
+      <CardCarouselComponent title="newTitle" fetchMovies={fetchMovies} />
+      <Footer />
     </>
   );
 };
