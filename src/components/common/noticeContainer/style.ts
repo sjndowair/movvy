@@ -3,6 +3,7 @@ import { keyframes } from "styled-components";
 
 export const Notice = styled.div`
   width: 100%;
+  margin-top: 8rem;
   background: #111;
   color: #fff;
   height: 5rem;
