@@ -7,57 +7,65 @@ import {
   useReducer,
   useContext,
 } from "react";
-import { IMovieListResponse } from "../types/movieList";
-
+import { IMovie, IMovieListResponse } from "../types/movieList";
+import { getNowPlayingMovieList } from "../apis/movieList.api";
 interface ICardState {
   title: string;
-  fetchMovies: IMovieListResponse[];
+  movies: IMovie[];
 }
 
 const cardState: ICardState = {
-  title: "Default Title",
-  fetchMovies: [],
+  title: "",
+  movies: [],
 };
 
 type TCardAction =
-  | { type: "TITLE"; config: string }
-  | { type: "FETCH_MOVIES"; config: IMovieListResponse[] };
+  | { type: "SET_TITLE"; config: string }
+  | { type: "SET_MOVIES"; config: IMovie[] };
 
 export const CardContext = createContext<ICardState | any>(cardState);
 CardContext.displayName = "cardContext";
 
 const CardReducer = (state: ICardState, action: TCardAction) => {
   switch (action.type) {
-    case "TITLE":
+    case "SET_TITLE":
       return { ...state, title: action.config };
-    case "FETCH_MOVIES":
+    case "SET_MOVIES":
       return { ...state, fetchMovies: action.config };
     default:
       return state;
   }
 };
 
-export const CardProvider: FC<{
-  children?: string | ReactNode | JSX.Element;
-}> = (props) => {
+export const CardProvider = ({
+  children,
+}: {
+  children: ReactNode | string | JSX.Element;
+}) => {
   const [state, dispatch] = useReducer(CardReducer, cardState);
   const setTitle = useCallback((title: string) => {
-    dispatch({ type: "TITLE", config: title });
+    dispatch({ type: "SET_TITLE", config: title });
   }, []);
-  const setFetchMovies = useCallback((fetchMovies: IMovieListResponse[]) => {
-    dispatch({ type: "FETCH_MOVIES", config: fetchMovies });
+  const setMovies = useCallback((fetchMovies: IMovie[]) => {
+    dispatch({ type: "SET_MOVIES", config: fetchMovies });
   }, []);
 
+  const fetchMovies = useCallback(async (): Promise<IMovieListResponse> => {
+    const response = await getNowPlayingMovieList();
+    setMovies(response.results);
+
+    return response;
+  }, [setMovies]);
   const value = useMemo(
-    () => ({ ...state, setTitle, setFetchMovies }),
-    [setTitle, setFetchMovies, state]
+    () => ({ ...state, setTitle, fetchMovies }),
+    [setTitle, fetchMovies, state]
   );
-  return <CardContext.Provider value={value} {...props} />;
+  return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
 };
 
 interface IUseCardState extends ICardState {
   setTitle(title: string): void;
-  setFetchMovies(fetchMovies: IMovieListResponse[]): void;
+  fetchMovies: () => Promise<IMovieListResponse>;
 }
 
 export const useCardStore = (): IUseCardState => {
