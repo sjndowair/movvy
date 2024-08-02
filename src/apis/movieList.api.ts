@@ -26,3 +26,25 @@ export const getTopRatedMovieList = async (
     )
   ).json();
 };
+
+export const getUpComingMovieList = async (
+  reqInit: RequestInit = REQUEST_INIT_OBJECT
+): Promise<IMovieListResponse> => {
+  return await (
+    await fetch(
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`,
+      reqInit
+    )
+  ).json();
+};
+
+export const getPopularMovieList = async (
+  reqInit: RequestInit = REQUEST_INIT_OBJECT
+): Promise<IMovieListResponse> => {
+  return await (
+    await fetch(
+      `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1&region=kr`,
+      reqInit
+    )
+  ).json();
+};
