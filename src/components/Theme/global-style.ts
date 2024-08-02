@@ -5,15 +5,15 @@ export const GlobalStyle = createGlobalStyle`
     ${reset}
     
     * {
+       
         padding: 0;
         margin: 0;
         box-sizing: border-box;
     }
+   
     
 
-    body {
-        background-color: #111;
-    }
+   
 
     a {
         padding: 0;
@@ -55,8 +55,8 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         font-family: sans-serif;
-        color: ${(props) => props.theme.color.color};
-        background-color: ${(props) => props.theme.color.background};
+        color: ${(props) => props.theme.color.background};
+        background-color:#111;
     }
 
 `;

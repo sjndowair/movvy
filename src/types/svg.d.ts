@@ -7,11 +7,13 @@ export interface ISvgProperty {
     sm: "1rem";
     md: "1.5rem";
     xl: "2rem";
+    xxl: "3rem";
   };
 
   height: {
     sm: "1rem";
     md: "1.5rem";
     xl: "2rem";
+    xxl: "3rem";
   };
 }
