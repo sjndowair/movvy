@@ -26,17 +26,23 @@ const Header = () => {
   return (
     <HeadContainer handleScrollEvent={scrollEvent}>
       <HeadInnerContainer>
-        <H1>movvy</H1>
+        <Link to={"/"}>
+          <H1>movvy</H1>
+        </Link>
         <nav>
           <List>
-            <ListIndex>HOME</ListIndex>
-            <Link to={"/thisIsTestPage"}>
-              <ListIndex>MOVVY</ListIndex>
+            <Link to={"/"}>
+              <ListIndex>HOME</ListIndex>
+            </Link>
+            <Link to={"/thisIsSubPage"}>
+              <ListIndex>SERIESE</ListIndex>
             </Link>
           </List>
         </nav>
       </HeadInnerContainer>
-      <Magnifiy />
+      <Link to={"/thisIsSearchPage"}>
+        <Magnifiy />
+      </Link>
     </HeadContainer>
   );
 };
