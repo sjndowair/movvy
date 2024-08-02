@@ -9,8 +9,10 @@ import ModalComponet from "../components/layout/Modal";
 import {
   getNowPlayingMovieList,
   getTopRatedMovieList,
+  getPopularMovieList,
+  getUpComingMovieList,
 } from "../apis/movieList.api"; // 캐러셀 이미지 top and Now play 불러오기
-
+import { getTvSeriesList } from "../apis/seriesList.api";
 import { getImagePath } from "../utils/image.util"; // 이미지 링크
 import { IMovie } from "../types/movieList"; // 무비 타입 정의
 import { Link } from "react-router-dom"; //리액트 라우터 돔 불러오기
@@ -40,12 +42,16 @@ const Home = () => {
       <MainCarouselComponent />
       <CardCollectionBox>
         <CardCarouselComponent
-          title="Now Playing"
-          fetchMovies={getNowPlayingMovieList}
-        ></CardCarouselComponent>
-        <CardCarouselComponent
           title="Top Rated"
           fetchMovies={getTopRatedMovieList}
+        />
+        <CardCarouselComponent
+          title="Popular"
+          fetchMovies={getPopularMovieList}
+        />
+        <CardCarouselComponent
+          title="Up Coming"
+          fetchMovies={getUpComingMovieList}
         />
       </CardCollectionBox>
       <NoticeContainer />
