@@ -16,7 +16,8 @@ import {
   ArrowButtonContainer,
   HoverDirectionContainer,
 } from "./style";
-import { RightArrowButton, LeftArrowButton } from "../../Context/\bindex";
+import { RightArrowButton, LeftArrowButton } from "../svg/index";
+import { Console } from "console";
 
 interface ImovieProps {
   title: string;
@@ -46,6 +47,7 @@ const CardCarouselComponent = ({ title, fetchMovies }: ImovieProps) => {
       .then((res: any) => {
         if (res?.results?.length) {
           setMovies(res?.results);
+          // console.log(res);
         }
       })
       .catch((err) => {

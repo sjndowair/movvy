@@ -10,7 +10,7 @@ import {
   MainTitle,
 } from "../../../../pages/style";
 import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
-import { LeftArrowButton, RightArrowButton } from "../../../Context/\bindex";
+import { LeftArrowButton, RightArrowButton } from "../../../common/svg/index";
 
 const MainCarouselComponent = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);

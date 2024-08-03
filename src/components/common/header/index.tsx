@@ -8,7 +8,7 @@ import {
   ListIndex,
   HeadInnerContainer,
 } from "./style";
-import { Magnifiy } from "../../Context/index";
+import { Magnifiy } from "../svg/index";
 import { Link } from "react-router-dom";
 
 const Header = () => {

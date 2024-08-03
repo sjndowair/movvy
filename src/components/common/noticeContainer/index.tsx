@@ -7,7 +7,7 @@ import {
   WidthControlContainer,
   NoticeArrowContainer,
 } from "./style";
-import { UpArrowButton, DownArrowButton } from "../../Context/\bindex";
+import { UpArrowButton, DownArrowButton } from "../svg/index";
 
 import { NOTICE_CONTENT_LIST } from "../../../constants/notice-content.constant";
 

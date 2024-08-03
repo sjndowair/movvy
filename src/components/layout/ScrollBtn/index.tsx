@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScrollBTN } from "./style";
-import { ArrowUpCircle } from "../../Context/\bindex";
+import { ArrowUpCircle } from "../../common/svg/index";
 
 const ScrollUpEvent = () => {
   window?.scrollTo({ top: 0, behavior: "smooth" });
