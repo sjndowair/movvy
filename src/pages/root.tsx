@@ -5,7 +5,7 @@ import MainCarouselComponent from "../components/pages/root/mainCarousel"; // �
 import CardCarouselComponent from "../components/common/cardCarousel"; // 카드 캐러셀 컴포넌트
 import NoticeContainer from "../components/common/noticeContainer"; // 공지사항 컨테이너
 import ScrollButton from "../components/layout/ScrollBtn";
-import ModalComponet from "../components/layout/Modal";
+import ModalComponent from "../components/layout/Modal";
 import {
   getNowPlayingMovieList,
   getTopRatedMovieList,
@@ -23,8 +23,31 @@ import { getVideoPath } from "../utils/video.util"; // 비디오 리이크
 
 import { CardCollectionBox } from "./style"; //스타일 컴포넌트
 
+const LOCAL_STORAGE_NOT_TODAY_KEY = "LOCAL_STORAGE_NOT_TODAY_KEY";
+const getTodayDate = () => {
+  return new Date().toLocaleDateString("ko-kr", {
+    dateStyle: "medium",
+  });
+};
+
 const Home = () => {
   const [randomMovie, setRandomMovie] = useState<IMovie | null>(null);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isCheckedNotToday, setIsCheckedNotToday] = useState<boolean>(false);
+
+  const isCloseSetModal = () => {
+    setIsOpenModal(false);
+    if (isCheckedNotToday) {
+      localStorage.setItem(LOCAL_STORAGE_NOT_TODAY_KEY, getTodayDate());
+    }
+  };
+
+  useEffect(() => {
+    const notTodayDate = localStorage.getItem(LOCAL_STORAGE_NOT_TODAY_KEY);
+    if (!notTodayDate || notTodayDate !== getTodayDate()) {
+      setIsOpenModal(true);
+    }
+  }, []);
 
   useEffect(() => {
     getNowPlayingMovieList().then((res) => {
@@ -37,7 +60,12 @@ const Home = () => {
 
   return (
     <Layout>
-      <ModalComponet />
+      <ModalComponent
+        isOpenModal={isOpenModal}
+        isCheckedNotToday={isCheckedNotToday}
+        setIsCheckedNotToday={setIsCheckedNotToday}
+        isCloseSetModal={isCloseSetModal}
+      />
       <ScrollButton></ScrollButton>
       <MainCarouselComponent />
       <CardCollectionBox>

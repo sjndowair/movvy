@@ -8,63 +8,39 @@ import {
   ModalBTN,
   CheckBoxContainer,
 } from "./style";
-import { Xcircle } from "../../Context/\bindex";
+import { Xcircle } from "../../common/svg/index";
 
-const TIME_STORAGE = new Date().getDate().toString();
+interface IModalProps {
+  isOpenModal: boolean;
+  isCheckedNotToday: boolean;
+  setIsCheckedNotToday: React.Dispatch<React.SetStateAction<boolean>>;
+  isCloseSetModal: () => void;
+}
 
-const ModalComponet = () => {
-  const [modalCondition, setModalCondition] = useState<boolean>(true);
-  const [checkToday, setCheckToday] = useState<boolean>(false);
-
-  const checkOppositionEvent = () => {
-    setCheckToday(!checkToday);
-  };
-
-  const closeModal = (): void => {
-    setModalCondition(false);
-  };
-
-  const todayCloseModal = (): void => {
-    if (checkToday) {
-      localStorage.setItem("otherTime", TIME_STORAGE);
-      closeModal();
-    }
-  };
-
-  useEffect(() => {
-    const GET_NOW_TIME = localStorage.getItem("otherTime");
-    if (GET_NOW_TIME === TIME_STORAGE) {
-      setModalCondition(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (modalCondition) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "unset";
-    }
-    return () => {
-      document.body.style.overflowY = "unset";
-    };
-  }, [modalCondition]);
-
+const ModalComponent = ({
+  isOpenModal,
+  isCheckedNotToday,
+  setIsCheckedNotToday,
+  isCloseSetModal,
+}: IModalProps) => {
   return (
     <>
-      {modalCondition && (
+      {isOpenModal && (
         <ModalBackgroundDeemContainer>
           <ModalInnerContainer>
-            <Div onClick={closeModal}>
+            <Div onClick={isCloseSetModal}>
               <Xcircle />
             </Div>
             <CheckBoxContainer>
-              <input
-                type="checkBox"
-                onChange={checkOppositionEvent}
-                checked={checkToday}
-              />
-
-              <ModalBTN onClick={todayCloseModal}>오늘하루보지않기</ModalBTN>
+              <label
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCheckedNotToday((pre) => !pre);
+                }}
+              >
+                <input type="checkBox" checked={isCheckedNotToday} />
+                <ModalBTN>오늘하루보지않기</ModalBTN>
+              </label>
             </CheckBoxContainer>
             <H5>
               <Span>Movvy가?</Span>
@@ -77,4 +53,4 @@ const ModalComponet = () => {
   );
 };
 
-export default ModalComponet;
+export default ModalComponent;
