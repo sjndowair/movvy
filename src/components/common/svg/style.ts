@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ISvgProperty } from "../../../../../types/svg";
+import { ISvgProperty } from "../../../types/svg";
 
 export const MagnifySvg = styled.svg<ISvgProperty>`
   fill: ${({ fill }) => fill.white};
@@ -33,7 +33,7 @@ export const ScrollTopSvg = styled.svg<ISvgProperty>`
   transition: all 0.3s ease-in-out;
   &:hover {
     fill: ${({ fill }) => fill.white};
-    box-shadow: ${({ theme }) => theme.color.primary} 0rem 0rem 1rem;
+    box-shadow: rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;
   }
 `;
 

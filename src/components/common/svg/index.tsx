@@ -1,10 +1,5 @@
-import {
-  ScrollTopSvg,
-  MagnifySvg,
-  ArrowSvg,
-  XcircleSvg,
-} from "./atoms/Wraoer/svg/style";
-import { svgProperty } from "../../constants/svg.constant";
+import { ScrollTopSvg, MagnifySvg, ArrowSvg, XcircleSvg } from "./style";
+import { svgProperty } from "../../../constants/svg.constant";
 
 export const RightArrowButton = () => {
   const { width, height, fill } = svgProperty;
