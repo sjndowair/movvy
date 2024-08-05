@@ -85,8 +85,7 @@ export const CardTitle = styled.h2`
   font-size: 1.75rem;
   margin-left: 2.75rem;
   margin-bottom: 2.75rem;
-  font-weight: bold;
-  text-transform: uppercase;
+
   color: ${({ theme }) => theme.color.primary};
 `;
 
