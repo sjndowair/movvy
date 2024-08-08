@@ -32,14 +32,15 @@ interface ISlideProps {
   totalCards: number;
 }
 
-export const Slide = styled.div<ISlideProps>`
+export const Slide = styled.div`
   display: flex;
   position: relative;
   transition: transform 0.5s ease;
-  transform: ${({ currentIndex }) =>
+`;
+/* transform: ${({ currentIndex }) =>
     `translateX(-${(currentIndex * 100) / 4}%)`};
   width: ${({ totalCards }) => `calc(100% * ${Math.ceil(totalCards / 4)})`};
-`;
+`; */
 
 export const MoviesImgBox = styled.div`
   flex: 0 0 30%;
