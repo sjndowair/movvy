@@ -34,9 +34,7 @@ const Header = () => {
             <Link to={"/"}>
               <ListIndex>HOME</ListIndex>
             </Link>
-            <Link to={"/thisIsSubPage"}>
-              <ListIndex>SERIESE</ListIndex>
-            </Link>
+            <ListIndex>SERIESE</ListIndex>
           </List>
         </nav>
       </HeadInnerContainer>

@@ -16,7 +16,7 @@ export interface IMovie {
 }
 
 export interface IMovieListResponse {
-  dates: {
+  dates?: {
     maximum: string;
     minimum: string;
   };
@@ -27,7 +27,7 @@ export interface IMovieListResponse {
 }
 
 interface ITvSerise {
-  backdrop_path: string | null;
+  backdrop_path: string;
   first_air_date: string;
   genre_ids: number[];
   id: number;
