@@ -1,38 +1,24 @@
 import { ThemeProvider } from "styled-components";
+import { Route, Routes } from "react-router-dom";
 import { darkTheme, lightTheme } from "./components/Theme/theme";
 import { GlobalStyle } from "./components/Theme/global-style";
 import { useThemeMode } from "./contexts/themeCtx";
 import Home from "./pages/root";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import SubPage from "./pages/Subpage";
-import { CardProvider } from "./contexts/movieCtx";
-import SearchPage from "./pages/Searchpage";
+// import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/thisIsSubPage",
-    element: <SubPage />,
-  },
-  {
-    path: "/thisIsSearchPage",
-    element: <SearchPage />,
-  },
-]);
+import SearchPage from "./pages/Searchpage";
 
 function App() {
   const { isDark } = useThemeMode();
 
   return (
-    <CardProvider>
-      <ThemeProvider theme={!isDark ? lightTheme : darkTheme}>
-        <GlobalStyle />
-        <RouterProvider router={router} />;
-      </ThemeProvider>
-    </CardProvider>
+    <ThemeProvider theme={!isDark ? lightTheme : darkTheme}>
+      <GlobalStyle />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/ThisIsSearchPage" element={<SearchPage />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 
