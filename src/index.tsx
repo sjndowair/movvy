@@ -9,17 +9,19 @@ import { ThemeModeProvider } from "./contexts/themeCtx";
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+    document.getElementById("root") as HTMLElement
 );
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
     <React.StrictMode>
-      <ThemeModeProvider>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </ThemeModeProvider>
+        <QueryClientProvider client={queryClient}>
+            {process.env.NODE_ENV !== "production" && (
+                <ReactQueryDevtools initialIsOpen={true} />
+            )}
+            <ThemeModeProvider>
+                <HashRouter>
+                    <App />
+                </HashRouter>
+            </ThemeModeProvider>
+        </QueryClientProvider>
     </React.StrictMode>
-  </QueryClientProvider>
 );

@@ -7,102 +7,118 @@ import NoticeContainer from "../components/common/noticeContainer"; // 공지사
 import ScrollButton from "../components/layout/ScrollBtn";
 import ModalComponent from "../components/layout/Modal";
 import {
-  getNowPlayingMovieList,
-  getTopRatedMovieList,
-  getPopularMovieList,
-  getUpComingMovieList,
+    getNowPlayingMovieList,
+    getTopRatedMovieList,
+    getPopularMovieList,
+    getUpComingMovieList,
 } from "../apis/movieList.api"; // 캐러셀 이미지 top and Now play 불러오기
 import { IMovie, IMovieListResponse } from "../types/movieList"; // 무비 타입 정의
 
 import { CardCollectionBox } from "./style"; //스타일 컴포넌트
+import { QUERY_KEYS } from "../constants/query-keys.constants";
+import { movieListService } from "../services/movieList.service";
+import { seriesListService } from "../services/seriesList.service";
 
 const LOCAL_STORAGE_NOT_TODAY_KEY = "LOCAL_STORAGE_NOT_TODAY_KEY";
 
 const getTodayDate = () => {
-  return new Date().toLocaleDateString("ko-kr", {
-    dateStyle: "medium",
-  });
+    return new Date().toLocaleDateString("ko-kr", {
+        dateStyle: "medium",
+    });
 };
 
 const Home = () => {
-  const { data: nowPlaying, isLoading: isLoadingNowPlaying } =
-    useQuery<IMovieListResponse>({
-      queryKey: ["movie", "nowPlaying"],
-      queryFn: getNowPlayingMovieList,
-    });
-  console.log(isLoadingNowPlaying);
+    // const { data: nowPlaying, isLoading: isLoadingNowPlaying } =
+    //     useQuery<IMovieListResponse>({
+    //         queryKey: [...QUERY_KEYS.MOVIE.NOW_PLAYING],
+    //         queryFn: getNowPlayingMovieList,
+    //     });
 
-  const { data: topRated, isLoading: isLoadingTopRated } =
-    useQuery<IMovieListResponse>({
-      queryKey: ["movie", "topRated"],
-      queryFn: getTopRatedMovieList,
-    });
+    const { data: nowPlayingMovieList, isLoading: isLoadingNowPlaying } =
+        movieListService.useGetMovieListNowPlaying();
 
-  const { data: popular, isLoading: isLoadingPopular } =
-    useQuery<IMovieListResponse>({
-      queryKey: ["movie", "popular"],
-      queryFn: getPopularMovieList,
-    });
+    const { data: nowPlayingSeriesList } =
+        seriesListService.useGetSeriesListNowPlaying();
 
-  const { data: upComing, isLoading: isLodingUpComing } =
-    useQuery<IMovieListResponse>({
-      queryKey: ["movie", "upComing"],
-      queryFn: getUpComingMovieList,
-    });
+    useEffect(() => {
+        console.log("nowPlayingMovieList", nowPlayingMovieList?.[0].getKind());
+        console.log(
+            "nowPlayingSeriesList",
+            nowPlayingSeriesList?.[0].getKind()
+        );
+    }, [nowPlayingMovieList, nowPlayingSeriesList]);
 
-  const [randomMovie, setRandomMovie] = useState<IMovie | null>(null);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [isCheckedNotToday, setIsCheckedNotToday] = useState<boolean>(false);
+    const { data: topRated, isLoading: isLoadingTopRated } =
+        useQuery<IMovieListResponse>({
+            queryKey: ["movie", "topRated"],
+            queryFn: getTopRatedMovieList,
+        });
 
-  const isCloseSetModal = () => {
-    setIsOpenModal(false);
-    if (isCheckedNotToday) {
-      localStorage.setItem(LOCAL_STORAGE_NOT_TODAY_KEY, getTodayDate());
-    }
-  };
+    const { data: popular, isLoading: isLoadingPopular } =
+        useQuery<IMovieListResponse>({
+            queryKey: ["movie", "popular"],
+            queryFn: getPopularMovieList,
+        });
 
-  useEffect(() => {
-    const notTodayDate = localStorage.getItem(LOCAL_STORAGE_NOT_TODAY_KEY);
-    if (!notTodayDate || notTodayDate !== getTodayDate()) {
-      setIsOpenModal(true);
-    }
-  }, []);
+    const { data: upComing, isLoading: isLodingUpComing } =
+        useQuery<IMovieListResponse>({
+            queryKey: ["movie", "upComing"],
+            queryFn: getUpComingMovieList,
+        });
 
-  return (
-    <Layout>
-      <ModalComponent
-        isOpenModal={isOpenModal}
-        isCheckedNotToday={isCheckedNotToday}
-        setIsCheckedNotToday={setIsCheckedNotToday}
-        isCloseSetModal={isCloseSetModal}
-      />
-      <ScrollButton></ScrollButton>
-      <MainCarouselComponent />
-      <CardCollectionBox>
-        <CardCarouselComponent
-          IMovie={nowPlaying?.results.slice()}
-          title="Top Rated"
-          ApiType="movie"
-        />
-        <CardCarouselComponent
-          IMovie={popular?.results.slice()}
-          title="Popular"
-          ApiType="movie"
-        />
-        <CardCarouselComponent
-          IMovie={upComing?.results.slice()}
-          title="Up Coming"
-          ApiType="movie"
-        />
-        <CardCarouselComponent
-          IMovie={topRated?.results.slice()}
-          title="Top Lated"
-          ApiType="movie"
-        />
-      </CardCollectionBox>
-      <NoticeContainer />
-    </Layout>
-  );
+    const [randomMovie, setRandomMovie] = useState<IMovie | null>(null);
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [isCheckedNotToday, setIsCheckedNotToday] = useState<boolean>(false);
+
+    const isCloseSetModal = () => {
+        setIsOpenModal(false);
+        if (isCheckedNotToday) {
+            localStorage.setItem(LOCAL_STORAGE_NOT_TODAY_KEY, getTodayDate());
+        }
+    };
+
+    useEffect(() => {
+        const notTodayDate = localStorage.getItem(LOCAL_STORAGE_NOT_TODAY_KEY);
+        if (!notTodayDate || notTodayDate !== getTodayDate()) {
+            setIsOpenModal(true);
+        }
+    }, []);
+
+    return (
+        <Layout>
+            <ModalComponent
+                isOpenModal={isOpenModal}
+                isCheckedNotToday={isCheckedNotToday}
+                setIsCheckedNotToday={setIsCheckedNotToday}
+                isCloseSetModal={isCloseSetModal}
+            />
+            <ScrollButton></ScrollButton>
+            <MainCarouselComponent />
+            <CardCollectionBox>
+                {/* <CardCarouselComponent
+                    IMovie={nowPlaying?.results}
+                    title="Top Rated"
+                    ApiType="movie"
+                /> */}
+                <CardCarouselComponent
+                    IMovie={popular?.results}
+                    title="Popular"
+                    ApiType="movie"
+                />
+                <CardCarouselComponent
+                    IMovie={upComing?.results}
+                    title="Up Coming"
+                    ApiType="movie"
+                />
+                <CardCarouselComponent
+                    IMovie={topRated?.results}
+                    title="Top Lated"
+                    ApiType="movie"
+                />
+            </CardCollectionBox>
+            <NoticeContainer />
+        </Layout>
+    );
 };
 
 export default Home;
