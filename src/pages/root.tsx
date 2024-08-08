@@ -18,6 +18,7 @@ import { CardCollectionBox } from "./style"; //스타일 컴포넌트
 import { QUERY_KEYS } from "../constants/query-keys.constants";
 import { movieListService } from "../services/movieList.service";
 import { seriesListService } from "../services/seriesList.service";
+import 로딩서스펜더 from "../components/common/loadingSuspender/LoadingSuspender";
 
 const LOCAL_STORAGE_NOT_TODAY_KEY = "LOCAL_STORAGE_NOT_TODAY_KEY";
 
@@ -100,11 +101,15 @@ const Home = () => {
                     title="Top Rated"
                     ApiType="movie"
                 /> */}
-                <CardCarouselComponent
-                    IMovie={popular?.results}
-                    title="Popular"
-                    ApiType="movie"
-                />
+
+                <로딩서스펜더 isLoading={isLoadingPopular}>
+                    <CardCarouselComponent
+                        IMovie={popular?.results}
+                        title="Popular"
+                        ApiType="movie"
+                    />
+                </로딩서스펜더>
+
                 <CardCarouselComponent
                     IMovie={upComing?.results}
                     title="Up Coming"
