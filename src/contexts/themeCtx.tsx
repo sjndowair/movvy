@@ -7,6 +7,7 @@ import {
   useContext,
 } from "react";
 import { FC } from "react";
+import { IMovieListResponse } from "../types/movieList";
 
 interface IThemeState {
   isDark: boolean;

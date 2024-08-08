@@ -1,80 +1,125 @@
-import { FC, useCallback, useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { getImagePath } from "../../../utils/image.util";
+import { IMovie, IMovieListResponse } from "../../../types/movieList";
+import { ITvSerise, ITvSeriseResponse } from "../../../types/movieList";
 import {
-    CardContainer,
-    Slide,
-    SlideWrapper,
-    Card,
-    Prev,
-    Coordinates,
-    Next,
-    More,
-    Intro,
+  NextBtn,
+  Slide,
+  SlideContainer,
+  PrevBtn,
+  MoviesImgBox,
+  CardImg,
+  MoviesTitleName,
+  TitleEncaseContainer,
+  CardTitle,
+  ArrowButtonContainer,
+  HoverDirectionContainer,
 } from "./style";
-import { cardData } from "../../../constants/temp-card.constant";
+import { RightArrowButton, LeftArrowButton } from "../svg/index";
+import { Console } from "console";
+import { useNavigate } from "react-router-dom";
 
-interface ICardComponentProps {
-    title: string;
+type TApiType = "movie" | "series";
+
+interface ISlideProps {
+  IMovie?: IMovie[];
+  ITvSerise?: ITvSerise[];
+  ApiType?: TApiType;
+  title: string;
 }
 
-const CardCarousel: FC<ICardComponentProps> = ({ title }) => {
-    const [slideIndex, setSlideIndex] = useState<number>(0);
+let moveCarculater: number;
 
-    const calculateCardsPerSlide = useCallback(
-        () => (window?.innerWidth >= 768 ? 5 : 3),
-        []
-    );
+const CardCarouselComponent = ({
+  IMovie,
+  ITvSerise,
+  ApiType,
+  title,
+}: ISlideProps) => {
+  console.log(IMovie);
+  const [index, setIndex] = useState<number>(0);
+  const [move, setMove] = useState<boolean>(false);
+  const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
 
-    const totalSlides: number = Math.ceil(
-        cardData.length / calculateCardsPerSlide()
-    );
+  const navigation = useNavigate();
+  const urlDestination = () => {
+    navigation(`${ApiType}/${title}`);
+    return;
+  };
 
-    const prevSlide = useCallback(() => {
-        setSlideIndex((curr) => (curr === 0 ? 0 : curr - 1));
-    }, []);
+  const isArray = (item: any): item is any[] => Array.isArray(item);
 
-    const nextSlide = useCallback(() => {
-        setSlideIndex((curr) => (curr === totalSlides - 1 ? 0 : curr + 1));
-    }, [totalSlides]);
+  const programIndex = () => {
+    if (isArray(IMovie) && IMovie.length) {
+      moveCarculater = Math.floor(IMovie.length) - 1;
+    } else if (isArray(ITvSerise) && ITvSerise.length) {
+      moveCarculater = Math.floor(ITvSerise.length) - 1;
+    } else {
+      return -1;
+    }
 
-    useEffect(() => {
-        window.addEventListener("resize", calculateCardsPerSlide);
+    return moveCarculater;
+  };
 
-        return () => {
-            window.removeEventListener("resize", calculateCardsPerSlide);
-        };
-    }, [calculateCardsPerSlide]);
+  const moveState = () => setMove((pre) => !pre);
 
-    return (
-        <section>
-            <Coordinates>
-                <SlideWrapper>
-                    <Intro>
-                        <h2>{title}</h2>
-                        <More>더보기</More>
-                    </Intro>
-                    <CardContainer
-                        className="card-container"
-                        slideIndex={slideIndex}
-                        totalSlides={totalSlides}
-                    >
-                        {cardData.map((card, index) => (
-                            <Slide key={index}>
-                                <picture>
-                                    <source
-                                        srcSet={card.webSrcSet}
-                                        type="image/webp"
-                                    />
-                                    <Card src={card.imgSrc} alt={card.alt} />
-                                </picture>
-                            </Slide>
-                        ))}
-                    </CardContainer>
-                </SlideWrapper>
-                <Prev onClick={prevSlide} />
-                <Next onClick={nextSlide} />
-            </Coordinates>
-        </section>
-    );
+  const inMoveCollectFunction = () => {
+    setCarousalEvent(true);
+    moveState();
+  };
+
+  const nextMove = () => {
+    inMoveCollectFunction();
+    setIndex((pre) => (pre === programIndex() ? 0 : pre + 1));
+  };
+
+  const prevMove = () => {
+    inMoveCollectFunction();
+    setIndex((pre) => (pre === 0 ? programIndex() : pre - 1));
+  };
+
+  return (
+    <>
+      <TitleEncaseContainer>
+        <CardTitle>{title}</CardTitle>
+        <ArrowButtonContainer>
+          <PrevBtn onClick={prevMove}>
+            <LeftArrowButton />
+          </PrevBtn>
+          <NextBtn onClick={nextMove}>
+            <RightArrowButton />
+          </NextBtn>
+        </ArrowButtonContainer>
+        <SlideContainer>
+          {IMovie
+            ? IMovie?.map((m, i) => (
+                <Slide key={m.id}>
+                  <MoviesImgBox>
+                    <HoverDirectionContainer>
+                      <span>{m.title}</span>
+                      <span>지금 보러가기</span>
+                    </HoverDirectionContainer>
+                    <CardImg src={getImagePath(m.poster_path)} />
+                    <MoviesTitleName>{m.title}</MoviesTitleName>
+                  </MoviesImgBox>
+                </Slide>
+              ))
+            : ITvSerise?.map((m, i) => (
+                <Slide key={m.id}>
+                  <MoviesImgBox>
+                    <HoverDirectionContainer>
+                      <span>{m.name}</span>
+                      <span>지금 보러가기</span>
+                    </HoverDirectionContainer>
+                    <CardImg src={getImagePath(m.poster_path!)} />
+                    <MoviesTitleName>{m.name}</MoviesTitleName>
+                  </MoviesImgBox>
+                </Slide>
+              ))}
+        </SlideContainer>
+      </TitleEncaseContainer>
+    </>
+  );
 };
-
-export default CardCarousel;
+export default CardCarouselComponent;

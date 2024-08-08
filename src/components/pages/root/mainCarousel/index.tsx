@@ -1,52 +1,77 @@
-import { useState, useCallback } from "react";
+import { useEffect, useState } from "react";
+import { getNowPlayingMovieList } from "../../../../apis/movieList.api";
+import { getImagePath } from "../../../../utils/image.util";
+import { IMovie } from "../../../../types/movieList";
 import {
-    Slider,
-    Slides,
-    Slide,
-    NextBtn,
-    Picture,
-    Img,
-    PrevBtn,
-    PictureAreaContainer,
-} from "./style";
-import { slideData } from "../../../../constants/temp-slide.constant";
+  MainTitleImg,
+  MainTitleName,
+  BackgroundDimEffectBox,
+  MainTitleOverView,
+  MainTitle,
+} from "../../../../pages/style";
+import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
+import { LeftArrowButton, RightArrowButton } from "../../../common/svg/index";
 
-const MainCarousel = () => {
-    const [slideIndex, setSlideIndex] = useState<number>(0);
+const MainCarouselComponent = () => {
+  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<boolean>(true);
 
-    const nextSlide = useCallback(() => {
-        setSlideIndex((prevIndex) => (prevIndex + 1) % slideData.length);
-    }, []);
+  const prevClickSlideEvent = () => {
+    setSlideDirection(false);
+    setCurrentIndex((pre) => (pre === 0 ? movies?.length - 1 : pre - 1));
+  };
 
-    const prevSlide = useCallback(() => {
-        setSlideIndex(
-            (prevIndex) => (prevIndex - 1 + slideData.length) % slideData.length
-        );
-    }, []);
+  const nextClickSlideEvent = () => {
+    setSlideDirection(true);
+    setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
+  };
 
-    return (
-        <Slider>
-            <Slides slideIndex={slideIndex}>
-                {slideData.map((slideItem, index) => (
-                    <Slide key={index}>
-                        <PictureAreaContainer>
-                            {slideItem.images.map((image, imgIndex) => (
-                                <Picture key={imgIndex}>
-                                    <source
-                                        srcSet={image.webpSrcSet}
-                                        type="image/webp"
-                                    />
-                                    <Img src={image.imgSrc} alt={image.alt} />
-                                </Picture>
-                            ))}
-                        </PictureAreaContainer>
-                    </Slide>
-                ))}
-            </Slides>
-            <PrevBtn onClick={prevSlide}></PrevBtn>
-            <NextBtn onClick={nextSlide}></NextBtn>
-        </Slider>
-    );
+  useEffect(() => {
+    getNowPlayingMovieList().then((res) => {
+      if (res?.results?.length) {
+        setMovies(res?.results);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const mainCarouselInterval = setInterval(() => {
+      setSlideDirection(true);
+      setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
+    }, 10000);
+    return () => clearInterval(mainCarouselInterval);
+  }, [movies?.length]);
+
+  if (!movies?.length) {
+    return <h1>로딩중</h1>;
+  }
+  const currentMovies = movies[currentIndex]; //함수로 수정하기
+
+  return (
+    movies && (
+      <>
+        <SlideContainer>
+          <Slide key={currentIndex} slideDirection={slideDirection}>
+            <MainTitle>
+              <BackgroundDimEffectBox />
+              <MainTitleImg src={getImagePath(currentMovies.backdrop_path)} />
+              <MainTitleName>{currentMovies.title}</MainTitleName>
+              <MainTitleOverView>{currentMovies.overview}</MainTitleOverView>
+            </MainTitle>
+          </Slide>
+        </SlideContainer>
+        <ArrowInnerContainer>
+          <button onClick={prevClickSlideEvent}>
+            <LeftArrowButton />
+          </button>
+          <button onClick={nextClickSlideEvent}>
+            <RightArrowButton />
+          </button>
+        </ArrowInnerContainer>
+      </>
+    )
+  );
 };
 
-export default MainCarousel;
+export default MainCarouselComponent;

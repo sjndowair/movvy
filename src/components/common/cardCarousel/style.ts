@@ -1,97 +1,116 @@
 import styled from "styled-components";
 
-interface ICardContainerProps {
-    slideIndex: number;
-    totalSlides: number;
+export const ArrowButtonContainer = styled.div`
+  position: relative;
+  height: 4rem;
+  margin-bottom: 2rem;
+`;
+
+export const NextBtn = styled.button`
+  width: 3rem;
+  position: absolute;
+  right: 2rem;
+  height: 3rem;
+`;
+
+export const PrevBtn = styled.button`
+  width: 3rem;
+  position: absolute;
+  left: 2rem;
+  height: 3rem;
+`;
+
+export const SlideContainer = styled.div`
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+`;
+
+interface ISlideProps {
+  currentIndex: number;
+  totalCards: number;
 }
 
-export const CardContainer = styled.div<ICardContainerProps>`
-    display: flex;
-    margin-top: 3rem;
-    transition: transform 0.5s ease-in-out;
-    transform: ${({ slideIndex, totalSlides }) =>
-        `translateX(-${slideIndex * (100 / Math.ceil(totalSlides / 1))}%)`};
-    width: ${({ totalSlides }) => `${totalSlides * 100}%`};
-`;
-
-export const Coordinates = styled.div`
-    position: relative;
-`;
-
-export const SlideWrapper = styled.div`
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-`;
-
 export const Slide = styled.div`
-    box-sizing: border-box;
-    padding: 0 1.2rem;
-    overflow: hidden;
-    cursor: pointer;
+  display: flex;
+  position: relative;
+  transition: transform 0.5s ease;
+`;
+/* transform: ${({ currentIndex }) =>
+    `translateX(-${(currentIndex * 100) / 4}%)`};
+  width: ${({ totalCards }) => `calc(100% * ${Math.ceil(totalCards / 4)})`};
+`; */
+
+export const MoviesImgBox = styled.div`
+  flex: 0 0 30%;
+  position: relative;
+  height: 14vw;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  text-align: center;
+  overflow: hidden;
 `;
 
-export const Card = styled.img`
-    width: 100%;
-    border-radius: 1.25rem;
-    height: auto;
-    object-fit: cover;
-    transition: all 0.2s ease-in;
-    overflow: hidden;
-
-    &:hover {
-        scale: 1.02;
-    }
+export const CardImg = styled.img`
+  width: 100%;
+  height: auto;
+  transition: all 0.5s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
-export const Button = styled.button`
-    color: #fff;
+export const MoviesTitleName = styled.h5`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fff;
+  z-index: 10;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `;
 
-export const Prev = styled.button`
-    position: absolute;
-    left: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    &::before {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-top: 3px solid ${({ theme }) => theme.color.primary};
-        border-left: 3px solid ${({ theme }) => theme.color.primary};
-        transform: rotate(-45deg);
-        transition: transform 0.3s ease;
-        filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-    }
+export const TitleEncaseContainer = styled.div`
+  padding-top: 8rem;
+  background-color: #111;
 `;
 
-export const Next = styled.button`
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    &::after {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-top: 3px solid ${({ theme }) => theme.color.primary};
-        border-right: 3px solid ${({ theme }) => theme.color.primary};
-        transform: rotate(45deg);
-        transition: transform 0.3s ease;
-        filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-    }
+export const CardTitle = styled.h2`
+  font-size: 1.75rem;
+  margin-left: 2.75rem;
+  margin-bottom: 2.75rem;
+
+  color: ${({ theme }) => theme.color.primary};
 `;
 
-export const Intro = styled.div`
-    display: flex;
-    margin-top: 3rem;
-    color: #fff;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-export const More = styled.div`
-    font-size: ${({ theme }) => theme.text.xl};
+export const HoverDirectionContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+  color: ${({ theme }) => theme.color.primary};
+  font-size: ${({ theme }) => theme.text.xxl};
+  font-weight: ${({ theme }) => theme.font.bold};
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
 `;
