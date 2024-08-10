@@ -22,7 +22,7 @@ export const PrevBtn = styled.button`
 
 export const SlideContainer = styled.div`
   display: flex;
-  overflow: hidden;
+
   position: relative;
   width: 100%;
 `;
@@ -35,6 +35,7 @@ interface ISlideProps {
 export const Slide = styled.div`
   display: flex;
   position: relative;
+  justify-content: center;
   transition: transform 0.5s ease;
 `;
 /* transform: ${({ currentIndex }) =>
@@ -43,18 +44,16 @@ export const Slide = styled.div`
 `; */
 
 export const MoviesImgBox = styled.div`
-  flex: 0 0 30%;
   position: relative;
-  height: 14vw;
   box-sizing: border-box;
   padding: 0.75rem;
   text-align: center;
-  overflow: hidden;
 `;
 
 export const CardImg = styled.img`
-  width: 100%;
-  height: auto;
+  width: 200px;
+  max-height: 300px;
+  height: 100%;
   transition: all 0.5s ease;
   &:hover {
     transform: scale(1.2);
@@ -62,7 +61,7 @@ export const CardImg = styled.img`
 `;
 
 export const MoviesTitleName = styled.h5`
-  position: absolute;
+  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -78,7 +77,8 @@ export const MoviesTitleName = styled.h5`
 `;
 
 export const TitleEncaseContainer = styled.div`
-  padding-top: 8rem;
+  margin-top: 5rem;
+  height: 100%;
   background-color: #111;
 `;
 

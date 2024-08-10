@@ -17,7 +17,7 @@ import {
   HoverDirectionContainer,
 } from "./style";
 import { RightArrowButton, LeftArrowButton } from "../svg/index";
-import { Console } from "console";
+
 import { useNavigate } from "react-router-dom";
 
 type TApiType = "movie" | "series";
@@ -37,7 +37,6 @@ const CardCarouselComponent = ({
   ApiType,
   title,
 }: ISlideProps) => {
-  console.log(IMovie);
   const [index, setIndex] = useState<number>(0);
   const [move, setMove] = useState<boolean>(false);
   const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
@@ -96,10 +95,6 @@ const CardCarouselComponent = ({
             ? IMovie?.map((m, i) => (
                 <Slide key={m.id}>
                   <MoviesImgBox>
-                    <HoverDirectionContainer>
-                      <span>{m.title}</span>
-                      <span>지금 보러가기</span>
-                    </HoverDirectionContainer>
                     <CardImg src={getImagePath(m.poster_path)} />
                     <MoviesTitleName>{m.title}</MoviesTitleName>
                   </MoviesImgBox>
