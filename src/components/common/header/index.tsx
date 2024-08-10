@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
+import { throttle } from "lodash";
 import { useState } from "react";
-import { GNB_MENUS_LIST } from "../../../constants/nav-menus.constant";
 import {
   HeadContainer,
   List,
@@ -14,14 +14,14 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
 
-  const handleScrollEvent = () => {
+  const handleScrollEvent = throttle(() => {
     setScrollEvent(window?.scrollY > 0);
-  };
+  }, 33);
 
   useEffect(() => {
     window?.addEventListener("scroll", handleScrollEvent);
-    return () => window?.addEventListener("scroll", handleScrollEvent);
-  }, []);
+    return () => window?.removeEventListener("scroll", handleScrollEvent);
+  }, [handleScrollEvent]);
 
   return (
     <HeadContainer handleScrollEvent={scrollEvent}>
@@ -34,7 +34,9 @@ const Header = () => {
             <Link to={"/"}>
               <ListIndex>HOME</ListIndex>
             </Link>
-            <ListIndex>SERIESE</ListIndex>
+            <Link to={"/SeriesPage"}>
+              <ListIndex>SERIES</ListIndex>
+            </Link>
           </List>
         </nav>
       </HeadInnerContainer>

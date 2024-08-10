@@ -19,13 +19,12 @@ export const HeadContainer = styled.header<IIsScrollEvent>`
   align-items: center;
   transition: all 0.3s ease;
   box-shadow: ${(props) =>
-    !props.handleScrollEvent ? "0" : "rgb(255, 111, 15) 0 0 15px 0.5px;"};
+    !props.handleScrollEvent ? "none" : "rgb(255, 111, 15) 0 0 1rem "};
   background: ${(props) =>
     props.handleScrollEvent
       ? "#000"
       : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
 `;
-
 export const HeadInnerContainer = styled.div`
   display: flex;
   align-items: center;
