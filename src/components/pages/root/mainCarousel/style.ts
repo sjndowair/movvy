@@ -8,20 +8,6 @@ export const H2 = styled.h2`
   text-indent: 2rem;
 `;
 
-export const HeaderToggleMenu = styled.div`
-  ${mediaSize.pc} {
-    display: none;
-  }
-  ${mediaSize.tablet} {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 1000vh;
-    background-color: #222;
-    color: #fff;
-  }
-`;
-
 export const SlideContainer = styled.div`
   position: relative;
   height: auto;
@@ -48,11 +34,16 @@ transform: translateX(0);
 }
 `;
 
-export const Slide = styled.div<{ slideDirection: boolean }>`
+interface ISlideProps {
+  slideDirection: boolean;
+  active: boolean;
+}
+export const Slide = styled.div<ISlideProps>`
   position: absolute;
   width: 100%;
   height: auto;
-  animation: ${(props) => (props.slideDirection ? NextSlide : PrevSlide)} 1s
+  display: ${(props) => (props.active ? "block" : "none")};
+  animation: ${(props) => (props.slideDirection ? PrevSlide : NextSlide)} 1s
     forwards;
 `;
 

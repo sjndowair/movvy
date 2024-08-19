@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getNowPlayingMovieList } from "../../../../apis/movieList.api";
 import { getImagePath } from "../../../../utils/image.util";
-import { IMovie } from "../../../../types/movieList";
+import { IMovie, ITvSerise } from "../../../../types/movieList";
+import { useNavigate } from "react-router-dom";
 import {
   MainTitleImg,
   MainTitleName,
@@ -11,66 +11,98 @@ import {
 } from "../../../../pages/style";
 import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
 import { LeftArrowButton, RightArrowButton } from "../../../common/svg/index";
+import { totalmem } from "os";
 
-const MainCarouselComponent = () => {
-  const [movies, setMovies] = useState<IMovie[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<boolean>(true);
+interface IMainCarousalProps {
+  IMovie?: IMovie[];
+  ITvSeries?: ITvSerise[];
+}
+
+const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
+  const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [slideDirection, setSlideDirection] = useState<boolean>(false);
+
+  const moveState = () => setSlideDirection((pre) => !pre);
+
+  const getItemCount = () => {
+    if (IMovie?.length && IMovie) {
+      return IMovie.length;
+    } else if (ITvSeries?.length && ITvSeries) {
+      return ITvSeries.length;
+    }
+    return 0;
+  };
 
   const prevClickSlideEvent = () => {
     setSlideDirection(false);
-    setCurrentIndex((pre) => (pre === 0 ? movies?.length - 1 : pre - 1));
+    moveState();
+    setCurrentIndex((pre) => (pre === 0 ? getItemCount() - 1 : pre - 1));
   };
 
   const nextClickSlideEvent = () => {
     setSlideDirection(true);
-    setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
+    moveState();
+    setCurrentIndex((pre) => (pre === getItemCount() - 1 ? 0 : pre + 1));
   };
 
   useEffect(() => {
-    getNowPlayingMovieList().then((res) => {
-      if (res?.results?.length) {
-        setMovies(res?.results);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     const mainCarouselInterval = setInterval(() => {
-      setSlideDirection(true);
-      setCurrentIndex((pre) => (pre === movies?.length - 1 ? 0 : pre + 1));
+      setSlideDirection(false);
+      setCurrentIndex((pre) => (pre === getItemCount() ? 0 : pre + 1));
     }, 10000);
-    return () => clearInterval(mainCarouselInterval);
-  }, [movies?.length]);
 
-  if (!movies?.length) {
-    return <h1>로딩중</h1>;
-  }
-  const currentMovies = movies[currentIndex]; //함수로 수정하기
+    return () => clearInterval(mainCarouselInterval);
+  }, [IMovie, ITvSeries]);
+
+  const onMovieClick = (movieId: string) => {
+    navigate(`movie/${movieId}`);
+  };
 
   return (
-    movies && (
-      <>
-        <SlideContainer>
-          <Slide key={currentIndex} slideDirection={slideDirection}>
-            <MainTitle>
-              <BackgroundDimEffectBox />
-              <MainTitleImg src={getImagePath(currentMovies.backdrop_path)} />
-              <MainTitleName>{currentMovies.title}</MainTitleName>
-              <MainTitleOverView>{currentMovies.overview}</MainTitleOverView>
-            </MainTitle>
-          </Slide>
-        </SlideContainer>
-        <ArrowInnerContainer>
-          <button onClick={prevClickSlideEvent}>
-            <LeftArrowButton />
-          </button>
-          <button onClick={nextClickSlideEvent}>
-            <RightArrowButton />
-          </button>
-        </ArrowInnerContainer>
-      </>
-    )
+    <>
+      <SlideContainer>
+        {IMovie &&
+          IMovie?.map((m, i) => (
+            <Slide
+              key={m.id}
+              slideDirection={slideDirection}
+              active={currentIndex === i}
+              onClick={() => onMovieClick(m?.id?.toString())}
+            >
+              <MainTitle>
+                <BackgroundDimEffectBox />
+                <MainTitleImg src={getImagePath(m.backdrop_path)} />
+                <MainTitleName>{m.title}</MainTitleName>
+                <MainTitleOverView>{m.overview}</MainTitleOverView>
+              </MainTitle>
+            </Slide>
+          ))}
+        {ITvSeries &&
+          ITvSeries?.map((m, i) => (
+            <Slide
+              slideDirection={slideDirection}
+              key={m.id}
+              active={currentIndex === i}
+            >
+              <MainTitle>
+                <BackgroundDimEffectBox />
+                <MainTitleImg src={getImagePath(m.backdrop_path)} />
+                <MainTitleName>{m.name}</MainTitleName>
+                <MainTitleOverView>{m.overview}</MainTitleOverView>
+              </MainTitle>
+            </Slide>
+          ))}
+      </SlideContainer>
+      <ArrowInnerContainer>
+        <button onClick={prevClickSlideEvent}>
+          <LeftArrowButton />
+        </button>
+        <button onClick={nextClickSlideEvent}>
+          <RightArrowButton />
+        </button>
+      </ArrowInnerContainer>
+    </>
   );
 };
 
