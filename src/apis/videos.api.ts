@@ -1,3 +1,4 @@
+import { error } from "console";
 import {
   API_KEY,
   BASE_URL,
@@ -6,11 +7,11 @@ import {
 import { IVideosResponse } from "../types/videos";
 
 export const getVideoByMovieId = async (
-  movieId: string | number,
+  programId: string | number,
   reqInit: RequestInit = REQUEST_INIT_OBJECT
 ): Promise<IVideosResponse> => {
   const response = await fetch(
-    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=ko-KR`,
+    `${BASE_URL}/movie/${programId}/videos?api_key=${API_KEY}&language=ko-KR`,
     reqInit
   );
 
