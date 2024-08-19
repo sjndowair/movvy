@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getImagePath } from "../../../utils/image.util";
-import { IMovie, IMovieListResponse } from "../../../types/movieList";
-import { ITvSerise, ITvSeriseResponse } from "../../../types/movieList";
+import { IMovie } from "../../../types/movieList";
+import { ITvSerise } from "../../../types/movieList";
 import {
   NextBtn,
   Slide,
@@ -14,11 +13,10 @@ import {
   TitleEncaseContainer,
   CardTitle,
   ArrowButtonContainer,
-  HoverDirectionContainer,
 } from "./style";
 import { RightArrowButton, LeftArrowButton } from "../svg/index";
-
 import { useNavigate } from "react-router-dom";
+import { mediaSize } from "../../Theme/theme";
 
 type TApiType = "movie" | "series";
 
@@ -26,39 +24,35 @@ interface ISlideProps {
   IMovie?: IMovie[];
   ITvSerise?: ITvSerise[];
   ApiType?: TApiType;
-  title: string;
+  title?: string;
+  name?: string;
 }
-
-let moveCarculater: number;
 
 const CardCarouselComponent = ({
   IMovie,
   ITvSerise,
   ApiType,
   title,
+  name,
 }: ISlideProps) => {
   const [index, setIndex] = useState<number>(0);
   const [move, setMove] = useState<boolean>(false);
   const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
 
   const navigation = useNavigate();
-  const urlDestination = () => {
-    navigation(`${ApiType}/${title}`);
+  const urlDestination = (id: number) => {
+    navigation(`${ApiType}/${id}`);
     return;
   };
 
-  const isArray = (item: any): item is any[] => Array.isArray(item);
-
   const programIndex = () => {
-    if (isArray(IMovie) && IMovie.length) {
-      moveCarculater = Math.floor(IMovie.length) - 1;
-    } else if (isArray(ITvSerise) && ITvSerise.length) {
-      moveCarculater = Math.floor(ITvSerise.length) - 1;
+    if (IMovie && IMovie.length) {
+      return IMovie.length - 1;
+    } else if (ITvSerise && ITvSerise.length) {
+      return ITvSerise.length - 1;
     } else {
-      return -1;
+      return 0;
     }
-
-    return moveCarculater;
   };
 
   const moveState = () => setMove((pre) => !pre);
@@ -68,14 +62,27 @@ const CardCarouselComponent = ({
     moveState();
   };
 
+  const screenReactionType = () => {
+    if (mediaSize.pc) {
+      return 6;
+    } else if (mediaSize.tablet) {
+      return 5;
+    } else if (mediaSize.mobile) return 4;
+    return 6;
+  };
+
   const nextMove = () => {
-    inMoveCollectFunction();
-    setIndex((pre) => (pre === programIndex() ? 0 : pre + 1));
+    if (index < programIndex() - screenReactionType() + 1) {
+      inMoveCollectFunction();
+      setIndex((pre) => pre + screenReactionType());
+    }
   };
 
   const prevMove = () => {
-    inMoveCollectFunction();
-    setIndex((pre) => (pre === 0 ? programIndex() : pre - 1));
+    if (index > 0) {
+      inMoveCollectFunction();
+      setIndex((pre) => pre - screenReactionType());
+    }
   };
 
   return (
@@ -91,27 +98,34 @@ const CardCarouselComponent = ({
           </NextBtn>
         </ArrowButtonContainer>
         <SlideContainer>
-          {IMovie
-            ? IMovie?.map((m, i) => (
-                <Slide key={m.id}>
-                  <MoviesImgBox>
-                    <CardImg src={getImagePath(m.poster_path)} />
-                    <MoviesTitleName>{m.title}</MoviesTitleName>
-                  </MoviesImgBox>
-                </Slide>
-              ))
-            : ITvSerise?.map((m, i) => (
-                <Slide key={m.id}>
-                  <MoviesImgBox>
-                    <HoverDirectionContainer>
-                      <span>{m.name}</span>
-                      <span>지금 보러가기</span>
-                    </HoverDirectionContainer>
-                    <CardImg src={getImagePath(m.poster_path!)} />
-                    <MoviesTitleName>{m.name}</MoviesTitleName>
-                  </MoviesImgBox>
-                </Slide>
-              ))}
+          {IMovie &&
+            IMovie?.map((m) => (
+              <Slide
+                key={m.id}
+                index={index}
+                totalCards={IMovie.length}
+                reaction={screenReactionType()}
+              >
+                <MoviesImgBox>
+                  <CardImg src={getImagePath(m.poster_path)} />
+                  <MoviesTitleName>{m.title}</MoviesTitleName>
+                </MoviesImgBox>
+              </Slide>
+            ))}
+          {ITvSerise &&
+            ITvSerise?.map((m) => (
+              <Slide
+                key={m.id}
+                index={index}
+                totalCards={ITvSerise.length}
+                reaction={screenReactionType()}
+              >
+                <MoviesImgBox>
+                  <CardImg src={getImagePath(m.poster_path)} />
+                  <MoviesTitleName>{m.name}</MoviesTitleName>
+                </MoviesImgBox>
+              </Slide>
+            ))}
         </SlideContainer>
       </TitleEncaseContainer>
     </>

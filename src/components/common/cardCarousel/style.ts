@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { NextSlide, PrevSlide } from "../../pages/root/mainCarousel/style";
 
 export const ArrowButtonContainer = styled.div`
   position: relative;
@@ -22,26 +23,39 @@ export const PrevBtn = styled.button`
 
 export const SlideContainer = styled.div`
   display: flex;
-
+  overflow-x: hidden;
   position: relative;
   width: 100%;
 `;
 
+const elasticBounce = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 interface ISlideProps {
-  currentIndex: number;
+  index: number;
+
   totalCards: number;
+  reaction: number;
 }
 
-export const Slide = styled.div`
+export const Slide = styled.div<ISlideProps>`
   display: flex;
   position: relative;
   justify-content: center;
-  transition: transform 0.5s ease;
+  transition: transform 0.75s ease-in-out;
+  transform: translateX(-${(props) => props.index * 100}%);
+
+  width: 16.666%;
 `;
-/* transform: ${({ currentIndex }) =>
-    `translateX(-${(currentIndex * 100) / 4}%)`};
-  width: ${({ totalCards }) => `calc(100% * ${Math.ceil(totalCards / 4)})`};
-`; */
 
 export const MoviesImgBox = styled.div`
   position: relative;
@@ -86,6 +100,9 @@ export const CardTitle = styled.h2`
   font-size: 1.75rem;
   margin-left: 2.75rem;
   margin-bottom: 2.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-style: italic;
 
   color: ${({ theme }) => theme.color.primary};
 `;
