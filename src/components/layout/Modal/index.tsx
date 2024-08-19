@@ -23,33 +23,34 @@ const ModalComponent = ({
   setIsCheckedNotToday,
   isCloseSetModal,
 }: IModalProps) => {
+  if (!isOpenModal) {
+    return null;
+  }
   return (
-    <>
+    <ModalBackgroundDeemContainer onClick={isCloseSetModal}>
       {isOpenModal && (
-        <ModalBackgroundDeemContainer>
-          <ModalInnerContainer>
-            <Div onClick={isCloseSetModal}>
-              <Xcircle />
-            </Div>
-            <CheckBoxContainer>
-              <label
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsCheckedNotToday((pre) => !pre);
-                }}
-              >
-                <input type="checkBox" checked={isCheckedNotToday} />
-                <ModalBTN>오늘하루보지않기</ModalBTN>
-              </label>
-            </CheckBoxContainer>
-            <H5>
-              <Span>Movvy가?</Span>
-              <span>오늘하루 무료라고!?</span>
-            </H5>
-          </ModalInnerContainer>
-        </ModalBackgroundDeemContainer>
+        <ModalInnerContainer>
+          <Div onClick={isCloseSetModal}>
+            <Xcircle />
+          </Div>
+          <CheckBoxContainer>
+            <label
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsCheckedNotToday((pre) => !pre);
+              }}
+            >
+              <input type="checkBox" checked={isCheckedNotToday} />
+              <ModalBTN>오늘하루보지않기</ModalBTN>
+            </label>
+          </CheckBoxContainer>
+          <H5>
+            <Span>Movvy가?</Span>
+            <span>오늘하루 무료라고!?</span>
+          </H5>
+        </ModalInnerContainer>
       )}
-    </>
+    </ModalBackgroundDeemContainer>
   );
 };
 
