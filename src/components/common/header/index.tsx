@@ -34,13 +34,13 @@ const Header = () => {
             <Link to={"/"}>
               <ListIndex>HOME</ListIndex>
             </Link>
-            <Link to={"/SeriesPage"}>
+            <Link to={"/series"}>
               <ListIndex>SERIES</ListIndex>
             </Link>
           </List>
         </nav>
       </HeadInnerContainer>
-      <Link to={"/thisIsSearchPage"}>
+      <Link to={"/search"}>
         <Magnifiy />
       </Link>
     </HeadContainer>
