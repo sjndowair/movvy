@@ -10,7 +10,8 @@ import {
   getPopularSeriesList,
   getTopRatedSeriesList,
 } from "../apis/seriesList.api";
-import { ITvSerise, ITvSeriseResponse } from "../types/movieList";
+import { ITvSeriseResponse } from "../types/movieList";
+import { useMatch } from "react-router-dom";
 
 const Series = () => {
   const { data: airingToday, isLoading: isLoadingAiringToday } =
@@ -19,47 +20,60 @@ const Series = () => {
       queryFn: getAiringTodaySeriesList,
     });
 
-  const { data: onTheAir, isLoading: isLoadingOnTheAir } = useQuery({
-    queryKey: ["series", "onTheAir"],
-    queryFn: getOnTheAirSeriesList,
-  });
+  const { data: onTheAir, isLoading: isLoadingOnTheAir } =
+    useQuery<ITvSeriseResponse>({
+      queryKey: ["series", "onTheAir"],
+      queryFn: getOnTheAirSeriesList,
+    });
 
-  const { data: popular, isLoading: isLoadingPopular } = useQuery({
-    queryKey: ["series", "popular"],
-    queryFn: getPopularSeriesList,
-  });
-  console.log(popular);
+  const { data: popular, isLoading: isLoadingPopular } =
+    useQuery<ITvSeriseResponse>({
+      queryKey: ["series", "popular"],
+      queryFn: getPopularSeriesList,
+    });
 
-  const { data: topRated, isLoading: isLoadingTopRated } = useQuery({
-    queryKey: ["series", "topRated"],
-    queryFn: getTopRatedSeriesList,
-  });
+  const { data: topRated, isLoading: isLoadingTopRated } =
+    useQuery<ITvSeriseResponse>({
+      queryKey: ["series", "topRated"],
+      queryFn: getTopRatedSeriesList,
+    });
+
+  const match = useMatch(`series/seriesId`);
+  const airingTodayData = match?.params.seriesId
+    ? airingToday?.results.find(
+        (i) => i.id.toString() === match.params.seriesId
+      )
+    : null;
+
+  const onTheAirData = match?.params.seriesId
+    ? onTheAir?.results.find((i) => i.id.toString() === match.params.seriesId)
+    : null;
 
   return (
     <>
       <Layout>
         <ScrollButton></ScrollButton>
-        <MainCarouselComponent />
+        <MainCarouselComponent ITvSeries={onTheAir?.results} />
         <CardCollectionBox>
           <CardCarouselComponent
-            IMovie={onTheAir?.results}
+            ITvSerise={onTheAir?.results}
             title="On the air"
-            ApiType="movie"
+            ApiType="series"
           />
           <CardCarouselComponent
-            IMovie={popular?.results}
+            ITvSerise={popular?.results}
             title="Popular"
-            ApiType="movie"
+            ApiType="series"
           />
           <CardCarouselComponent
-            IMovie={airingToday?.results}
+            ITvSerise={airingToday?.results}
             title="Airing today"
-            ApiType="movie"
+            ApiType="series"
           />
           <CardCarouselComponent
-            IMovie={topRated?.results}
+            ITvSerise={topRated?.results}
             title="Top Rated"
-            ApiType="movie"
+            ApiType="series"
           />
         </CardCollectionBox>
       </Layout>
