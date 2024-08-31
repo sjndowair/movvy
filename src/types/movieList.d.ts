@@ -14,19 +14,8 @@ export interface IMovie {
   vote_average: number;
   vote_count: number;
 }
-
-export interface IMovieListResponse {
-  dates?: {
-    maximum: string;
-    minimum: string;
-  };
-  page: number;
-  results: IMovie[];
-  total_pages: number;
-  total_results: number;
-}
-
-interface ITvSerise {
+export interface ITvSerise {
+  adult?: boolean;
   backdrop_path: string;
   first_air_date: string;
   genre_ids: number[];
@@ -42,9 +31,24 @@ interface ITvSerise {
   vote_count: number;
 }
 
-interface ITvSeriseResponse {
+export interface IMovieListResponse {
+  dates?: {
+    maximum: string;
+    minimum: string;
+  };
   page: number;
-  results: SearchResult[];
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface ITvSeriseResponse {
+  dates?: {
+    maximum: string;
+    minimum: string;
+  };
+  page: number;
+  results: ITvSerise[];
   total_pages: number;
   total_results: number;
 }

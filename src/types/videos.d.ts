@@ -12,6 +12,7 @@ export interface IVideo {
 }
 
 export interface IVideosResponse {
+  program?: string;
   id: number;
   results: IVideo[];
 }
