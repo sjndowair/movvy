@@ -1,18 +1,34 @@
 import { useEffect, useCallback } from "react";
 import { throttle } from "lodash";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   HeadContainer,
   List,
   H1,
   ListIndex,
   HeadInnerContainer,
+  SearchBox,
 } from "./style";
 import { Magnifiy } from "../svg/index";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
+  const [searchEvent, setSearchEvent] = useState<boolean>(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  interface ISubmitProps {
+    keyword: string;
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISubmitProps>();
 
   const handleScrollEvent = throttle(() => {
     setScrollEvent(window?.scrollY > 0);
@@ -22,6 +38,14 @@ const Header = () => {
     window?.addEventListener("scroll", handleScrollEvent);
     return () => window?.removeEventListener("scroll", handleScrollEvent);
   }, [handleScrollEvent]);
+
+  const onClickMagnifiy = () => {
+    setSearchEvent((pre) => !pre);
+  };
+
+  const onSubmitSearch = (data: ISubmitProps) => {
+    navigate(`/search?query=${data.keyword}`);
+  };
 
   return (
     <HeadContainer handleScrollEvent={scrollEvent}>
@@ -40,9 +64,22 @@ const Header = () => {
           </List>
         </nav>
       </HeadInnerContainer>
-      <Link to={"/search"}>
-        <Magnifiy />
-      </Link>
+      <SearchBox searchEvent={searchEvent}>
+        <p onClick={onClickMagnifiy}>
+          <Magnifiy />
+        </p>
+        {searchEvent && (
+          <form onSubmit={handleSubmit(onSubmitSearch)}>
+            <input
+              placeholder="검색어를 입력하세요"
+              {...register("keyword", { required: true, minLength: 2 })}
+              type="text"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {errors.keyword && <div>검색어는 최소 2글자 이상입니다</div>}
+          </form>
+        )}
+      </SearchBox>
     </HeadContainer>
   );
 };

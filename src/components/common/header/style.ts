@@ -69,3 +69,36 @@ export const ListIndex = styled.li`
     color: ${({ theme }) => theme.color.primary};
   }
 `;
+
+interface ISearchBoxProps {
+  searchEvent: boolean;
+}
+
+export const SearchBox = styled.div<ISearchBoxProps>`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+
+  align-items: center;
+  border-radius: 2rem;
+  padding: 0 5px;
+  padding-top: 3px;
+  border: ${(props) =>
+    props.searchEvent ? "rgb(255, 111, 15) 1.5px solid" : "none"};
+
+  form {
+    transition: 0.5s all ease;
+  }
+
+  input {
+    background: none;
+    border: none;
+
+    outline: none;
+    color: ${({ theme }) => theme.color.background};
+  }
+  svg {
+    color: ${(props) =>
+      props.searchEvent ? "rgb(255, 111, 15)" : "rgba(50, 50, 50, 0.8)"};
+  }
+`;
