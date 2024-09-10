@@ -39,10 +39,13 @@ const CardCarouselComponent = ({
   const [move, setMove] = useState<boolean>(false);
   const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
 
-  const navigation = useNavigate();
-  const urlDestination = (id: number) => {
-    navigation(`${ApiType}/${id}`);
-    return;
+  const navigate = useNavigate();
+
+  const onMovieClick = (movieId: string) => {
+    navigate(`/movie/${movieId}`);
+  };
+  const onSeriesClick = (seriesId: string) => {
+    navigate(`/series/${seriesId}`);
   };
 
   const programIndex = () => {
@@ -102,9 +105,10 @@ const CardCarouselComponent = ({
             IMovie?.map((m) => (
               <Slide
                 key={m.id}
-                index={index}
-                totalCards={IMovie.length}
-                reaction={screenReactionType()}
+                $index={index}
+                onClick={() => onMovieClick(m.id.toString())}
+                $cards={IMovie?.length}
+                $reaction={screenReactionType()}
               >
                 <MoviesImgBox>
                   <CardImg src={getImagePath(m.poster_path)} />
@@ -116,9 +120,10 @@ const CardCarouselComponent = ({
             ITvSerise?.map((m) => (
               <Slide
                 key={m.id}
-                index={index}
-                totalCards={ITvSerise.length}
-                reaction={screenReactionType()}
+                $index={index}
+                $cards={ITvSerise?.length}
+                onClick={() => onSeriesClick(m.id.toString())}
+                $reaction={screenReactionType()}
               >
                 <MoviesImgBox>
                   <CardImg src={getImagePath(m.poster_path)} />

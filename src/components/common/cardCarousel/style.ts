@@ -41,10 +41,9 @@ const elasticBounce = keyframes`
 `;
 
 interface ISlideProps {
-  index: number;
-
-  totalCards: number;
-  reaction: number;
+  $index: number;
+  $cards: number;
+  $reaction: number;
 }
 
 export const Slide = styled.div<ISlideProps>`
@@ -52,14 +51,14 @@ export const Slide = styled.div<ISlideProps>`
   position: relative;
   justify-content: center;
   transition: transform 0.75s ease-in-out;
-  transform: translateX(-${(props) => props.index * 100}%);
-
+  transform: translateX(-${(props) => props.$index * 100}%);
   width: 16.666%;
 `;
 
 export const MoviesImgBox = styled.div`
   position: relative;
   box-sizing: border-box;
+  cursor: pointer;
   padding: 0.75rem;
   text-align: center;
 `;
