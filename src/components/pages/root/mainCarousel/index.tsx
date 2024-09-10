@@ -11,14 +11,20 @@ import {
 } from "../../../../pages/style";
 import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
 import { LeftArrowButton, RightArrowButton } from "../../../common/svg/index";
-import { totalmem } from "os";
+
+type TApiType = "movie" | "series";
 
 interface IMainCarousalProps {
   IMovie?: IMovie[];
+  ApiType: TApiType;
   ITvSeries?: ITvSerise[];
 }
 
-const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
+const MainCarouselComponent = ({
+  IMovie,
+  ITvSeries,
+  ApiType,
+}: IMainCarousalProps) => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [slideDirection, setSlideDirection] = useState<boolean>(false);
@@ -56,7 +62,10 @@ const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
   }, [IMovie, ITvSeries]);
 
   const onMovieClick = (movieId: string) => {
-    navigate(`movie/${movieId}`);
+    navigate(`/movie/${movieId}`);
+  };
+  const onSeriesClick = (seriesId: string) => {
+    navigate(`/series/${seriesId}`);
   };
 
   return (
@@ -66,8 +75,8 @@ const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
           IMovie?.map((m, i) => (
             <Slide
               key={m.id}
-              slideDirection={slideDirection}
-              active={currentIndex === i}
+              $slideDirection={slideDirection}
+              $active={currentIndex === i}
               onClick={() => onMovieClick(m?.id?.toString())}
             >
               <MainTitle>
@@ -81,9 +90,10 @@ const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
         {ITvSeries &&
           ITvSeries?.map((m, i) => (
             <Slide
-              slideDirection={slideDirection}
-              key={m.id}
-              active={currentIndex === i}
+              $slideDirection={slideDirection}
+              key={m?.id}
+              $active={currentIndex === i}
+              onClick={() => onSeriesClick(m?.id.toString())}
             >
               <MainTitle>
                 <BackgroundDimEffectBox />

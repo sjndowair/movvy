@@ -35,15 +35,15 @@ transform: translateX(0);
 `;
 
 interface ISlideProps {
-  slideDirection: boolean;
-  active: boolean;
+  $slideDirection: boolean;
+  $active: boolean;
 }
 export const Slide = styled.div<ISlideProps>`
   position: absolute;
   width: 100%;
   height: auto;
-  display: ${(props) => (props.active ? "block" : "none")};
-  animation: ${(props) => (props.slideDirection ? PrevSlide : NextSlide)} 1s
+  display: ${(props) => (props.$active ? "block" : "none")};
+  animation: ${(props) => (props.$slideDirection ? PrevSlide : NextSlide)} 1s
     forwards;
 `;
 
