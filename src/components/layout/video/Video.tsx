@@ -43,15 +43,12 @@ const VideoPage = ({
       if (movieTotalData) {
         return getVideoByMovieId("movie", programId);
       } else if (seriesTotalData) {
-        return getVideoByMovieId("series", programId);
+        return getVideoByMovieId("tv", programId);
       } else {
         throw new Error("promise check");
       }
     },
   });
-
-  console.log(seriesTotalData);
-  console.log(movieTotalData);
 
   if (isLoading) return <div>is Loading...</div>;
 
