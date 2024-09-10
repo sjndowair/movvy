@@ -3,10 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import Layout from "../components/layout"; // 레이아웃 컴포넌트
 import MainCarouselComponent from "../components/pages/root/mainCarousel"; // 메인 케러셀 컴포넌트
 import CardCarouselComponent from "../components/common/cardCarousel"; // 카드 캐러셀 컴포넌트
-import NoticeContainer from "../components/common/noticeContainer"; // 공지사항 컨테이너
 import ScrollButton from "../components/layout/ScrollBtn";
 import ModalComponent from "../components/layout/Modal";
-import VideoPage from "./VideoPage";
+import VideoPage from "../components/layout/video/Video";
 import {
   getNowPlayingMovieList,
   getTopRatedMovieList,
@@ -83,27 +82,19 @@ const Home = () => {
     ? nowPlaying?.results.find(
         (i) => i.id?.toString() === match?.params.movieId
       )
-    : undefined;
+    : null;
 
   const topRatedData = match?.params.movieId
     ? topRated?.results.find((i) => i.id?.toString() === match?.params.movieId)
-    : undefined;
+    : null;
 
   const popularData = match?.params.movieId
     ? popular?.results.find((i) => i.id?.toString() === match?.params.movieId)
-    : undefined;
+    : null;
 
   const upComingData = match?.params.movieId
     ? upComing?.results.find((i) => i.id?.toString() === match?.params.movieId)
-    : undefined;
-
-  // const navigate = useNavigate();
-  // const moveVideo = (movieId: string) => {
-  //   navigate(`/movie/${movieId}`);
-  // };
-
-  console.log("match", match);
-  console.log(nowPlayingData);
+    : null;
 
   return (
     <Layout>
@@ -115,7 +106,7 @@ const Home = () => {
       />
 
       <ScrollButton></ScrollButton>
-      <MainCarouselComponent IMovie={nowPlaying?.results} />
+      <MainCarouselComponent ApiType="movie" IMovie={nowPlaying?.results} />
       <CardCollectionBox>
         <CardCarouselComponent
           IMovie={nowPlaying?.results}
@@ -138,16 +129,17 @@ const Home = () => {
           ApiType="movie"
         />
       </CardCollectionBox>
-      <NoticeContainer />
+
       {match ? (
         <VideoPage
           movieTotalData={
             nowPlayingData || topRatedData || popularData || upComingData
           }
           programId={match?.params?.movieId!}
+          ApiType="movie"
         />
       ) : (
-        <div>로드가 안되었습니다</div>
+        <div>is Loading...</div>
       )}
     </Layout>
   );
