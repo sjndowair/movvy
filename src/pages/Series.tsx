@@ -12,41 +12,53 @@ import {
 } from "../apis/seriesList.api";
 import { ITvSeriseResponse } from "../types/movieList";
 import { useMatch } from "react-router-dom";
+import VideoPage from "../components/layout/video/Video";
 
 const Series = () => {
-  const { data: airingToday, isLoading: isLoadingAiringToday } =
-    useQuery<ITvSeriseResponse>({
-      queryKey: ["series", "airingToday"],
-      queryFn: getAiringTodaySeriesList,
-    });
+  const seriesMatch = useMatch(`/series/:seriesId`);
 
-  const { data: onTheAir, isLoading: isLoadingOnTheAir } =
-    useQuery<ITvSeriseResponse>({
-      queryKey: ["series", "onTheAir"],
-      queryFn: getOnTheAirSeriesList,
-    });
+  const { data: airingToday } = useQuery<ITvSeriseResponse>({
+    queryKey: ["series", "airingToday"],
+    queryFn: getAiringTodaySeriesList,
+  });
 
-  const { data: popular, isLoading: isLoadingPopular } =
-    useQuery<ITvSeriseResponse>({
-      queryKey: ["series", "popular"],
-      queryFn: getPopularSeriesList,
-    });
+  const { data: onTheAir } = useQuery<ITvSeriseResponse>({
+    queryKey: ["series", "onTheAir"],
+    queryFn: getOnTheAirSeriesList,
+  });
 
-  const { data: topRated, isLoading: isLoadingTopRated } =
-    useQuery<ITvSeriseResponse>({
-      queryKey: ["series", "topRated"],
-      queryFn: getTopRatedSeriesList,
-    });
+  const { data: popular } = useQuery<ITvSeriseResponse>({
+    queryKey: ["series", "popular"],
+    queryFn: getPopularSeriesList,
+  });
 
-  const match = useMatch(`series/seriesId`);
-  const airingTodayData = match?.params.seriesId
+  const { data: topRated } = useQuery<ITvSeriseResponse>({
+    queryKey: ["series", "topRated"],
+    queryFn: getTopRatedSeriesList,
+  });
+
+  const airingTodayData = seriesMatch?.params.seriesId
     ? airingToday?.results.find(
-        (i) => i.id.toString() === match.params.seriesId
+        (it) => it.id.toString() === seriesMatch?.params.seriesId
       )
     : null;
 
-  const onTheAirData = match?.params.seriesId
-    ? onTheAir?.results.find((i) => i.id.toString() === match.params.seriesId)
+  const onTheAirData = seriesMatch?.params.seriesId
+    ? onTheAir?.results.find(
+        (it) => it.id.toString() === seriesMatch?.params.seriesId
+      )
+    : null;
+
+  const topRatedData = seriesMatch?.params.seriesId
+    ? topRated?.results.find(
+        (it) => it.id.toString() === seriesMatch?.params.seriesId
+      )
+    : null;
+
+  const popularData = seriesMatch?.params.seriesId
+    ? popular?.results.find(
+        (it) => it.id.toString() === seriesMatch?.params.seriesId
+      )
     : null;
 
   return (
