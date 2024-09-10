@@ -1,6 +1,6 @@
-import { useEffect, useCallback } from "react";
+import { ReactHTMLElement, useEffect, useRef } from "react";
 import { throttle } from "lodash";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -10,6 +10,7 @@ import {
   ListIndex,
   HeadInnerContainer,
   SearchBox,
+  ErrorBox,
 } from "./style";
 import { Magnifiy } from "../svg/index";
 import { Link } from "react-router-dom";
@@ -53,7 +54,7 @@ const Header = () => {
   };
 
   return (
-    <HeadContainer handleScrollEvent={scrollEvent}>
+    <HeadContainer $handleScrollEvent={scrollEvent}>
       <HeadInnerContainer>
         <Link to={"/"}>
           <H1>movvy</H1>
@@ -69,7 +70,7 @@ const Header = () => {
           </List>
         </nav>
       </HeadInnerContainer>
-      <SearchBox searchEvent={searchEvent}>
+      <SearchBox $searchEvent={searchEvent}>
         <p onClick={onClickMagnifiy}>
           <Magnifiy />
         </p>

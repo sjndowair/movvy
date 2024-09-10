@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { mediaSize } from "../../Theme/theme";
 
 interface IIsScrollEvent {
-  handleScrollEvent: boolean;
+  $handleScrollEvent: boolean;
 }
 
 export const HeadContainer = styled.header<IIsScrollEvent>`
   position: fixed;
   display: flex;
   width: 100%;
-  z-index: 1;
+  z-index: 3;
   align-items: center;
   color: ${(props) => props.theme.color.background};
   font-size: ${(props) => props.theme.text.xxl};
@@ -19,9 +19,9 @@ export const HeadContainer = styled.header<IIsScrollEvent>`
   align-items: center;
   transition: all 0.3s ease;
   box-shadow: ${(props) =>
-    !props.handleScrollEvent ? "none" : "rgb(255, 111, 15) 0 0 1rem "};
+    !props.$handleScrollEvent ? "none" : "rgba(255, 111, 15, 1) 0 0 1rem "};
   background: ${(props) =>
-    props.handleScrollEvent
+    props.$handleScrollEvent
       ? "#000"
       : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
 `;
@@ -71,7 +71,7 @@ export const ListIndex = styled.li`
 `;
 
 interface ISearchBoxProps {
-  searchEvent: boolean;
+  $searchEvent: boolean;
 }
 
 export const SearchBox = styled.div<ISearchBoxProps>`
@@ -84,7 +84,7 @@ export const SearchBox = styled.div<ISearchBoxProps>`
   padding: 0 5px;
   padding-top: 3px;
   border: ${(props) =>
-    props.searchEvent ? "rgb(255, 111, 15) 1.5px solid" : "none"};
+    props.$searchEvent ? "rgb(255, 111, 15) 1.5px solid" : "none"};
 
   form {
     transition: 0.5s all ease;
@@ -99,6 +99,21 @@ export const SearchBox = styled.div<ISearchBoxProps>`
   }
   svg {
     color: ${(props) =>
-      props.searchEvent ? "rgb(255, 111, 15)" : "rgba(50, 50, 50, 0.8)"};
+      props.$searchEvent ? "rgb(255, 111, 15)" : "rgba(50, 50, 50, 0.8)"};
   }
+`;
+
+export const ErrorBox = styled.div`
+  background-color: #11111199;
+  position: absolute;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  top: 5rem;
+  left: 36%;
+  right: 50%;
+  transition: all 0.5s ease;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 2rem;
+  border-radius: 2rem;
 `;
