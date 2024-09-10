@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
   const [searchEvent, setSearchEvent] = useState<boolean>(false);
-  const location = useLocation();
+  const inputFocusRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
   interface ISubmitProps {
@@ -41,6 +41,11 @@ const Header = () => {
 
   const onClickMagnifiy = () => {
     setSearchEvent((pre) => !pre);
+    setTimeout(() => {
+      if (inputFocusRef.current) {
+        inputFocusRef.current.focus();
+      }
+    }, 100);
   };
 
   const onSubmitSearch = (data: ISubmitProps) => {
@@ -72,11 +77,17 @@ const Header = () => {
           <form onSubmit={handleSubmit(onSubmitSearch)}>
             <input
               placeholder="검색어를 입력하세요"
-              {...register("keyword", { required: true, minLength: 2 })}
+              {...register("keyword", {
+                required: true,
+                minLength: 2,
+              })}
               type="text"
               onClick={(e) => e.stopPropagation()}
+              ref={inputFocusRef}
             />
-            {errors.keyword && <div>검색어는 최소 2글자 이상입니다</div>}
+            {errors.keyword && (
+              <ErrorBox>검색어는 최소 2글자 이상입니다</ErrorBox>
+            )}
           </form>
         )}
       </SearchBox>
