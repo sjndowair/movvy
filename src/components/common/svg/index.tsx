@@ -1,6 +1,7 @@
 import { ScrollTopSvg } from "./style";
 import { svgProperty } from "../../../constants/svg.constant";
 import { useState } from "react";
+import { set } from "lodash";
 
 interface ISvgProps {
   fill?: string;
@@ -11,6 +12,28 @@ interface ISvgProps {
   viewBox?: string;
   boxShadow?: string;
 }
+
+export const Back = () => {
+  const [hover, setHover] = useState<boolean>(false);
+  return (
+    <svg
+      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setHover(true)}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      style={{ transition: "all 0.5s ease" }}
+      strokeWidth={1}
+      stroke={hover ? "rgb(255, 111, 15)" : "rgba(50, 50, 50, 1)"}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+      />
+    </svg>
+  );
+};
 
 export const RightArrowButton = ({
   fill = "rgba(50, 50, 50, 0.8)",
@@ -34,7 +57,7 @@ export const RightArrowButton = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
+        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem" : fill,
       }}
     >
       <path
@@ -149,7 +172,7 @@ export const DownArrowButton = ({
 };
 
 export const Magnifiy = ({
-  fill = "rgba(50, 50, 50, 0.8)",
+  fill = "rgba(255, 255, 255, 1)",
   size = "24",
   xmlns = "http://www.w3.org/2000/svg",
   viewBox = "0 0 24 24",
@@ -157,13 +180,20 @@ export const Magnifiy = ({
   strokeWidth = "1",
 }: ISvgProps) => {
   const [hover, setHover] = useState<boolean>(false);
+  const [clicked, setClicked] = useState<boolean>(false);
+
+  const onClick = () => {
+    setClicked((pre) => !pre);
+    setHover(true);
+  };
   return (
     <svg
       onMouseLeave={() => setHover(false)}
       onMouseEnter={() => setHover(true)}
+      onClick={() => onClick()}
       xmlns={xmlns}
       viewBox={viewBox}
-      fill={hover ? "rgb(255, 111, 15)" : fill}
+      fill={hover || clicked ? "rgb(255, 111, 15)" : fill}
       width={size}
       height={size}
       stroke={stroke}

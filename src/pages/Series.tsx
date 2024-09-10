@@ -65,7 +65,7 @@ const Series = () => {
     <>
       <Layout>
         <ScrollButton></ScrollButton>
-        <MainCarouselComponent ITvSeries={onTheAir?.results} />
+        <MainCarouselComponent ApiType="series" ITvSeries={topRated?.results} />
         <CardCollectionBox>
           <CardCarouselComponent
             ITvSerise={onTheAir?.results}
@@ -88,6 +88,17 @@ const Series = () => {
             ApiType="series"
           />
         </CardCollectionBox>
+        {seriesMatch ? (
+          <VideoPage
+            seriesTotalData={
+              topRatedData || airingTodayData || onTheAirData || popularData
+            }
+            ApiType="series"
+            programId={seriesMatch?.params.seriesId!}
+          />
+        ) : (
+          <div>is Loading...</div>
+        )}
       </Layout>
     </>
   );
