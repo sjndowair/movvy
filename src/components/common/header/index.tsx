@@ -1,6 +1,6 @@
-import { ReactHTMLElement, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { throttle } from "lodash";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
   const [searchEvent, setSearchEvent] = useState<boolean>(false);
-  const inputFocusRef = useRef<HTMLInputElement | null>(null);
+  const inputFocusRef = useRef<HTMLFormElement | null>(null);
   const navigate = useNavigate();
 
   interface ISubmitProps {
@@ -75,7 +75,7 @@ const Header = () => {
           <Magnifiy />
         </p>
         {searchEvent && (
-          <form onSubmit={handleSubmit(onSubmitSearch)}>
+          <form ref={inputFocusRef} onSubmit={handleSubmit(onSubmitSearch)}>
             <input
               placeholder="검색어를 입력하세요"
               {...register("keyword", {
@@ -83,8 +83,6 @@ const Header = () => {
                 minLength: 2,
               })}
               type="text"
-              onClick={(e) => e.stopPropagation()}
-              ref={inputFocusRef}
             />
             {errors.keyword && (
               <ErrorBox>검색어는 최소 2글자 이상입니다</ErrorBox>
