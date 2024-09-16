@@ -26,27 +26,38 @@ interface ISlideProps {
   ApiType?: TApiType;
   title?: string;
   name?: string;
+  isMatch?: any;
 }
 
 const CardCarouselComponent = ({
   IMovie,
   ITvSerise,
   ApiType,
+  isMatch,
   title,
   name,
 }: ISlideProps) => {
-  const [index, setIndex] = useState<number>(0);
   const [move, setMove] = useState<boolean>(false);
+  const [index, setIndex] = useState<number>(0);
   const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
+  const [hiddenCard, setHiddenCard] = useState<number[]>([]);
 
   const navigate = useNavigate();
 
   const onMovieClick = (movieId: string) => {
     navigate(`/movie/${movieId}`);
+    setHiddenCard((pre) => [...pre, Number(movieId)]);
   };
   const onSeriesClick = (seriesId: string) => {
     navigate(`/series/${seriesId}`);
+    setHiddenCard((pre) => [...pre, Number(seriesId)]);
   };
+
+  useEffect(() => {
+    return () => {
+      setHiddenCard([]);
+    };
+  }, []);
 
   const programIndex = () => {
     if (IMovie && IMovie.length) {
@@ -57,7 +68,6 @@ const CardCarouselComponent = ({
       return 0;
     }
   };
-
   const moveState = () => setMove((pre) => !pre);
 
   const inMoveCollectFunction = () => {
@@ -66,25 +76,39 @@ const CardCarouselComponent = ({
   };
 
   const screenReactionType = () => {
-    if (mediaSize.pc) {
+    if (window.innerWidth >= 1500) {
+      return 7;
+    } else if (window.innerWidth >= 1200) {
       return 6;
-    } else if (mediaSize.tablet) {
+    } else if (window.innerWidth >= 800) {
       return 5;
-    } else if (mediaSize.mobile) return 4;
-    return 6;
+    } else if (window.innerWidth >= 600) return 3;
+    else {
+      return 2.5;
+    }
   };
 
+  useEffect(() => {
+    const carousalResize = () => {
+      setIndex(screenReactionType());
+    };
+
+    window.addEventListener("resize", carousalResize);
+
+    return () => window.removeEventListener("resize", carousalResize);
+  }, []);
+
   const nextMove = () => {
-    if (index < programIndex() - screenReactionType() + 1) {
+    if (index < programIndex() - screenReactionType()! + 1) {
       inMoveCollectFunction();
-      setIndex((pre) => pre + screenReactionType());
+      setIndex((pre) => pre + screenReactionType()!);
     }
   };
 
   const prevMove = () => {
     if (index > 0) {
       inMoveCollectFunction();
-      setIndex((pre) => pre - screenReactionType());
+      setIndex((pre) => pre - screenReactionType()!);
     }
   };
 
@@ -105,13 +129,14 @@ const CardCarouselComponent = ({
             IMovie?.map((m) => (
               <Slide
                 key={m.id}
+                hiddenCard={hiddenCard.includes(m.id)}
                 $index={index}
                 onClick={() => onMovieClick(m.id.toString())}
                 $cards={IMovie?.length}
-                $reaction={screenReactionType()}
+                $reaction={screenReactionType()!}
               >
                 <MoviesImgBox>
-                  <CardImg src={getImagePath(m.poster_path)} />
+                  <CardImg src={getImagePath(m.poster_path)} alt={m.overview} />
                   <MoviesTitleName>{m.title}</MoviesTitleName>
                 </MoviesImgBox>
               </Slide>
@@ -119,14 +144,15 @@ const CardCarouselComponent = ({
           {ITvSerise &&
             ITvSerise?.map((m) => (
               <Slide
+                hiddenCard={hiddenCard.includes(m.id)}
                 key={m.id}
                 $index={index}
                 $cards={ITvSerise?.length}
                 onClick={() => onSeriesClick(m.id.toString())}
-                $reaction={screenReactionType()}
+                $reaction={screenReactionType()!}
               >
                 <MoviesImgBox>
-                  <CardImg src={getImagePath(m.poster_path)} />
+                  <CardImg src={getImagePath(m.poster_path)} alt={m.overview} />
                   <MoviesTitleName>{m.name}</MoviesTitleName>
                 </MoviesImgBox>
               </Slide>
