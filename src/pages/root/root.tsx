@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Layout from "../components/layout"; // 레이아웃 컴포넌트
-import MainCarouselComponent from "../components/pages/root/mainCarousel"; // 메인 케러셀 컴포넌트
-import CardCarouselComponent from "../components/common/cardCarousel"; // 카드 캐러셀 컴포넌트
-import ScrollButton from "../components/layout/ScrollBtn";
-import ModalComponent from "../components/layout/Modal";
-import VideoPage from "../components/layout/video/Video";
+import Layout from "../../components/layout"; // 레이아웃 컴포넌트
+import MainCarouselComponent from "../../components/pages/root/mainCarousel"; // 메인 케러셀 컴포넌트
+import CardCarouselComponent from "../../components/common/cardCarousel"; // 카드 캐러셀 컴포넌트
+import ScrollButton from "../../components/layout/ScrollBtn";
+import ModalComponent from "../../components/layout/Modal";
+import VideoPage from "../../components/layout/video/Video";
 import {
   getNowPlayingMovieList,
   getTopRatedMovieList,
   getPopularMovieList,
   getUpComingMovieList,
-} from "../apis/movieList.api"; // 캐러셀 이미지 top and Now play 불러오기
-import { IMovieListResponse } from "../types/movieList"; // 무비 타입 정의
+} from "../../apis/movieList.api"; // 캐러셀 이미지 top and Now play 불러오기
+import { IMovieListResponse } from "../../types/movieList"; // 무비 타입 정의
 import { CardCollectionBox } from "./style"; //스타일 컴포넌트
-import { useMatch, useNavigate } from "react-router-dom";
-import { divide } from "lodash";
+import { useMatch } from "react-router-dom";
 
 const LOCAL_STORAGE_NOT_TODAY_KEY = "LOCAL_STORAGE_NOT_TODAY_KEY";
 
@@ -96,6 +95,17 @@ const Home = () => {
     ? upComing?.results.find((i) => i.id?.toString() === match?.params.movieId)
     : null;
 
+  useEffect(() => {
+    if (match) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [match]);
+
   return (
     <Layout>
       <ModalComponent
@@ -112,25 +122,29 @@ const Home = () => {
           IMovie={nowPlaying?.results}
           title="NOW PLAYING"
           ApiType="movie"
+          isMatch={match}
         />
         <CardCarouselComponent
           IMovie={popular?.results}
           title="POPULAR"
           ApiType="movie"
+          isMatch={match}
         />
         <CardCarouselComponent
           IMovie={upComing?.results}
           title="UP COMING"
           ApiType="movie"
+          isMatch={match}
         />
         <CardCarouselComponent
           IMovie={topRated?.results}
           title="TOP RATED"
           ApiType="movie"
+          isMatch={match}
         />
       </CardCollectionBox>
 
-      {match ? (
+      {match && (
         <VideoPage
           movieTotalData={
             nowPlayingData || topRatedData || popularData || upComingData
@@ -138,8 +152,6 @@ const Home = () => {
           programId={match?.params?.movieId!}
           ApiType="movie"
         />
-      ) : (
-        <div>is Loading...</div>
       )}
     </Layout>
   );
