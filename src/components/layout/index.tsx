@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { MainContainer } from "./style";
 import Header from "../common/header";
 import Footer from "../common/footer";
@@ -10,9 +10,10 @@ interface ILayout {
 const Layout = ({ children }: ILayout) => {
   return (
     <>
-      <Header></Header>
+      <Header />
       <MainContainer>{children}</MainContainer>
-      <Footer></Footer>
+
+      <Footer />
     </>
   );
 };
