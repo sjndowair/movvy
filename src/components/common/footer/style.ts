@@ -9,6 +9,6 @@ export const FooterContainer = styled.footer`
   align-items: center;
   gap: 2rem;
   color: gray;
-
+  width: 100%;
   height: 10rem;
 `;
