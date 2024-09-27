@@ -9,15 +9,15 @@ import { ThemeModeProvider } from "./contexts/themeCtx";
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+    document.getElementById("root") as HTMLElement
 );
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
-    <React.StrictMode>
-      <ThemeModeProvider>
-        <App />
-      </ThemeModeProvider>
-    </React.StrictMode>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <React.StrictMode>
+            <ThemeModeProvider>
+                <App />
+            </ThemeModeProvider>
+        </React.StrictMode>
+    </QueryClientProvider>
 );
