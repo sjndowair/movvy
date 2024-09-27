@@ -50,6 +50,12 @@ const Home = () => {
   // modal state and scrollRock
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isCheckedNotToday, setIsCheckedNotToday] = useState<boolean>(false);
+  const [hiddenCard, setHiddenCard] = useState<number[]>([]);
+  const [isVideoOpacity, setIsVideoOpacity] = useState<boolean>(false);
+
+  const removeHiddenCard = (programId: number) => {
+    setHiddenCard((pre) => pre.filter((id) => id !== programId));
+  };
 
   const isCloseSetModal = () => {
     setIsOpenModal(false);
@@ -97,14 +103,17 @@ const Home = () => {
 
   useEffect(() => {
     if (match) {
+      setIsVideoOpacity(true);
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      setIsVideoOpacity(false);
+      setTimeout(() => {
+        document.body.style.overflow = "unset";
+      }, 300);
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
   }, [match]);
+
+  console.log(isVideoOpacity);
 
   return (
     <Layout>
@@ -116,41 +125,46 @@ const Home = () => {
       />
 
       <ScrollButton></ScrollButton>
-      <MainCarouselComponent ApiType="movie" IMovie={nowPlaying?.results} />
+      <MainCarouselComponent IMovie={nowPlaying?.results} />
       <CardCollectionBox>
         <CardCarouselComponent
           IMovie={nowPlaying?.results}
           title="NOW PLAYING"
-          ApiType="movie"
           isMatch={match}
+          hiddenCard={hiddenCard}
+          setHiddenCard={setHiddenCard}
         />
         <CardCarouselComponent
           IMovie={popular?.results}
           title="POPULAR"
-          ApiType="movie"
           isMatch={match}
+          hiddenCard={hiddenCard}
+          setHiddenCard={setHiddenCard}
         />
         <CardCarouselComponent
           IMovie={upComing?.results}
           title="UP COMING"
-          ApiType="movie"
           isMatch={match}
+          hiddenCard={hiddenCard}
+          setHiddenCard={setHiddenCard}
         />
         <CardCarouselComponent
           IMovie={topRated?.results}
           title="TOP RATED"
-          ApiType="movie"
           isMatch={match}
+          hiddenCard={hiddenCard}
+          setHiddenCard={setHiddenCard}
         />
       </CardCollectionBox>
 
       {match && (
         <VideoPage
+          videoVisible={isVideoOpacity}
           movieTotalData={
             nowPlayingData || topRatedData || popularData || upComingData
           }
           programId={match?.params?.movieId!}
-          ApiType="movie"
+          removeHiddenCard={removeHiddenCard}
         />
       )}
     </Layout>

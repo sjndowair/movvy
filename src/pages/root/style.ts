@@ -15,7 +15,10 @@ export const TemporaryIframe = styled.iframe`
 export const CardCollectionBox = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: -10rem;
   width: 100%;
+  height: auto;
 `;
 
 export const SubPageContainer = styled.div`
