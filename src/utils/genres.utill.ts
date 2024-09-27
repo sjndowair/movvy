@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 export const genres: { [key: string]: string } = {
   "28": "액션",
   "12": "모험",
