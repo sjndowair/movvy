@@ -50,29 +50,33 @@ const VideoPage = ({
     },
   });
 
-  if (isLoading) return <div>is Loading...</div>;
-
-  if (error) return <div>오류입니다 확인 바랍니다</div>;
-
-  const clickVideo = getVideoPath(data?.results[0]?.key);
+  const clickVideo = data?.results?.[0]?.key
+    ? getVideoPath(data?.results?.[0]?.key)
+    : null;
 
   const clickNavigate = () => {
+    removeHiddenCard(Number(programId));
     return navigate(-1);
   };
 
-  const escNavigate = (e: any) => {
-    if (e.key === "Escape") {
-      clickNavigate();
-    }
-  };
+  useEffect(() => {
+    const escNavigate = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        clickNavigate();
+      }
+    };
+    window?.addEventListener("keydown", escNavigate);
+    return () => {
+      window?.removeEventListener("keydown", escNavigate);
+    };
+  }, [navigate]);
 
   return (
-    <div tabIndex={0} onKeyDown={(e) => escNavigate(e)}>
-      {isLoading && <div> is Loading</div>}
-      {error && <div> this is error</div>}
-      {movieTotalData ? (
+    <div>
+      {movieTotalData && (
         <VideoDeemBackground onClick={clickNavigate}>
           <VideoWrapper
+            videoVisible={videoVisible}
             onClick={(e) => {
               e.stopPropagation();
             }}
