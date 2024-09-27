@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
   const [searchEvent, setSearchEvent] = useState<boolean>(false);
-  const inputFocusRef = useRef<HTMLFormElement | null>(null);
+
   const navigate = useNavigate();
 
   interface ISubmitProps {
@@ -28,26 +28,28 @@ const Header = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm<ISubmitProps>();
 
   const handleScrollEvent = throttle(() => {
     setScrollEvent(window?.scrollY > 0);
+    setSearchEvent(false);
   }, 33);
+
+  const onClickMagnifiy = () => {
+    setSearchEvent((prev) => !prev);
+    if (!searchEvent) {
+      setTimeout(() => {
+        setFocus("keyword");
+      }, 100);
+    }
+  };
 
   useEffect(() => {
     window?.addEventListener("scroll", handleScrollEvent);
     return () => window?.removeEventListener("scroll", handleScrollEvent);
   }, [handleScrollEvent]);
-
-  const onClickMagnifiy = () => {
-    setSearchEvent((pre) => !pre);
-    setTimeout(() => {
-      if (inputFocusRef.current) {
-        inputFocusRef.current.focus();
-      }
-    }, 100);
-  };
 
   const onSubmitSearch = (data: ISubmitProps) => {
     navigate(`/search?query=${data.keyword}`);
@@ -75,12 +77,12 @@ const Header = () => {
           <Magnifiy />
         </p>
         {searchEvent && (
-          <form ref={inputFocusRef} onSubmit={handleSubmit(onSubmitSearch)}>
+          <form onSubmit={handleSubmit(onSubmitSearch)}>
             <input
               placeholder="검색어를 입력하세요"
               {...register("keyword", {
                 required: true,
-                minLength: 2,
+                minLength: 1,
               })}
               type="text"
             />
