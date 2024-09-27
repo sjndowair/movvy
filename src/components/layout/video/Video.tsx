@@ -12,25 +12,33 @@ import {
   VideoWrapper,
   PlayerWrapper,
   VideoDeemBackground,
+  GenresBox,
+  GenresEachBox,
   PlayerIMG,
+  VideoTitle,
+  FlexBox,
+  VideoInstructionBox,
 } from "./style";
+import { useEffect } from "react";
 
 interface IVideoPageProps {
   programId: string;
   movieTotalData?: IMovie | null;
   seriesTotalData?: ITvSerise | null;
-  ApiType: string;
+  videoVisible: boolean;
+  removeHiddenCard: (programId: number) => void;
 }
 
 const VideoPage = ({
   movieTotalData,
   programId,
+  videoVisible,
   seriesTotalData,
-  ApiType,
+  removeHiddenCard,
 }: IVideoPageProps) => {
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useQuery<IVideosResponse>({
+  const { data, isLoading } = useQuery<IVideosResponse>({
     queryKey: (() => {
       if (movieTotalData) {
         return ["movie", `${programId}`];
@@ -91,10 +99,8 @@ const VideoPage = ({
                   playing={true}
                   controls={false}
                   light={true}
-                  style={{
-                    backgroundPosition: "center, center",
-                    backgroundSize: "cover",
-                  }}
+                  width="100%"
+                  height="400px"
                 />
               </PlayerWrapper>
             ) : (
@@ -102,26 +108,31 @@ const VideoPage = ({
                 <PlayerIMG
                   src={getImagePath(movieTotalData?.backdrop_path)}
                   alt={movieTotalData?.overview}
+                  $posterPath={movieTotalData?.poster_path}
                 />
               </PlayerWrapper>
             )}
 
-            <div>
-              <h5>{movieTotalData?.title}</h5>
-              <div>
-                <div>{movieTotalData?.vote_average! * 10} / 100</div>
-              </div>
-              <p>{movieTotalData?.overview}</p>
-            </div>
+            <VideoInstructionBox>
+              <VideoTitle>{movieTotalData?.title}</VideoTitle>
+              <FlexBox>
+                <StarRate voteAverage={movieTotalData?.vote_average} />
+                <GenresBox>
+                  {movieTotalData?.genre_ids.map((e, i) => (
+                    <GenresEachBox key={i}>{genres[e]}</GenresEachBox>
+                  ))}
+                </GenresBox>
+              </FlexBox>
+              <p style={{ overflow: "scroll" }}>{movieTotalData?.overview}</p>
+            </VideoInstructionBox>
           </VideoWrapper>
         </VideoDeemBackground>
-      ) : (
-        <div>is Loading...</div>
       )}
 
-      {seriesTotalData ? (
+      {seriesTotalData && (
         <VideoDeemBackground onClick={clickNavigate}>
           <VideoWrapper
+            videoVisible={videoVisible}
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -134,10 +145,9 @@ const VideoPage = ({
                   playing={true}
                   controls={false}
                   light={true}
-                  style={{
-                    backgroundPosition: "center, center",
-                    backgroundSize: "cover",
-                  }}
+                  background={false}
+                  width="100%"
+                  height="400px"
                 />
               </PlayerWrapper>
             ) : (
