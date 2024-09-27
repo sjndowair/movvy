@@ -16,9 +16,7 @@ root.render(
     <ReactQueryDevtools initialIsOpen={true} />
     <React.StrictMode>
       <ThemeModeProvider>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <App />
       </ThemeModeProvider>
     </React.StrictMode>
   </QueryClientProvider>
