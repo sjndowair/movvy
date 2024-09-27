@@ -54,9 +54,11 @@ export const GlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         padding: 0;
+        position: relative;
+        height: 100%;
         font-family: sans-serif;
         color: ${(props) => props.theme.color.background};
-        background-color:#111;
+        background-color:rgba(0,0,0, 1);
     }
 
 `;
