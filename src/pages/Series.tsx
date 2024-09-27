@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import ScrollButton from "../components/layout/ScrollBtn";
 import MainCarouselComponent from "../components/pages/root/mainCarousel";
 import CardCarouselComponent from "../components/common/cardCarousel";
-import { CardCollectionBox } from "./style";
+import { CardCollectionBox } from "./root/style";
 import {
   getAiringTodaySeriesList,
   getOnTheAirSeriesList,
@@ -13,8 +13,16 @@ import {
 import { ITvSeriseResponse } from "../types/movieList";
 import { useMatch } from "react-router-dom";
 import VideoPage from "../components/layout/video/Video";
+import { useEffect, useState } from "react";
 
 const Series = () => {
+  const [hiddenCard, setHiddenCard] = useState<number[]>([]);
+  const [isVideoOpacity, setIsVideoOpactiy] = useState<boolean>(false);
+
+  const removeHiddenCard = (programId: number) => {
+    setHiddenCard((pre) => pre.filter((id) => id !== programId));
+  };
+
   const seriesMatch = useMatch(`/series/:seriesId`);
 
   const { data: airingToday } = useQuery<ITvSeriseResponse>({
@@ -61,43 +69,62 @@ const Series = () => {
       )
     : null;
 
+  useEffect(() => {
+    if (seriesMatch) {
+      setIsVideoOpactiy(true);
+      document.body.style.overflow = "hidden";
+    } else {
+      setIsVideoOpactiy(false);
+      setTimeout(() => {
+        document.body.style.overflow = "unset";
+      }, 300);
+    }
+  }, [seriesMatch]);
+
   return (
     <>
       <Layout>
         <ScrollButton></ScrollButton>
-        <MainCarouselComponent ApiType="series" ITvSeries={topRated?.results} />
+        <MainCarouselComponent ITvSeries={topRated?.results} />
         <CardCollectionBox>
           <CardCarouselComponent
             ITvSerise={onTheAir?.results}
             title="On the air"
-            ApiType="series"
+            isMatch={seriesMatch}
+            hiddenCard={hiddenCard}
+            setHiddenCard={setHiddenCard}
           />
           <CardCarouselComponent
             ITvSerise={popular?.results}
             title="Popular"
-            ApiType="series"
+            isMatch={seriesMatch}
+            hiddenCard={hiddenCard}
+            setHiddenCard={setHiddenCard}
           />
           <CardCarouselComponent
             ITvSerise={airingToday?.results}
             title="Airing today"
-            ApiType="series"
+            isMatch={seriesMatch}
+            hiddenCard={hiddenCard}
+            setHiddenCard={setHiddenCard}
           />
           <CardCarouselComponent
             ITvSerise={topRated?.results}
             title="Top Rated"
-            ApiType="series"
+            isMatch={seriesMatch}
+            hiddenCard={hiddenCard}
+            setHiddenCard={setHiddenCard}
           />
         </CardCollectionBox>
-        {seriesMatch ? (
+        {seriesMatch && (
           <VideoPage
+            videoVisible={isVideoOpacity}
             seriesTotalData={
               topRatedData || airingTodayData || onTheAirData || popularData
             }
-            ApiType="series"
+            removeHiddenCard={removeHiddenCard}
             programId={seriesMatch?.params.seriesId!}
           />
-        ) : (
-          <div>is Loading...</div>
         )}
       </Layout>
     </>
