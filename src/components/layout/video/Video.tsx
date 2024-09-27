@@ -37,7 +37,7 @@ const VideoPage = ({
       } else if (seriesTotalData) {
         return ["series", `${programId}`];
       } else {
-        throw new Error("key check");
+        return ["movie" || "series" || "person", `${programId}`];
       }
     })(),
 
@@ -47,7 +47,7 @@ const VideoPage = ({
       } else if (seriesTotalData) {
         return getVideoByMovieId("tv", programId);
       } else {
-        throw new Error("promise check");
+        throw new Error("prgram id data 의 provider를 확인 해야됩니다.");
       }
     },
   });
