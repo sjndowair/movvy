@@ -116,12 +116,14 @@ export const SearchBox = styled.div<ISearchBoxProps>`
 export const ErrorBox = styled.div`
   background-color: #11111199;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 500px;
   width: 100%;
   text-align: center;
-  top: 5rem;
-  left: 36%;
-  right: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all 0.5s ease;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   padding: 2rem;
