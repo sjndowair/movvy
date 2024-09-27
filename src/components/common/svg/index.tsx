@@ -1,7 +1,7 @@
 import { ScrollTopSvg } from "./style";
 import { svgProperty } from "../../../constants/svg.constant";
 import { useState } from "react";
-import { set } from "lodash";
+import { fill } from "lodash";
 
 interface ISvgProps {
   fill?: string;
@@ -57,7 +57,7 @@ export const RightArrowButton = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem" : fill,
+        boxShadow: "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem",
       }}
     >
       <path
@@ -91,7 +91,7 @@ export const LeftArrowButton = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
+        boxShadow: "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem",
       }}
     >
       <path
@@ -125,7 +125,7 @@ export const UpArrowButton = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
+        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem" : fill,
       }}
     >
       <path
@@ -159,7 +159,7 @@ export const DownArrowButton = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
+        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem" : fill,
       }}
     >
       <path
@@ -200,7 +200,6 @@ export const Magnifiy = ({
       strokeWidth={strokeWidth}
       style={{
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
       }}
     >
       <path
@@ -257,7 +256,7 @@ export const Xcircle = ({
         cursor: "pointer",
         float: "right",
         transition: "all 0.5s ease",
-        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem;" : fill,
+        boxShadow: hover ? "rgba(255, 111, 15, 0.5) 0rem 0rem 1rem" : fill,
       }}
     >
       <path
@@ -266,5 +265,67 @@ export const Xcircle = ({
         clipRule="evenodd"
       />
     </svg>
+  );
+};
+
+export const StarRate = ({ voteAverage, size = 24 }: any) => {
+  const totalStar = () => 5;
+  const totalRate = () => {
+    return voteAverage / 2;
+  };
+
+  return (
+    <div style={{ display: "flex" }}>
+      {[...Array(totalStar())].map((_, i) => {
+        const starTotalRate = totalRate();
+        const essenceRate = Math.floor(starTotalRate);
+        const pointRate = starTotalRate - essenceRate;
+
+        let fillStar;
+
+        if (i < Math.floor(starTotalRate)) {
+          fillStar = "rgba(255, 111, 15, 1)";
+        } else if (i === starTotalRate && pointRate >= 0.75) {
+          fillStar = "url(#reverseHalfAndHalf)";
+        } else if (i === starTotalRate && pointRate >= 0.5) {
+          fillStar = "url(#half)";
+        } else if (i === starTotalRate && pointRate >= 0.25) {
+          fillStar = "url(#halfAndHalf)";
+        } else {
+          fillStar = "none";
+        }
+        return (
+          <svg
+            width={size}
+            height={size}
+            stroke="rgba(255, 111, 15, 1)"
+            key={i}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill={fillStar}
+          >
+            <defs>
+              <linearGradient id="half">
+                <stop offset="50%" stopColor="rgba(255, 111, 15, 1)"></stop>
+                <stop offset="50%" stopColor="none"></stop>
+              </linearGradient>
+            </defs>
+            <defs>
+              <linearGradient id="halfAndHalf">
+                <stop offset="30%" stopColor="rgba(255, 111, 15, 1)"></stop>
+                <stop offset="70%" stopColor="none"></stop>
+              </linearGradient>
+            </defs>
+            <defs>
+              <linearGradient id="reverseHalfAndHalf">
+                <stop offset="70%" stopColor="rgba(255, 111, 15, 1)"></stop>
+                <stop offset="30%" stopColor="none"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" />
+          </svg>
+        );
+      })}
+    </div>
   );
 };
