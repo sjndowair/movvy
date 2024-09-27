@@ -4,8 +4,10 @@ import { getImagePath } from "../../../utils/image.util";
 import { getVideoPath } from "../../../utils/video.util";
 import { getVideoByMovieId } from "../../../apis/videos.api";
 import { ITvSerise, IMovie } from "../../../types/movieList";
-import { IVideosResponse, IVideo } from "../../../types/videos";
+import { IVideosResponse } from "../../../types/videos";
 import ReactPlayer from "react-player";
+import { genres } from "../../../utils/genres.utill";
+import { StarRate } from "../../common/svg/\bindex";
 import {
   VideoWrapper,
   PlayerWrapper,
@@ -143,22 +145,26 @@ const VideoPage = ({
                 <PlayerIMG
                   src={getImagePath(seriesTotalData?.backdrop_path)}
                   alt={seriesTotalData?.overview}
+                  $posterPath={seriesTotalData?.poster_path}
                 />
               </PlayerWrapper>
             )}
-
-            <div>
-              <h5>{seriesTotalData?.name}</h5>
-              <div>
-                <div>{seriesTotalData?.vote_average! * 10} / 100</div>
-              </div>
-              <p>{seriesTotalData?.overview}</p>
-            </div>
+            <VideoInstructionBox>
+              <VideoTitle>{seriesTotalData?.name}</VideoTitle>
+              <FlexBox>
+                <StarRate voteAverage={seriesTotalData?.vote_average} />
+                <GenresBox>
+                  {seriesTotalData?.genre_ids.map((e, i) => (
+                    <GenresEachBox key={i}>{genres[e]}</GenresEachBox>
+                  ))}
+                </GenresBox>
+              </FlexBox>
+              <p style={{ overflow: "scroll" }}>{seriesTotalData?.overview}</p>
+            </VideoInstructionBox>
           </VideoWrapper>
         </VideoDeemBackground>
-      ) : (
-        <div>is Loading</div>
       )}
+      {isLoading && <div>지금은 로딩중....</div>}
     </div>
   );
 };
