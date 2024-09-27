@@ -1,27 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ISearchResponce } from "../../types/searchList";
-import { debounce } from "lodash";
 import { getSearchList } from "../../apis/searchList.api";
 import { getImagePath } from "../../utils/image.util";
 import Header from "../../components/common/header";
 import Footer from "../../components/common/footer";
-import { ProgramBox, EachBox, ProgramIMG, NoDataMessage } from "./style";
+import {
+  ProgramBox,
+  EachBox,
+  ProgramIMG,
+  NoDataMessage,
+  SearchNoticeTitle,
+} from "./style";
 import { Back } from "../../components/common/svg/\bindex";
 
 const SearchPage = () => {
-  // const [userQuery, setUserQuery] = useState("");
-  // const [apiQuery, setApiQuery] = useState("");
-
-  // useEffect(() => {
-  //   const onDebounce = debounce(() => setApiQuery(userQuery), 300);
-  //   onDebounce();
-  //   return () => {
-  //     onDebounce.cancel();
-  //   };
-  // }, [userQuery]);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,6 +36,7 @@ const SearchPage = () => {
   return (
     <>
       <Header />
+      <SearchNoticeTitle>이런걸 찾으셨나요?</SearchNoticeTitle>
       <ProgramBox>
         {data?.results.length ? (
           data.results.map((it) => (

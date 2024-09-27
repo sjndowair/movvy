@@ -1,15 +1,17 @@
 import styled from "styled-components";
+import { mediaQuery } from "../../components/Theme/theme";
 
 export const ProgramBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 3rem;
-  justify-content: flex-start;
-  max-width: 1200px;
+  justify-content: center;
   width: 100%;
-  padding-left: 14rem;
-  padding-top: 10rem;
+  max-width: 1400px;
+  margin: auto;
+  padding-top: 5rem;
   align-items: center;
+  transition: all 0.5s;
 `;
 
 export const EachBox = styled.div`
@@ -43,4 +45,19 @@ export const NoDataMessage = styled.p`
   font-size: 3rem;
   width: 100%;
   text-align: center;
+`;
+
+export const SearchNoticeTitle = styled.h5`
+  font-size: 3.2rem;
+  font-weight: 700;
+  font-style: italic;
+  color: ${({ theme }) => theme.color.primary};
+  padding-top: 10rem;
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  ${mediaQuery(1399)} {
+    display: flex;
+    justify-content: center;
+  }
 `;
