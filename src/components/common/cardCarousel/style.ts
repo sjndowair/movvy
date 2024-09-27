@@ -1,9 +1,9 @@
 import styled from "styled-components";
+import { mediaQuery } from "../../Theme/theme";
 
 export const ArrowButtonContainer = styled.div`
   position: relative;
   height: 4rem;
-  margin-bottom: 2rem;
 `;
 
 export const NextBtn = styled.button`
@@ -24,48 +24,68 @@ export const SlideContainer = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 1);
 `;
 
 interface ISlideProps {
   $index: number;
   $cards: number;
   $reaction: number;
-  hiddenCard: boolean;
+  $hiddenCard: boolean;
 }
 
 export const Slide = styled.div<ISlideProps>`
   display: flex;
-  display: ${(props) => (props.hiddenCard ? "none" : "block")};
+  opacity: ${(props) => (props.$hiddenCard ? 0 : 1)};
   position: relative;
-  height: auto;
+  height: 55vh;
   justify-content: center;
-  transition: transform 0.75s ease-in-out;
+  transition: all 0.4s ease;
   transform: translateX(-${(props) => props.$index * 100}%);
   min-width: calc(100% / ${(props) => props.$reaction});
   gap: 1.5rem;
+
+  ${mediaQuery(500)} {
+    height: 50vh;
+  }
 `;
 
 export const MoviesImgBox = styled.div`
   position: relative;
-  height: 330px;
+  height: 100%;
   z-index: 1;
   cursor: pointer;
   color: rgba(255, 255, 255, 1);
   text-align: center;
+  padding-top: 3rem;
   transition: all 0.5s ease;
   &:hover {
     transform: scale(1.2);
     z-index: 10;
     color: ${({ theme }) => theme.color.primary};
-    box-shadow: 0 25px 25px rgba(0, 0, 0, 1), 0 16px 17px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 1), 0 25px 25px rgba(0, 0, 0, 0.7);
   }
 `;
 
 export const CardImg = styled.img`
   width: 200px;
   max-height: 300px;
+  min-height: 300px;
   height: 100%;
+
+  ${mediaQuery(800)} {
+    width: 200px;
+  }
+  ${mediaQuery(650)} {
+    width: 180px;
+  }
+  ${mediaQuery(450)} {
+    width: 140px;
+    height: 100%;
+    max-height: 250px;
+    min-height: 250pxㄴ;
+  }
 `;
 
 export const MoviesTitleName = styled.h5`
@@ -76,14 +96,11 @@ export const MoviesTitleName = styled.h5`
   font-weight: bold;
   font-size: 1.5rem;
   padding-top: 0.5rem;
-  overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 export const TitleEncaseContainer = styled.div`
-  padding-top: 5rem;
   height: 100%;
-  background-color: rgba(0, 0, 0, 1);
 `;
 
 export const CardTitle = styled.h2`

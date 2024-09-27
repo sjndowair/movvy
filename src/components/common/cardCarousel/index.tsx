@@ -16,7 +16,6 @@ import {
 } from "./style";
 import { RightArrowButton, LeftArrowButton } from "../svg/index";
 import { useNavigate } from "react-router-dom";
-import { mediaSize } from "../../Theme/theme";
 
 type TApiType = "movie" | "series";
 
@@ -27,20 +26,21 @@ interface ISlideProps {
   title?: string;
   name?: string;
   isMatch?: any;
+  hiddenCard: number[];
+  setHiddenCard: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const CardCarouselComponent = ({
   IMovie,
   ITvSerise,
-  ApiType,
-  isMatch,
   title,
-  name,
+  hiddenCard,
+  setHiddenCard,
 }: ISlideProps) => {
   const [move, setMove] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
   const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
-  const [hiddenCard, setHiddenCard] = useState<number[]>([]);
+  const [reaction, setReaction] = useState<number>();
 
   const navigate = useNavigate();
 
@@ -48,16 +48,11 @@ const CardCarouselComponent = ({
     navigate(`/movie/${movieId}`);
     setHiddenCard((pre) => [...pre, Number(movieId)]);
   };
+
   const onSeriesClick = (seriesId: string) => {
     navigate(`/series/${seriesId}`);
     setHiddenCard((pre) => [...pre, Number(seriesId)]);
   };
-
-  useEffect(() => {
-    return () => {
-      setHiddenCard([]);
-    };
-  }, []);
 
   const programIndex = () => {
     if (IMovie && IMovie.length) {
@@ -76,27 +71,27 @@ const CardCarouselComponent = ({
   };
 
   const screenReactionType = () => {
-    if (window.innerWidth >= 1500) {
+    if (window?.innerWidth >= 1500) {
       return 7;
-    } else if (window.innerWidth >= 1200) {
+    } else if (window?.innerWidth >= 1300) {
       return 6;
-    } else if (window.innerWidth >= 800) {
+    } else if (window?.innerWidth >= 1080) {
       return 5;
-    } else if (window.innerWidth >= 600) return 3;
-    else {
-      return 2.5;
+    } else if (window?.innerWidth >= 800) {
+      return 4;
     }
+    return 3;
   };
 
   useEffect(() => {
     const carousalResize = () => {
-      setIndex(screenReactionType());
+      setIndex(screenReactionType()!);
     };
 
     window.addEventListener("resize", carousalResize);
 
     return () => window.removeEventListener("resize", carousalResize);
-  }, []);
+  }, [screenReactionType()]);
 
   const nextMove = () => {
     if (index < programIndex() - screenReactionType()! + 1) {
@@ -129,7 +124,7 @@ const CardCarouselComponent = ({
             IMovie?.map((m) => (
               <Slide
                 key={m.id}
-                hiddenCard={hiddenCard.includes(m.id)}
+                $hiddenCard={hiddenCard.includes(m.id)}
                 $index={index}
                 onClick={() => onMovieClick(m.id.toString())}
                 $cards={IMovie?.length}
@@ -144,7 +139,7 @@ const CardCarouselComponent = ({
           {ITvSerise &&
             ITvSerise?.map((m) => (
               <Slide
-                hiddenCard={hiddenCard.includes(m.id)}
+                $hiddenCard={hiddenCard.includes(m.id)}
                 key={m.id}
                 $index={index}
                 $cards={ITvSerise?.length}
