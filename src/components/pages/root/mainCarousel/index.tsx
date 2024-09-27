@@ -2,29 +2,26 @@ import { useEffect, useState } from "react";
 import { getImagePath } from "../../../../utils/image.util";
 import { IMovie, ITvSerise } from "../../../../types/movieList";
 import { useNavigate } from "react-router-dom";
+
 import {
+  ArrowInnerContainer,
+  Slide,
+  SlideContainer,
+  MainTitle,
   MainTitleImg,
   MainTitleName,
-  BackgroundDimEffectBox,
   MainTitleOverView,
-  MainTitle,
-} from "../../../../pages/style";
-import { ArrowInnerContainer, Slide, SlideContainer } from "./style";
+  ArrowButtonWrapper,
+  BackgroundDimEffectBox,
+} from "./style";
 import { LeftArrowButton, RightArrowButton } from "../../../common/svg/index";
-
-type TApiType = "movie" | "series";
 
 interface IMainCarousalProps {
   IMovie?: IMovie[];
-  ApiType: TApiType;
   ITvSeries?: ITvSerise[];
 }
 
-const MainCarouselComponent = ({
-  IMovie,
-  ITvSeries,
-  ApiType,
-}: IMainCarousalProps) => {
+const MainCarouselComponent = ({ IMovie, ITvSeries }: IMainCarousalProps) => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [slideDirection, setSlideDirection] = useState<boolean>(false);
@@ -81,9 +78,10 @@ const MainCarouselComponent = ({
             >
               <MainTitle>
                 <BackgroundDimEffectBox />
-                <MainTitleImg src={getImagePath(m.backdrop_path)} />
-                <MainTitleName>{m.title}</MainTitleName>
-                <MainTitleOverView>{m.overview}</MainTitleOverView>
+                <MainTitleImg $mainImg={getImagePath(m.backdrop_path)}>
+                  <MainTitleName>{m.title}</MainTitleName>
+                  <MainTitleOverView>{m.overview}</MainTitleOverView>
+                </MainTitleImg>
               </MainTitle>
             </Slide>
           ))}
@@ -97,20 +95,21 @@ const MainCarouselComponent = ({
             >
               <MainTitle>
                 <BackgroundDimEffectBox />
-                <MainTitleImg src={getImagePath(m.backdrop_path)} />
-                <MainTitleName>{m.name}</MainTitleName>
-                <MainTitleOverView>{m.overview}</MainTitleOverView>
+                <MainTitleImg $mainImg={getImagePath(m.backdrop_path)}>
+                  <MainTitleName>{m.name}</MainTitleName>
+                  <MainTitleOverView>{m.overview}</MainTitleOverView>
+                </MainTitleImg>
               </MainTitle>
             </Slide>
           ))}
       </SlideContainer>
       <ArrowInnerContainer>
-        <button onClick={prevClickSlideEvent}>
+        <ArrowButtonWrapper onClick={prevClickSlideEvent}>
           <LeftArrowButton />
-        </button>
-        <button onClick={nextClickSlideEvent}>
+        </ArrowButtonWrapper>
+        <ArrowButtonWrapper onClick={nextClickSlideEvent}>
           <RightArrowButton />
-        </button>
+        </ArrowButtonWrapper>
       </ArrowInnerContainer>
     </>
   );
