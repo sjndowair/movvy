@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { getDetailList } from "../../apis/getDetailList.api";
 import { IDetailListResponse } from "../../types/detailList";
 import { IVideosResponse } from "../../types/videos";
@@ -7,12 +6,25 @@ import { getVideoByMovieId } from "../../apis/videos.api";
 import { useQuery } from "@tanstack/react-query";
 import { useMatch } from "react-router-dom";
 import { getImagePath } from "../../utils/image.util";
+import { genres } from "../../utils/genres.utill";
 import ReactPlayer from "react-player";
 import Header from "../../components/common/header";
 import Footer from "../../components/common/footer";
-import { DetailContainer, Layout, Poster, Title, OverView } from "./style";
+import { GenresEachBox } from "../../components/layout/video/style";
+import {
+  DetailContainer,
+  Layout,
+  Poster,
+  BackArrow,
+  BackArrowWrapper,
+  Title,
+  PlayerWrapper,
+  OverView,
+  AlreadyBox,
+} from "./style";
 import { Back } from "../../components/common/svg/\bindex";
 import { useNavigate } from "react-router-dom";
+import { StarRate } from "../../components/common/svg/\bindex";
 
 const Detail = () => {
   const match = useMatch("search/:type/:id");
@@ -28,8 +40,6 @@ const Detail = () => {
     queryKey: ["search", `${matchId}`],
     queryFn: () => getDetailList(matchType, matchId!),
   });
-
-  console.log("data", data);
 
   const { data: videoData } = useQuery<IVideosResponse>({
     queryKey: [matchType, matchId],
@@ -54,7 +64,7 @@ const Detail = () => {
               <Header />
 
               <DetailContainer
-                background={getImagePath(data?.backdrop_path || "")}
+                $background={getImagePath(data?.backdrop_path || "")}
               >
                 <Poster
                   src={getImagePath(data?.poster_path)}
@@ -62,53 +72,45 @@ const Detail = () => {
                 />
                 <Layout>
                   {clickDetail ? (
-                    <ReactPlayer
-                      url={clickDetail}
-                      volume={0.1}
-                      playing={true}
-                      controls={false}
-                      light={true}
-                      style={{
-                        boxShadow:
-                          "0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)",
-                      }}
-                    />
+                    <PlayerWrapper>
+                      <ReactPlayer
+                        url={clickDetail}
+                        volume={0.1}
+                        playing={true}
+                        controls={false}
+                        light={true}
+                        style={{
+                          boxShadow:
+                            "0 30px 30px rgba(0, 0, 0, 0.25), 0 18px 18px rgba(0, 0, 0, 0.22)",
+                        }}
+                      />
+                    </PlayerWrapper>
                   ) : (
-                    <img src={data?.poster_path} alt={data?.overview} />
+                    <AlreadyBox>
+                      {data?.title || data?.name} 영상이 준비중입니다.....
+                    </AlreadyBox>
                   )}
                   <Title>{data.name ? data?.name : data?.title}</Title>
-
+                  <StarRate voteAverage={data?.vote_average} />
+                  <div style={{ display: "flex", gap: "0.75rem" }}>
+                    {data.genres.map((e, i) => (
+                      <GenresEachBox key={i}>{genres[e.id]}</GenresEachBox>
+                    ))}
+                  </div>
                   <OverView>{data.overview}</OverView>
                 </Layout>
               </DetailContainer>
 
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  height: "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  onClick={() => onClickBack()}
-                  style={{
-                    width: "30px",
-                    height: "auto",
-                    cursor: "pointer",
-                    paddingTop: "2rem",
-                  }}
-                >
+              <BackArrowWrapper>
+                <BackArrow onClick={() => onClickBack()}>
                   <Back />
-                </div>
-              </div>
+                </BackArrow>
+              </BackArrowWrapper>
               <Footer />
             </>
           }
         </div>
       )}
-      {isLoading && <div> isLoading</div>}
-      {error && <div>error</div>}
     </>
   );
 };
