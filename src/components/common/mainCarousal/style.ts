@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import { keyframes } from "styled-components";
-import { mediaSize, mediaQuery } from "../../../Theme/theme";
+import {
+  IBackgroundDimProps,
+  ISlideProps,
+} from "../../../types/mainCarusalList";
+import { mediaQuery, mediaSize } from "../../theme/theme";
 
 export const H2 = styled.h2`
-  color: #fff;
+  color: ${({ theme }) => theme.color.average};
   font-size: 2rem;
   text-indent: 2rem;
 `;
@@ -33,10 +37,6 @@ transform: translateX(0);
 }
 `;
 
-interface ISlideProps {
-  $slideDirection: boolean;
-  $active: boolean;
-}
 export const Slide = styled.div<ISlideProps>`
   position: absolute;
   width: 100%;
@@ -58,9 +58,9 @@ export const ArrowStyleContainer = styled.svg`
 export const ArrowButtonWrapper = styled.button`
   svg {
     border-radius: 2rem;
-    width: 50px;
+    width: 3.25rem;
     fill: ${({ theme }) => theme.color.primary};
-    height: 50px;
+    height: 3.25rem;
   }
 `;
 
@@ -73,7 +73,6 @@ export const ArrowInnerContainer = styled.div`
   top: 0;
   bottom: 0;
   width: 100%;
-
   justify-content: space-between;
   padding: 0 3rem;
   height: 5vh;
@@ -106,7 +105,7 @@ export const MainTitleImg = styled.div<IMaintitleProps>`
 `;
 
 export const MainTitleName = styled.h5`
-  color: rgba(220, 220, 220, 1);
+  color: ${({ theme }) => theme.color.average};
   font-weight: 700;
   font-size: 7rem;
   overflow: hidden;
@@ -125,7 +124,7 @@ export const MainTitleName = styled.h5`
 `;
 
 export const MainTitleOverView = styled.p`
-  color: rgba(220, 220, 220, 1);
+  color: ${({ theme }) => theme.color.average};
   z-index: 2;
   font-weight: 600;
   font-size: 1.75rem;
@@ -143,7 +142,7 @@ export const MainTitleOverView = styled.p`
   }
   ${mediaSize.mobile} {
     font: 2rem;
-    width: 80%;
+
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -151,12 +150,14 @@ export const MainTitleOverView = styled.p`
     -webkit-box-orient: vertical;
   }
 `;
-export const BackgroundDimEffectBox = styled.div`
-  background-color: rgba(0, 0, 0, 0.4);
-  /* background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); */
+export const BackgroundDimEffectBox = styled.div<IBackgroundDimProps>`
   cursor: pointer;
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 0;
+  background: ${({ $isDark }) =>
+    !$isDark
+      ? "  rgba(0, 0, 0, 0.4)"
+      : "  linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 240, 1))"};
 `;
