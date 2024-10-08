@@ -3,28 +3,30 @@ import { ScrollBTN } from "./style";
 import { ArrowUpCircle } from "../../common/svg/index";
 
 // 카멜케이스
-const ScrollUpEvent = () => {
-    window?.scrollTo({ top: 0, behavior: "smooth" });
+const isScrollUpEvent = () => {
+  window?.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const ScrollButton = () => {
-    const [buttonPresenceCheck, setButonPresenceCheck] = useState(false);
+  const [onClickButton, setOnClickButton] = useState(false);
 
-    const scrollTop = () => {
-        setButonPresenceCheck(window?.scrollY > 0);
+  const isScrollTopEvent = () => {
+    setOnClickButton(window?.scrollY > 0);
+  };
+
+  useEffect(() => {
+    window?.addEventListener("scroll", isScrollTopEvent);
+    return () => {
+      window?.removeEventListener("scroll", isScrollTopEvent);
     };
-    useEffect(() => {
-        window?.addEventListener("scroll", scrollTop);
-        return () => {
-            window?.removeEventListener("scroll", scrollTop);
-        };
-    }, []);
+  }, []);
 
-    if (!buttonPresenceCheck) return null;
-    return (
-        <ScrollBTN onClick={ScrollUpEvent}>
-            <ArrowUpCircle />
-        </ScrollBTN>
-    );
+  if (!onClickButton) return null;
+
+  return (
+    <ScrollBTN onClick={isScrollUpEvent}>
+      <ArrowUpCircle />
+    </ScrollBTN>
+  );
 };
 export default ScrollButton;

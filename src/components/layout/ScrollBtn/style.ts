@@ -14,7 +14,7 @@ export const ScrollBTN = styled.button`
   align-items: center;
   z-index: 3;
   transition: all 1s ease;
-  bottom: 1rem;
+  bottom: 8rem;
   border-radius: 20px;
   background: ${({ theme }) => theme.color.primary};
 `;
