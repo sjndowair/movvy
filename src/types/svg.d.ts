@@ -17,3 +17,13 @@ export interface ISvgProperty {
     xxl: "3rem";
   };
 }
+
+export interface ISvgProps {
+  fill?: string;
+  size?: string;
+  xmlns?: string;
+  stroke?: string;
+  strokeWidth?: string;
+  viewBox?: string;
+  boxShadow?: string;
+}
