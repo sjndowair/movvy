@@ -96,7 +96,7 @@ const Detail = () => {
                       <GenresEachBox key={i}>{genres[e.id]}</GenresEachBox>
                     ))}
                   </div>
-                  <OverView>{data.overview}</OverView>
+                  <OverView $isDark={isDark}>{data.overview}</OverView>
                 </LayoutContain>
               </DetailContainer>
 

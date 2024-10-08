@@ -13,7 +13,7 @@ export const DetailContainer = styled.div<IDetailContainer>`
 
   display: flex;
   width: 100%;
-  padding: 20rem 0;
+  padding: 20rem 2rem;
   justify-content: center;
   align-items: flex-start;
   gap: 10rem;
@@ -80,11 +80,16 @@ export const Title = styled.h5`
   padding-top: 2rem;
 `;
 
-export const OverView = styled.div`
+interface IOverViewProps {
+  $isDark: boolean;
+}
+
+export const OverView = styled.div<IOverViewProps>`
   max-width: 600px;
   width: 100%;
   line-height: 2;
-  font-size: 1.5rem;
+  font-weight: ${({ $isDark }) => (!$isDark ? "600" : "400")};
+  font-size: 2rem;
 `;
 
 export const AlreadyBox = styled.div`
