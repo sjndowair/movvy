@@ -1,18 +1,19 @@
 import styled from "styled-components";
-import { mediaQuery } from "../../components/Theme/theme";
+import { mediaQuery, mediaSize } from "../../components/theme/theme";
 
 interface IDetailContainer {
   $background: string;
+  isDark: boolean;
 }
 
 export const DetailContainer = styled.div<IDetailContainer>`
   background: url(${(props) => props.$background}) 50% 50% no-repeat;
   background-size: cover;
   background-position: center;
-  background-color: rgba(0, 0, 0, 0.5);
+
   display: flex;
   width: 100%;
-  padding-top: 7rem;
+  padding: 20rem 0;
   justify-content: center;
   align-items: flex-start;
   gap: 10rem;
@@ -23,35 +24,42 @@ export const DetailContainer = styled.div<IDetailContainer>`
 
   &:after {
     content: "";
+    background-color: ${({ theme }) => theme.background.detail};
     position: absolute;
+    width: 100%;
+    max-width: 100vw;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
   }
 
-  ${mediaQuery(1300)} {
+  ${mediaSize.tablet} {
     flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
   }
   ${mediaQuery(670)} {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding: 0 3rem;
   }
 `;
 
-export const Layout = styled.div`
+export const LayoutContain = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
   justify-content: center;
   position: relative;
   z-index: 2;
+  max-width: 100vw;
 
-  ${mediaQuery(670)} {
-    max-width: 500px;
+  .react-player__preview {
+    max-width: 95vw;
+  }
+
+  ${mediaSize.mobile} {
+    max-width: 100vw;
+    padding: 10rem 1rem 0;
     overflow: hidden;
   }
 `;
@@ -59,17 +67,17 @@ export const Layout = styled.div`
 export const Poster = styled.img`
   max-width: 500px;
   width: 100%;
-  height: 600px;
-  margin-bottom: 5rem;
+  height: auto;
+  margin-bottom: 10rem;
   position: relative;
   z-index: 2;
-
   box-shadow: 0 20px 20px rgba(0, 0, 0, 1), 0 16px 17px rgba(0, 0, 0, 0.7);
 `;
 
 export const Title = styled.h5`
   font-size: 3rem;
   font-weight: 800;
+  padding-top: 2rem;
 `;
 
 export const OverView = styled.div`
@@ -86,18 +94,13 @@ export const AlreadyBox = styled.div`
   padding-bottom: 5rem;
 `;
 
-export const PlayerWrapper = styled.div`
-  .ReactPlayer {
-    ${mediaQuery(720)} {
-    }
-  }
-`;
+export const PlayerWrapper = styled.div``;
 
 export const BackArrowWrapper = styled.div`
   width: 100%;
   display: flex;
   height: 5rem;
-  background-color: #111;
+  background-color: ${({ theme }) => theme.background.footer};
   justify-content: center;
   align-items: center;
 `;

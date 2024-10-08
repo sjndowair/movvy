@@ -8,12 +8,11 @@ import { useMatch } from "react-router-dom";
 import { getImagePath } from "../../utils/image.util";
 import { genres } from "../../utils/genres.utill";
 import ReactPlayer from "react-player";
-import Header from "../../components/common/header";
-import Footer from "../../components/common/footer";
+import Layout from "../../components/common/layoutPage";
 import { GenresEachBox } from "../../components/layout/video/style";
 import {
   DetailContainer,
-  Layout,
+  LayoutContain,
   Poster,
   BackArrow,
   BackArrowWrapper,
@@ -25,18 +24,23 @@ import {
 import { Back } from "../../components/common/svg/\bindex";
 import { useNavigate } from "react-router-dom";
 import { StarRate } from "../../components/common/svg/\bindex";
+import { usePages } from "../../hooks/usePages";
+import { useTheme } from "styled-components";
 
 const Detail = () => {
-  const match = useMatch("search/:type/:id");
+  const { useSearchDetailPage } = usePages();
+  const { isDark } = useTheme();
+  const { match } = useSearchDetailPage();
+
   const navigate = useNavigate();
 
   const onClickBack = () => {
     navigate(-1);
   };
 
-  const matchType = match?.params.type!;
+  const matchType = match?.params.type || "";
   const matchId = match?.params.id;
-  const { data, isLoading, error } = useQuery<IDetailListResponse>({
+  const { data } = useQuery<IDetailListResponse>({
     queryKey: ["search", `${matchId}`],
     queryFn: () => getDetailList(matchType, matchId!),
   });
@@ -58,19 +62,18 @@ const Detail = () => {
   return (
     <>
       {data && (
-        <div>
+        <>
           {
-            <>
-              <Header />
-
+            <Layout>
               <DetailContainer
+                isDark={isDark}
                 $background={getImagePath(data?.backdrop_path || "")}
               >
                 <Poster
                   src={getImagePath(data?.poster_path)}
                   alt={data?.overview}
                 />
-                <Layout>
+                <LayoutContain>
                   {clickDetail ? (
                     <PlayerWrapper>
                       <ReactPlayer
@@ -79,10 +82,6 @@ const Detail = () => {
                         playing={true}
                         controls={false}
                         light={true}
-                        style={{
-                          boxShadow:
-                            "0 30px 30px rgba(0, 0, 0, 0.25), 0 18px 18px rgba(0, 0, 0, 0.22)",
-                        }}
                       />
                     </PlayerWrapper>
                   ) : (
@@ -98,7 +97,7 @@ const Detail = () => {
                     ))}
                   </div>
                   <OverView>{data.overview}</OverView>
-                </Layout>
+                </LayoutContain>
               </DetailContainer>
 
               <BackArrowWrapper>
@@ -106,10 +105,9 @@ const Detail = () => {
                   <Back />
                 </BackArrow>
               </BackArrowWrapper>
-              <Footer />
-            </>
+            </Layout>
           }
-        </div>
+        </>
       )}
     </>
   );
