@@ -11,9 +11,6 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
    
-    
-
-   
 
     a {
         padding: 0;
@@ -56,8 +53,8 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         position: relative;
         height: 100%;
+        color: ${({ theme }) => theme.color.average};
         font-family: sans-serif;
-        color: ${(props) => props.theme.color.background};
         background-color:rgba(0,0,0, 1);
     }
 

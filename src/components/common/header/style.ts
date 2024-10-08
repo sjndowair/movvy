@@ -9,25 +9,26 @@ export const HeadContainer = styled.header<IIsScrollEvent>`
   position: fixed;
   display: flex;
   width: 100%;
+  max-width: 100vw;
   z-index: 3;
   align-items: center;
-  color: ${(props) => props.theme.color.background};
+  color: ${({ theme }) => theme.color.average};
   font-size: ${(props) => props.theme.text.xxl};
-  height: 4.5rem;
+  height: auto;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-  padding: 0 10rem;
+  padding: 1.5rem;
   box-shadow: ${(props) =>
     !props.$handleScrollEvent ? "none" : "rgba(255, 111, 15, 1) 0 0 1rem "};
   background: ${(props) =>
-    props.$handleScrollEvent
-      ? "#000"
-      : "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"};
-
-  ${mediaSize.tablet} {
-    padding: 0;
-  }
+    props.$handleScrollEvent && !props.$isDark
+      ? "rgba(0,0,0,1)"
+      : props.$isDark && !props.$handleScrollEvent
+      ? "linear-gradient(rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.1) 100%)"
+      : !props.$isDark && !props.$handleScrollEvent
+      ? "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)"
+      : "rgba(255,255,255,1)"};
 `;
 export const HeadInnerContainer = styled.div`
   display: flex;
@@ -63,7 +64,7 @@ export const List = styled.ul`
 
 export const ListIndex = styled.li`
   transition: all 0.225s ease;
-  color: rgba(255, 255, 255, 1);
+  color: ${({ theme }) => theme.color.average};
   &:hover {
     cursor: pointer;
     color: ${({ theme }) => theme.color.primary};
@@ -76,45 +77,55 @@ interface ISearchBoxProps {
 
 export const SearchBox = styled.div<ISearchBoxProps>`
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: end;
   align-items: center;
   border-radius: 2rem;
-  padding: 0 5px;
-  padding-top: 3px;
-  border: ${(props) =>
-    props.$searchEvent ? "rgb(255, 111, 15) 1.5px solid" : "none"};
-  width: ${(props) => (props.$searchEvent ? "200px" : "30px")};
-  overflow: hidden;
+  border: 1.5px solid transparent;
+  border-color: ${(props) =>
+    props.$searchEvent ? "rgb(255, 111, 15)" : "transparent"};
   transition: all 0.3s ease;
-
-  ${mediaSize.tablet} {
-    padding-right: 1.25rem;
-  }
-
-  form {
-    ${mediaSize.tablet} {
-      padding-right: 1.25rem;
-    }
-  }
+  background-color: ${(props) =>
+    props.$searchEvent ? "transparent" : "transparent"};
+  z-index: ${(props) => (props.$searchEvent ? 1 : 0)};
+  mix-blend-mode: unset;
 
   input {
     background: none;
     border: none;
     width: 100%;
     outline: none;
-    color: ${({ theme }) => theme.color.background};
+    color: ${({ theme }) => theme.color.average};
   }
+
   svg {
     color: ${(props) =>
-      props.$searchEvent
-        ? "rgba(255, 111, 15, 1)"
-        : "rgba(50, 50, 50, 0.8, 1)"};
+      props.$searchEvent ? "rgba(255, 111, 15, 1)" : "rgba(50, 50, 50, 0.8)"};
   }
 `;
 
+export const IconContainer = styled.div`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+`;
+
+export const SearchForm = styled.form`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  max-width: calc(max(8rem, 10vw));
+  padding: 0 1rem;
+`;
+
 export const ErrorBox = styled.div`
-  background-color: #11111199;
+  background-color: ${({ theme }) => theme.background.footer};
   position: absolute;
   left: 50%;
   transform: translateX(-50%);

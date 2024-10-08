@@ -64,7 +64,10 @@ export const MoviesImgBox = styled.div`
     transform: scale(1.2);
     z-index: 10;
     color: ${({ theme }) => theme.color.primary};
-    box-shadow: 0 20px 20px rgba(0, 0, 0, 1), 0 25px 25px rgba(0, 0, 0, 0.7);
+    box-shadow: ${({ $isDark }) =>
+      !$isDark
+        ? " 0 20px 20px rgba(0, 0, 0, 1), 0 25px 25px rgba(0, 0, 0, 0.7)"
+        : " 0 20px 20px rgba(0, 0, 0, 0.2), 0 25px 25px rgba(0, 0, 0, 0.1)"};
   }
 `;
 
