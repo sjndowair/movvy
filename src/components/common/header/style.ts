@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { mediaSize } from "../../Theme/theme";
+import { mediaSize } from "../../theme/theme";
 
 interface IIsScrollEvent {
   $handleScrollEvent: boolean;
+  $isDark: boolean;
 }
 
 export const HeadContainer = styled.header<IIsScrollEvent>`
@@ -45,9 +46,6 @@ export const H1 = styled.h1`
   cursor: pointer;
   color: ${({ theme }) => theme.color.primary};
   display: inline-block;
-  ${mediaSize.tablet} {
-    padding-left: 1.25rem;
-  }
   transition: all 0.2s ease-in-out;
   &:hover {
     scale: 1.125;

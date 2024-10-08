@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { throttle } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -11,19 +11,23 @@ import {
   HeadInnerContainer,
   SearchBox,
   ErrorBox,
+  IconContainer,
+  SearchInput,
+  SearchForm,
 } from "./style";
 import { Magnifiy } from "../svg/index";
 import { Link } from "react-router-dom";
+import { useThemeMode } from "../../../contexts/themeCtx";
+
+interface ISubmitProps {
+  keyword: string;
+}
 
 const Header = () => {
   const [scrollEvent, setScrollEvent] = useState<boolean>(false);
   const [searchEvent, setSearchEvent] = useState<boolean>(false);
-
+  const { isDark } = useThemeMode();
   const navigate = useNavigate();
-
-  interface ISubmitProps {
-    keyword: string;
-  }
 
   const {
     register,
@@ -32,31 +36,31 @@ const Header = () => {
     formState: { errors },
   } = useForm<ISubmitProps>();
 
-  const handleScrollEvent = throttle(() => {
-    setScrollEvent(window?.scrollY > 0);
-    setSearchEvent(false);
-  }, 33);
-
-  const onClickMagnifiy = () => {
+  const onClickSearchEvent = useCallback(() => {
     setSearchEvent((prev) => !prev);
     if (!searchEvent) {
       setTimeout(() => {
         setFocus("keyword");
       }, 100);
     }
-  };
+  }, []);
+
+  const isScrollEvent = throttle(() => {
+    setScrollEvent(window?.scrollY > 0);
+    setSearchEvent(false);
+  }, 33);
 
   useEffect(() => {
-    window?.addEventListener("scroll", handleScrollEvent);
-    return () => window?.removeEventListener("scroll", handleScrollEvent);
-  }, [handleScrollEvent]);
+    window?.addEventListener("scroll", isScrollEvent);
+    return () => window?.removeEventListener("scroll", isScrollEvent);
+  }, [isScrollEvent]);
 
   const onSubmitSearch = (data: ISubmitProps) => {
     navigate(`/search?query=${data.keyword}`);
   };
 
   return (
-    <HeadContainer $handleScrollEvent={scrollEvent}>
+    <HeadContainer $isDark={isDark} $handleScrollEvent={scrollEvent}>
       <HeadInnerContainer>
         <Link to={"/"}>
           <H1>movvy</H1>
@@ -73,12 +77,12 @@ const Header = () => {
         </nav>
       </HeadInnerContainer>
       <SearchBox $searchEvent={searchEvent}>
-        <p onClick={onClickMagnifiy}>
-          <Magnifiy />
-        </p>
+        <IconContainer onClick={onClickSearchEvent}>
+          <Magnifiy fill="rgba(255, 111, 15, 1)" size="20px" />
+        </IconContainer>
         {searchEvent && (
-          <form onSubmit={handleSubmit(onSubmitSearch)}>
-            <input
+          <SearchForm onSubmit={handleSubmit(onSubmitSearch)}>
+            <SearchInput
               placeholder="검색어를 입력하세요"
               {...register("keyword", {
                 required: true,
@@ -89,7 +93,7 @@ const Header = () => {
             {errors.keyword && (
               <ErrorBox>검색어는 최소 2글자 이상입니다</ErrorBox>
             )}
-          </form>
+          </SearchForm>
         )}
       </SearchBox>
     </HeadContainer>
