@@ -1,44 +1,67 @@
 import { useMatch } from "react-router-dom";
 
 export const usePages = () => {
-    const getMovieDetailPage = () => {
-        return "movie/:movieId";
-    };
+  const getMovieDetailPage = () => {
+    return "movie/:movieId";
+  };
 
-    const getSeriesDetailPage = () => {
-        return "series/:seriesId";
-    };
+  const getSeriesDetailPage = () => {
+    return "series/:seriesId";
+  };
 
-    const getSeriesPage = () => {
-        return "series";
-    };
+  const getSeriesPage = () => {
+    return "series";
+  };
 
-    const getRootPage = () => {
-        return "/";
-    };
+  const getRootPage = () => {
+    return "/";
+  };
 
-    const getSearchPage = () => {
-        return "/search";
-    };
+  const getSearchPage = () => {
+    return "/search";
+  };
 
-    const useRootPage = () => {
-        return useMatch(getRootPage());
-    };
+  const getSearchDetailPage = () => {
+    return "search/:type/:id";
+  };
 
-    const useMovieDetailPage = () => {
-        const match = useMatch(getMovieDetailPage());
+  const useRootPage = () => {
+    return useMatch(getRootPage());
+  };
 
-        const isMovieIdPage = !!match?.params.movieId;
+  const useSearchDetailPage = () => {
+    const match = useMatch(getSearchDetailPage());
 
-        return { match, isMovieIdPage };
-    };
+    const isSearchIdPage = match?.params.id;
 
-    return {
-        getMovieDetailPage,
-        getSeriesDetailPage,
-        getRootPage,
-        getSearchPage,
-        useRootPage,
-        useMovieDetailPage,
-    };
+    return { match, isSearchIdPage };
+  };
+
+  const useMovieDetailPage = () => {
+    const match = useMatch(getMovieDetailPage());
+
+    const isMovieIdPage = !!match?.params.movieId;
+
+    return { match, isMovieIdPage };
+  };
+
+  const useSeriesDetailPage = () => {
+    const seriesMatch = useMatch(getSeriesDetailPage());
+
+    const isSeriesPage = !!seriesMatch?.params.seriesId;
+
+    return { seriesMatch, isSeriesPage };
+  };
+
+  return {
+    getMovieDetailPage,
+    getSeriesDetailPage,
+    getSeriesPage,
+    getRootPage,
+    getSearchPage,
+    useRootPage,
+    useSeriesDetailPage,
+    useSearchDetailPage,
+    useMovieDetailPage,
+  };
 };
