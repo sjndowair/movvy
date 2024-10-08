@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getImagePath } from "../../../utils/image.util";
 import { getVideoPath } from "../../../utils/video.util";
 import { getVideoByMovieId } from "../../../apis/videos.api";
-import { ITvSerise, IMovie } from "../../../types/movieList";
 import { IVideosResponse } from "../../../types/videos";
+import { IVideoPageProps } from "../../../types/videoPageList";
 import ReactPlayer from "react-player";
 import { genres } from "../../../utils/genres.utill";
 import { StarRate } from "../../common/svg/\bindex";
@@ -19,82 +20,73 @@ import {
   FlexBox,
   VideoInstructionBox,
 } from "./style";
-import { useEffect } from "react";
+import ReactDOM from "react-dom";
+import { useThemeMode } from "../../../contexts/themeCtx";
 
-interface IVideoPageProps {
-  programId: string;
-  movieTotalData?: IMovie | null;
-  seriesTotalData?: ITvSerise | null;
-  videoVisible: boolean;
-  removeHiddenCard: (programId: number) => void;
-}
+const isModal = document.getElementById("portal-root");
 
 const VideoPage = ({
   movieTotalData,
   programId,
-  videoVisible,
+  $videoVisible,
   seriesTotalData,
   removeHiddenCard,
 }: IVideoPageProps) => {
+  const { isDark } = useThemeMode();
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery<IVideosResponse>({
+  const { data } = useQuery<IVideosResponse>({
     queryKey: (() => {
-      if (movieTotalData) {
-        return ["movie", `${programId}`];
-      } else if (seriesTotalData) {
-        return ["series", `${programId}`];
-      } else {
-        return ["movie" || "series" || "person", `${programId}`];
-      }
+      if (movieTotalData) return ["movie", `${programId}`];
+      if (seriesTotalData) return ["series", `${programId}`];
+      else return ["movie" || "series" || "person", `${programId}`];
     })(),
 
     queryFn: () => {
-      if (movieTotalData) {
-        return getVideoByMovieId("movie", programId);
-      } else if (seriesTotalData) {
-        return getVideoByMovieId("tv", programId);
-      } else {
+      if (movieTotalData) return getVideoByMovieId("movie", programId);
+      if (seriesTotalData) return getVideoByMovieId("tv", programId);
+      else {
         throw new Error("prgram id data 의 provider를 확인 해야됩니다.");
       }
     },
   });
 
-  const clickVideo = data?.results?.[0]?.key
-    ? getVideoPath(data?.results?.[0]?.key)
-    : null;
-
-  const clickNavigate = () => {
+  const onClickNavigate = () => {
     removeHiddenCard(Number(programId));
     return navigate(-1);
   };
 
+  const isOpenVideo = data?.results?.[0]?.key
+    ? getVideoPath(data.results[0].key)
+    : null;
+
   useEffect(() => {
-    const escNavigate = (e: KeyboardEvent) => {
+    const isEscapeEvent = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        clickNavigate();
+        onClickNavigate();
       }
     };
-    window?.addEventListener("keydown", escNavigate);
+    window?.addEventListener("keydown", isEscapeEvent);
     return () => {
-      window?.removeEventListener("keydown", escNavigate);
+      window?.removeEventListener("keydown", isEscapeEvent);
     };
   }, [navigate]);
 
-  return (
-    <div>
+  return ReactDOM.createPortal(
+    <>
       {movieTotalData && (
-        <VideoDeemBackground onClick={clickNavigate}>
+        <VideoDeemBackground onClick={onClickNavigate}>
           <VideoWrapper
-            videoVisible={videoVisible}
+            $isDark={isDark}
+            $videoVisible={$videoVisible}
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            {clickVideo ? (
+            {isOpenVideo ? (
               <PlayerWrapper>
                 <ReactPlayer
-                  url={clickVideo}
+                  url={isOpenVideo}
                   volume={0.1}
                   playing={true}
                   controls={false}
@@ -130,22 +122,22 @@ const VideoPage = ({
       )}
 
       {seriesTotalData && (
-        <VideoDeemBackground onClick={clickNavigate}>
+        <VideoDeemBackground onClick={onClickNavigate}>
           <VideoWrapper
-            videoVisible={videoVisible}
+            $isDark={isDark}
+            $videoVisible={$videoVisible}
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            {clickVideo ? (
+            {isOpenVideo ? (
               <PlayerWrapper>
                 <ReactPlayer
-                  url={clickVideo}
+                  url={isOpenVideo}
                   volume={0.1}
                   playing={true}
                   controls={false}
                   light={true}
-                  background={false}
                   width="100%"
                   height="400px"
                 />
@@ -174,8 +166,8 @@ const VideoPage = ({
           </VideoWrapper>
         </VideoDeemBackground>
       )}
-      {isLoading && <div>지금은 로딩중....</div>}
-    </div>
+    </>,
+    isModal!
   );
 };
 

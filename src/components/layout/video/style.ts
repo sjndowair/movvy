@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { mediaQuery } from "../../Theme/theme";
+import { mediaQuery } from "../../theme/theme";
 import { getImagePath } from "../../../utils/image.util";
 
 export const VideoDeemBackground = styled.div`
   width: 100%;
   position: fixed;
   height: 100vh;
+  z-index: 9999;
   top: 0;
   left: 0;
   display: flex;
@@ -15,14 +16,16 @@ export const VideoDeemBackground = styled.div`
 `;
 
 interface IIvideoWrapper {
-  videoVisible: boolean;
+  $videoVisible: boolean;
+  $isDark: boolean;
 }
 
 export const VideoWrapper = styled.div<IIvideoWrapper>`
-  opacity: ${(props) => (props.videoVisible ? 1 : 0)};
+  opacity: ${(props) => (props.$videoVisible ? 1 : 0)};
   border-radius: 0.5rem;
   display: flex;
   max-width: 800px;
+  max-height: 95vh;
   width: 100%;
   justify-content: center;
   align-items: center;
