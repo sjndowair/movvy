@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mediaQuery } from "../../components/Theme/theme";
+import { mediaQuery } from "../../components/theme/theme";
 
 export const ProgramBox = styled.div`
   display: flex;
@@ -30,8 +30,10 @@ export const EachBox = styled.div`
 `;
 
 export const ProgramIMG = styled.img`
-  width: 300px;
   height: auto;
+  max-width: 250px;
+  width: 100%;
+  aspect-ratio: auto;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -48,7 +50,7 @@ export const NoDataMessage = styled.p`
 `;
 
 export const SearchNoticeTitle = styled.h5`
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   font-style: italic;
   color: ${({ theme }) => theme.color.primary};
@@ -60,4 +62,19 @@ export const SearchNoticeTitle = styled.h5`
     display: flex;
     justify-content: center;
   }
+`;
+
+export const BackSvgWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100vw;
+  justify-content: center;
+`;
+
+export const SvgStyleContain = styled.div`
+  width: 2rem;
+  height: auto;
+  cursor: pointer;
+  padding-top: 5rem;
 `;
