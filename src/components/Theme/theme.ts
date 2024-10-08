@@ -8,7 +8,7 @@ export const lightTheme: DefaultTheme = {
     body: "rgba(255, 255, 240, 1)",
     primary: "rgba(255, 111, 15, 1)",
     footer: "#fff",
-    detail: "rgba(255,255,255,0.3)",
+    detail: "rgba(230,230,230,0.7)",
     modal: "rgba(240,240,240,1)",
   },
 

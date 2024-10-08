@@ -27,6 +27,7 @@ export const VideoWrapper = styled.div<IIvideoWrapper>`
   max-width: 800px;
   max-height: 95vh;
   width: 100%;
+  overflow: scroll;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -35,7 +36,7 @@ export const VideoWrapper = styled.div<IIvideoWrapper>`
   box-shadow: ${({ $isDark }) =>
     !$isDark
       ? "0 70px 70px rgba(0, 0, 0, 1), 0 30px 30px rgba(0, 0, 0, 0.7)"
-      : "0 20px 10px rgba(255, 255, 255, 0.5), 0 10px 10px rgba(255, 255, 255, 0.5)"};
+      : "0 40px 40px rgba(255, 255, 255, 0.5), 0 10px 10px rgba(255, 255, 255, 0.5)"};
   position: relative;
   z-index: 1000;
   gap: 1.5rem;

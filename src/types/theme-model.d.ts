@@ -6,7 +6,7 @@ declare module "styled-components" {
       body: "rgba(255, 255, 240, 1)" | "rgba(0,0,0,1)";
       primary: "rgba(255, 111, 15, 1)";
       footer: "rgba(17,17,17,1)" | "#fff";
-      detail: "rgba(0,0,0,0.6)" | "rgba(255,255,255,0.3)";
+      detail: "rgba(0,0,0,0.6)" | "rgba(230,230,230,0.7)";
       modal: "rgba(50, 50, 50, 1)" | "rgba(240,240,240,1)";
     };
 
