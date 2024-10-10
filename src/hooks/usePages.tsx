@@ -32,7 +32,7 @@ export const usePages = () => {
   const useSearchDetailPage = () => {
     const match = useMatch(getSearchDetailPage());
 
-    const isSearchIdPage = match?.params.id;
+    const isSearchIdPage = !!match?.params.id;
 
     return { match, isSearchIdPage };
   };
