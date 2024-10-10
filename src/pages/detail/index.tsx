@@ -4,7 +4,6 @@ import { IVideosResponse } from "../../types/videos";
 import { getVideoPath } from "../../utils/video.util";
 import { getVideoByMovieId } from "../../apis/videos.api";
 import { useQuery } from "@tanstack/react-query";
-import { useMatch } from "react-router-dom";
 import { getImagePath } from "../../utils/image.util";
 import { genres } from "../../utils/genres.utill";
 import ReactPlayer from "react-player";
@@ -39,20 +38,18 @@ const Detail = () => {
   };
 
   const matchType = match?.params.type || "";
-  const matchId = match?.params.id;
+  const matchId = match?.params.id || "";
+
   const { data } = useQuery<IDetailListResponse>({
     queryKey: ["search", `${matchId}`],
-    queryFn: () => getDetailList(matchType, matchId!),
+    queryFn: () => getDetailList(matchType, matchId),
   });
 
   const { data: videoData } = useQuery<IVideosResponse>({
     queryKey: [matchType, matchId],
     queryFn: () => {
-      if (matchType === "movie") {
-        return getVideoByMovieId("movie", matchId!);
-      } else if (matchType === "series") {
-        return getVideoByMovieId("series", matchId!);
-      }
+      if (matchType === "movie") return getVideoByMovieId("movie", matchId);
+      if (matchType === "series") return getVideoByMovieId("series", matchId);
       return Promise.reject("Invalid matchType");
     },
   });
@@ -75,7 +72,7 @@ const Detail = () => {
                 />
                 <LayoutContain>
                   {clickDetail ? (
-                    <PlayerWrapper>
+                    <div>
                       <ReactPlayer
                         url={clickDetail}
                         volume={0.1}
@@ -83,19 +80,19 @@ const Detail = () => {
                         controls={false}
                         light={true}
                       />
-                    </PlayerWrapper>
+                    </div>
                   ) : (
                     <AlreadyBox>
                       {data?.title || data?.name} 영상이 준비중입니다.....
                     </AlreadyBox>
                   )}
-                  <Title>{data.name ? data?.name : data?.title}</Title>
+                  <Title>{data?.name || data?.title}</Title>
                   <StarRate voteAverage={data?.vote_average} />
-                  <div style={{ display: "flex", gap: "0.75rem" }}>
+                  <PlayerWrapper>
                     {data.genres.map((e, i) => (
                       <GenresEachBox key={i}>{genres[e.id]}</GenresEachBox>
                     ))}
-                  </div>
+                  </PlayerWrapper>
                   <OverView $isDark={isDark}>{data.overview}</OverView>
                 </LayoutContain>
               </DetailContainer>

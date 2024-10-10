@@ -99,7 +99,10 @@ export const AlreadyBox = styled.div`
   padding-bottom: 5rem;
 `;
 
-export const PlayerWrapper = styled.div``;
+export const PlayerWrapper = styled.div`
+  display: flex;
+  gap: 0.75rem;
+`;
 
 export const BackArrowWrapper = styled.div`
   width: 100%;
