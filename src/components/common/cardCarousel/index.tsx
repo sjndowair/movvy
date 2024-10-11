@@ -1,80 +1,145 @@
-import { FC, useCallback, useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getImagePath } from "../../../utils/image.util";
 import {
-    CardContainer,
-    Slide,
-    SlideWrapper,
-    Card,
-    Prev,
-    Coordinates,
-    Next,
-    More,
-    Intro,
+  NextBtn,
+  Slide,
+  SlideContainer,
+  PrevBtn,
+  MoviesImgBox,
+  CardImg,
+  MoviesTitleName,
+  TitleEncaseContainer,
+  CardTitle,
+  ArrowButtonContainer,
 } from "./style";
-import { cardData } from "../../../constants/temp-card.constant";
+import { RightArrowButton, LeftArrowButton } from "../svg/index";
+import { useNavigate } from "react-router-dom";
+import {
+  ICardCarousalProps,
+  IOnClickProprs,
+} from "../../../types/cardCarousalList";
+import { useThemeMode } from "../../../contexts/themeCtx";
 
-interface ICardComponentProps {
-    title: string;
-}
+const CardCarouselComponent = ({
+  IMovie,
+  ITvSerise,
+  title,
+  hiddenCard,
+  setHiddenCard,
+}: ICardCarousalProps) => {
+  const [index, setIndex] = useState<number>(0);
+  const [carousalEvent, setCarousalEvent] = useState<boolean>(true);
 
-const CardCarousel: FC<ICardComponentProps> = ({ title }) => {
-    const [slideIndex, setSlideIndex] = useState<number>(0);
+  const { isDark } = useThemeMode();
+  const navigate = useNavigate();
 
-    const calculateCardsPerSlide = useCallback(
-        () => (window?.innerWidth >= 768 ? 5 : 3),
-        []
-    );
+  const isCarousalIndex = useCallback(() => {
+    if (IMovie) return IMovie.length - 1;
+    if (ITvSerise) return ITvSerise.length - 1;
+    return 0;
+  }, [IMovie, ITvSerise]);
 
-    const totalSlides: number = Math.ceil(
-        cardData.length / calculateCardsPerSlide()
-    );
+  const isCarousalResizeNumber = () => {
+    if (window?.innerWidth >= 1500) {
+      return 7;
+    } else if (window?.innerWidth >= 1300) {
+      return 6;
+    } else if (window?.innerWidth >= 1080) {
+      return 5;
+    } else if (window?.innerWidth >= 800) {
+      return 4;
+    }
+    return 3;
+  };
+  const onMoveCarousal = () => {
+    setCarousalEvent(true);
+  };
 
-    const prevSlide = useCallback(() => {
-        setSlideIndex((curr) => (curr === 0 ? 0 : curr - 1));
-    }, []);
+  const onNextMove = () => {
+    if (index < isCarousalIndex() - isCarousalResizeNumber() + 1) {
+      onMoveCarousal();
+      setIndex((pre) => pre + isCarousalResizeNumber());
+    }
+  };
 
-    const nextSlide = useCallback(() => {
-        setSlideIndex((curr) => (curr === totalSlides - 1 ? 0 : curr + 1));
-    }, [totalSlides]);
+  const onPrevMove = () => {
+    if (index > 0) {
+      onMoveCarousal();
+      setIndex((pre) => pre - isCarousalResizeNumber());
+    }
+  };
 
-    useEffect(() => {
-        window.addEventListener("resize", calculateCardsPerSlide);
+  useEffect(() => {
+    const isWindowResize = () => {
+      setIndex(isCarousalResizeNumber()!);
+    };
 
-        return () => {
-            window.removeEventListener("resize", calculateCardsPerSlide);
-        };
-    }, [calculateCardsPerSlide]);
+    window?.addEventListener("resize", isWindowResize);
 
-    return (
-        <section>
-            <Coordinates>
-                <SlideWrapper>
-                    <Intro>
-                        <h2>{title}</h2>
-                        <More>더보기</More>
-                    </Intro>
-                    <CardContainer
-                        className="card-container"
-                        slideIndex={slideIndex}
-                        totalSlides={totalSlides}
-                    >
-                        {cardData.map((card, index) => (
-                            <Slide key={index}>
-                                <picture>
-                                    <source
-                                        srcSet={card.webSrcSet}
-                                        type="image/webp"
-                                    />
-                                    <Card src={card.imgSrc} alt={card.alt} />
-                                </picture>
-                            </Slide>
-                        ))}
-                    </CardContainer>
-                </SlideWrapper>
-                <Prev onClick={prevSlide} />
-                <Next onClick={nextSlide} />
-            </Coordinates>
-        </section>
-    );
+    return () => window?.removeEventListener("resize", isWindowResize);
+  }, [isCarousalResizeNumber()]);
+
+  const onClickItem = ({ seriesId, movieId }: IOnClickProprs) => {
+    if (movieId) {
+      navigate(`/movie/${movieId}`);
+      setHiddenCard((pre) => [...pre, Number(movieId)]);
+      return;
+    }
+    if (seriesId) {
+      navigate(`/series/${seriesId}`);
+      setHiddenCard((pre) => [...pre, Number(seriesId)]);
+      return;
+    }
+  };
+
+  return (
+    <>
+      <TitleEncaseContainer>
+        <CardTitle>{title}</CardTitle>
+        <ArrowButtonContainer>
+          <PrevBtn onClick={onPrevMove}>
+            <LeftArrowButton />
+          </PrevBtn>
+          <NextBtn onClick={onNextMove}>
+            <RightArrowButton />
+          </NextBtn>
+        </ArrowButtonContainer>
+        <SlideContainer>
+          {IMovie &&
+            IMovie?.map((m) => (
+              <Slide
+                key={m.id}
+                $hiddenCard={hiddenCard.includes(m.id)}
+                $index={index}
+                onClick={() => onClickItem({ movieId: m?.id.toString() })}
+                $cards={IMovie?.length}
+                $reaction={isCarousalResizeNumber()!}
+              >
+                <MoviesImgBox $isDark={isDark}>
+                  <CardImg src={getImagePath(m.poster_path)} alt={m.overview} />
+                  <MoviesTitleName>{m.title}</MoviesTitleName>
+                </MoviesImgBox>
+              </Slide>
+            ))}
+          {ITvSerise &&
+            ITvSerise?.map((m) => (
+              <Slide
+                $hiddenCard={hiddenCard.includes(m.id)}
+                key={m.id}
+                $index={index}
+                $cards={ITvSerise?.length}
+                onClick={() => onClickItem({ seriesId: m?.id.toString() })}
+                $reaction={isCarousalResizeNumber()!}
+              >
+                <MoviesImgBox $isDark={isDark}>
+                  <CardImg src={getImagePath(m.poster_path)} alt={m.overview} />
+                  <MoviesTitleName>{m.name}</MoviesTitleName>
+                </MoviesImgBox>
+              </Slide>
+            ))}
+        </SlideContainer>
+      </TitleEncaseContainer>
+    </>
+  );
 };
-
-export default CardCarousel;
+export default CardCarouselComponent;

@@ -1,18 +1,16 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
     ${reset}
     
     * {
+       
         padding: 0;
         margin: 0;
         box-sizing: border-box;
     }
-
-    body {
-        background-color: #333;
-    }
+   
 
     a {
         padding: 0;
@@ -53,9 +51,11 @@ export const GlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         padding: 0;
+        position: relative;
+        height: 100%;
+        color: ${({ theme }) => theme.color.average};
         font-family: sans-serif;
-        color: ${(props) => props.theme.color.color};
-        background-color: ${(props) => props.theme.color.background};
+        background-color:rgba(0,0,0, 1);
     }
 
 `;

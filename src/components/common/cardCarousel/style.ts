@@ -1,97 +1,101 @@
 import styled from "styled-components";
+import { mediaSize } from "../../theme/theme";
+import {
+  IMoviesImgBoxProps,
+  ISlideProps,
+} from "../../../types/cardCarousalList";
 
-interface ICardContainerProps {
-    slideIndex: number;
-    totalSlides: number;
-}
-
-export const CardContainer = styled.div<ICardContainerProps>`
-    display: flex;
-    margin-top: 3rem;
-    transition: transform 0.5s ease-in-out;
-    transform: ${({ slideIndex, totalSlides }) =>
-        `translateX(-${slideIndex * (100 / Math.ceil(totalSlides / 1))}%)`};
-    width: ${({ totalSlides }) => `${totalSlides * 100}%`};
+export const ArrowButtonContainer = styled.div`
+  position: relative;
+  height: 4rem;
 `;
 
-export const Coordinates = styled.div`
-    position: relative;
+export const NextBtn = styled.button`
+  width: 3rem;
+  position: absolute;
+  right: 2rem;
+  height: 3rem;
 `;
 
-export const SlideWrapper = styled.div`
-    overflow: hidden;
-    width: 100%;
-    position: relative;
+export const PrevBtn = styled.button`
+  width: 3rem;
+  position: absolute;
+  left: 2rem;
+  height: 3rem;
 `;
 
-export const Slide = styled.div`
-    box-sizing: border-box;
-    padding: 0 1.2rem;
-    overflow: hidden;
-    cursor: pointer;
+export const SlideContainer = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-bottom: 5rem;
+  overflow: hidden;
 `;
 
-export const Card = styled.img`
-    width: 100%;
-    border-radius: 1.25rem;
-    height: auto;
-    object-fit: cover;
-    transition: all 0.2s ease-in;
-    overflow: hidden;
-
-    &:hover {
-        scale: 1.02;
-    }
+export const Slide = styled.div<ISlideProps>`
+  display: flex;
+  opacity: ${(props) => (props.$hiddenCard ? 0 : 1)};
+  position: relative;
+  justify-content: center;
+  transition: all 0.4s ease;
+  transform: translateX(-${(props) => props.$index * 100}%);
+  flex: 0 0 calc(100% / ${(props) => props.$reaction});
+  width: 100%;
+  padding: 0 2rem;
+  ${mediaSize.tablet} {
+    padding: 0 1rem;
+  }
 `;
 
-export const Button = styled.button`
-    color: #fff;
+export const MoviesImgBox = styled.div<IMoviesImgBoxProps>`
+  position: relative;
+  height: 100%;
+  z-index: 1;
+  cursor: pointer;
+  color: ${({ theme }) => theme.color.average};
+  text-align: center;
+  transition: all 0.5s ease;
+  box-shadow: 0, 10px 10px rgba(0, 0, 0, 1), 0 10px 10px rgba(0, 0, 0, 0, 0.6);
+
+  &:hover {
+    transform: scale(1.2);
+    z-index: 10;
+    color: ${({ theme }) => theme.color.primary};
+    box-shadow: ${({ $isDark }) =>
+      !$isDark
+        ? " 0 20px 20px rgba(0, 0, 0, 1), 0 25px 25px rgba(0, 0, 0, 0.7)"
+        : " 0 20px 20px rgba(0, 0, 0, 0.2), 0 25px 25px rgba(0, 0, 0, 0.1)"};
+  }
 `;
 
-export const Prev = styled.button`
-    position: absolute;
-    left: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    &::before {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-top: 3px solid ${({ theme }) => theme.color.primary};
-        border-left: 3px solid ${({ theme }) => theme.color.primary};
-        transform: rotate(-45deg);
-        transition: transform 0.3s ease;
-        filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-    }
+export const CardImg = styled.img`
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 12/18;
+  height: auto;
 `;
 
-export const Next = styled.button`
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    &::after {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-top: 3px solid ${({ theme }) => theme.color.primary};
-        border-right: 3px solid ${({ theme }) => theme.color.primary};
-        transform: rotate(45deg);
-        transition: transform 0.3s ease;
-        filter: drop-shadow(0 0 5px rgb(255, 111, 15));
-    }
+export const MoviesTitleName = styled.h5`
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-top: 0.5rem;
+  text-overflow: ellipsis;
 `;
 
-export const Intro = styled.div`
-    display: flex;
-    margin-top: 3rem;
-    color: #fff;
-    justify-content: space-between;
-    align-items: center;
+export const TitleEncaseContainer = styled.div`
+  height: 100%;
 `;
 
-export const More = styled.div`
-    font-size: ${({ theme }) => theme.text.xl};
+export const CardTitle = styled.h2`
+  font-size: 1.75rem;
+  margin-left: 2.75rem;
+  margin-bottom: 2.75rem;
+  font-weight: 700;
+  font-style: italic;
+  color: ${({ theme }) => theme.color.primary};
 `;

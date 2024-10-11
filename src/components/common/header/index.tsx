@@ -1,48 +1,103 @@
-import { GNB_MENUS_LIST } from "../../../constants/nav-menus.constant";
-import { Head, List, H1, MyPage } from "./style";
+import { useCallback, useEffect } from "react";
+import { throttle } from "lodash";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  HeadContainer,
+  List,
+  H1,
+  ListIndex,
+  HeadInnerContainer,
+  SearchBox,
+  ErrorBox,
+  IconContainer,
+  SearchInput,
+  SearchForm,
+} from "./style";
+import { Magnifiy } from "../svg/index";
+import { Link } from "react-router-dom";
+import { useThemeMode } from "../../../contexts/themeCtx";
+
+interface ISubmitProps {
+  keyword: string;
+}
 
 const Header = () => {
-    return (
-        <Head>
-            <H1>movvy</H1>
-            <nav>
-                <List>
-                    {GNB_MENUS_LIST.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                    ))}
-                </List>
-            </nav>
-            <div>
-                <MyPage>
-                    <li>
-                        <svg
-                            data-v-d955b8b8=""
-                            width="22"
-                            height="22"
-                            viewBox="0 0 22 22"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M15.4508 8.90796C15.4508 12.4977 12.5396 15.408 8.94985 15.408C5.3611 15.408 2.45081 12.4977 2.45081 8.90796C2.45081 5.31825 5.3611 2.40796 8.94985 2.40796C12.5396 2.40796 15.4508 5.31825 15.4508 8.90796Z"
-                                stroke="#A5A5A5"
-                                stroke-width="2"
-                            ></path>
-                            <path
-                                d="M14.0474 13.6536L19.7904 19.2229"
-                                stroke="#A5A5A5"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                            ></path>
-                        </svg>
-                    </li>
-                    <li>My</li>
-                </MyPage>
-            </div>
-        </Head>
-    );
+  const [scrollEvent, setScrollEvent] = useState<boolean>(false);
+  const [searchEvent, setSearchEvent] = useState<boolean>(false);
+  const { isDark } = useThemeMode();
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    formState: { errors },
+  } = useForm<ISubmitProps>();
+
+  const onClickSearchEvent = useCallback(() => {
+    setSearchEvent((prev) => !prev);
+    if (!searchEvent) {
+      setTimeout(() => {
+        setFocus("keyword");
+      }, 100);
+    }
+  }, []);
+
+  const isScrollEvent = throttle(() => {
+    setScrollEvent(window?.scrollY > 0);
+    setSearchEvent(false);
+  }, 33);
+
+  useEffect(() => {
+    window?.addEventListener("scroll", isScrollEvent);
+    return () => window?.removeEventListener("scroll", isScrollEvent);
+  }, [isScrollEvent]);
+
+  const onSubmitSearch = (data: ISubmitProps) => {
+    navigate(`/search?query=${data.keyword}`);
+  };
+
+  return (
+    <HeadContainer $isDark={isDark} $handleScrollEvent={scrollEvent}>
+      <HeadInnerContainer>
+        <Link to={"/"}>
+          <H1>movvy</H1>
+        </Link>
+        <nav>
+          <List>
+            <Link to={"/"}>
+              <ListIndex>HOME</ListIndex>
+            </Link>
+            <Link to={"/series"}>
+              <ListIndex>SERIES</ListIndex>
+            </Link>
+          </List>
+        </nav>
+      </HeadInnerContainer>
+      <SearchBox $searchEvent={searchEvent}>
+        <IconContainer onClick={onClickSearchEvent}>
+          <Magnifiy fill="rgba(255, 111, 15, 1)" size="20px" />
+        </IconContainer>
+        {searchEvent && (
+          <SearchForm onSubmit={handleSubmit(onSubmitSearch)}>
+            <SearchInput
+              placeholder="검색어를 입력하세요"
+              {...register("keyword", {
+                required: true,
+                minLength: 1,
+              })}
+              type="text"
+            />
+            {errors.keyword && (
+              <ErrorBox>검색어는 최소 2글자 이상입니다</ErrorBox>
+            )}
+          </SearchForm>
+        )}
+      </SearchBox>
+    </HeadContainer>
+  );
 };
 //
 

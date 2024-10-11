@@ -1,12 +1,23 @@
 //:DefaultTheme
 import { DefaultTheme } from "styled-components";
 
+// seveColor: "rgb(255,250,224)",
+
 export const lightTheme: DefaultTheme = {
-  color: {
-    background: "#fff",
-    color: "#333",
-    primary: "rgb(255, 111, 15)",
+  background: {
+    body: "rgba(255, 255, 240, 1)",
+    primary: "rgba(255, 111, 15, 1)",
+    footer: "#fff",
+    detail: "rgba(230,230,230,0.7)",
+    modal: "rgba(240,240,240,1)",
   },
+
+  color: {
+    average: "rgba(0,0,0,1)",
+    primary: "rgba(255, 111, 15, 1)",
+    footer: "rgba(128, 128, 128, 1)",
+  },
+
   text: {
     sm: "0.75rem",
     md: "1rem",
@@ -22,11 +33,20 @@ export const lightTheme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = {
-  color: {
-    background: "#333",
-    color: "#fff",
-    primary: "rgb(255, 111, 15)",
+  background: {
+    body: "rgba(0,0,0,1)",
+    primary: "rgba(255, 111, 15, 1)",
+    footer: "rgba(17,17,17,1)",
+    detail: "rgba(0,0,0,0.6)",
+    modal: "rgba(50, 50, 50, 1)",
   },
+
+  color: {
+    average: "rgba(255,255,255, 1)",
+    primary: "rgba(255, 111, 15, 1)",
+    footer: "rgba(128, 128, 128, 1)",
+  },
+
   text: {
     sm: "0.75rem",
     md: "1rem",
@@ -41,8 +61,8 @@ export const darkTheme: DefaultTheme = {
   },
 };
 
-const mediaQuery = (maxWidth: number): string =>
-  `media (max width: ${maxWidth}px)`;
+export const mediaQuery = (maxWidth: number): string =>
+  `@media (max-width: ${maxWidth}px)`;
 
 export const mediaSize = {
   custom: mediaQuery,
