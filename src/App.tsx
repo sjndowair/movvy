@@ -10,6 +10,7 @@ import Detail from "./pages/detail";
 import { useEffect } from "react";
 
 const THEME_KEY = "THIS_THEME_KEY";
+const BASE_NAME = process.env.PUBLIC_URL || "";
 
 function App() {
   const { isDark, toggleTheme } = useThemeMode();
@@ -28,7 +29,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <HashRouter basename={process.env.PUBLIC_URL}>
+      <HashRouter basename="/">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="movie/:movieId" element={<Home />} />
