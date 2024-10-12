@@ -28,7 +28,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <HashRouter basename="/">
+      <HashRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="movie/:movieId" element={<Home />} />
