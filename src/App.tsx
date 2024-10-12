@@ -10,7 +10,6 @@ import Detail from "./pages/detail";
 import { useEffect } from "react";
 
 const THEME_KEY = "THIS_THEME_KEY";
-const BASE_NAME = process.env.PUBLIC_URL || "";
 
 function App() {
   const { isDark, toggleTheme } = useThemeMode();
