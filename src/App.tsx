@@ -29,7 +29,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <HashRouter basename="/">
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="movie/:movieId" element={<Home />} />
